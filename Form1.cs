@@ -290,6 +290,8 @@ namespace CheckRenewalPkg
         }
         public void button1_Click(object sender, EventArgs e)
         {
+            this.treeView1.Nodes.Clear();
+            GetUserTree();
         }
         public string GetShowAllStr( )
         {
@@ -451,6 +453,8 @@ namespace CheckRenewalPkg
         }
         private void button2_Click(object sender, EventArgs e)
         {
+            this.button2.Text = "获取中";
+            this.button2.Enabled = false;
             this.backgroundWorker1.RunWorkerAsync();
 
         } 
@@ -678,7 +682,11 @@ namespace CheckRenewalPkg
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+
+            this.button2.Text = "获取套餐列表";
+            this.button2.Enabled = true;
             DisplayAndLogBatch(e.Result.ToString(), true);
+
         }
     }
 }

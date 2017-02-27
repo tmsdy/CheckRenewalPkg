@@ -105,6 +105,8 @@ namespace CheckRenewalPkg
                 this.Hide();
                 Form1 form1 = new Form1();
                 form1.ShowDialog();
+                //UpdateSims form2 = new UpdateSims();
+                //form2.Show();
 
             }
             else
