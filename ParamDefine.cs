@@ -18,11 +18,11 @@ namespace CheckRenewalPkg
             /// <summary>
             /// 
             /// </summary>
-            public int id { get; set; }
+            public string id { get; set; }
             /// <summary>
             /// 
             /// </summary>
-            public int parentId { get; set; }
+            public string parentId { get; set; }
             /// <summary>
             /// 深圳超通互动管理中心(2261)
             /// </summary>
@@ -208,7 +208,45 @@ namespace CheckRenewalPkg
         }                                                
         /// //////////////////////////////////////////////套餐的可续费套餐结束///////////////////////////////////////////////////////////////
         /// //////////////////////////////////////////////XXXX开始///////////////////////////////////////////////////////////////
+        public class BackMoneyResultItem
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string iccid { get; set; }
+            /// <summary>
+            /// 48G 12个月(每月4G)
+            /// </summary>
+            public string packageName { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public double backPrice { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public double renewalsPrice { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string renewalsTime { get; set; }
+        }
 
+        public class BackMoney
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public int error { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string reason { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<BackMoneyResultItem> result { get; set; }
+        }
         /// //////////////////////////////////////////////XXXX结束///////////////////////////////////////////////////////////////
     }
 }

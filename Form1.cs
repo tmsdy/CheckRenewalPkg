@@ -20,7 +20,8 @@ namespace CheckRenewalPkg
 {
     public partial class Form1 : Form
     {
-
+        string sVer = "V1.0.5";
+ 
         string sApiUrl = "http://demo.m-m10010.com/";
         string sLogFileName = "";
         string slogfilepath = "";
@@ -34,7 +35,7 @@ namespace CheckRenewalPkg
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+            this.Text += sVer;
             string sLogPath = Application.StartupPath + @"\logs\";
             if (!Directory.Exists(sLogPath))
             {
@@ -53,7 +54,7 @@ namespace CheckRenewalPkg
                 fsLogFile.Close();
 
             }
-            GetUserTree();
+            GetUserTree(false);
             //RefreshUserTree(ParamDefine.UserTreeDefault);
         }
         private static bool CheckValidationResult(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors)
@@ -239,15 +240,16 @@ namespace CheckRenewalPkg
             return null;
         }
 
-        public void GetUserTree()
+        public void GetUserTree(bool isDisplayGhostUser)
         {
             string result = "";
-            result = GetResponseSafe("http://demo.m-m10010.com/api/allholdnodes?id="+ Program.UserId+"&parent=" + Program.UserId);
-            RefreshUserTree(result);
+            result = GetResponseSafe("http://demo.m-m10010.com/api/allholdnodes?nodeListType=1&NJholdId=0&notIncludeCount=false&id=" + Program.UserId + "&parent=" + Program.UserId);
+            RefreshUserTree(result, isDisplayGhostUser);
 
         }
-        public void RefreshUserTree(string a)
+        public void RefreshUserTree(string a,bool isDisplayGhostUser)
         {
+            string errormsg ="";
             if (a == "")
                 return; 
             TreeNode node1;
@@ -277,6 +279,8 @@ namespace CheckRenewalPkg
                 }
                 else
                 {
+                    if (isDisplayGhostUser)
+                        errormsg += "parentId\t" + userTree.result[i].parentId.ToString() + "\tID\t" + userTree.result[i].id.ToString() + "\t" + userTree.result[i].name.ToString() + "\r\n";
                     //一堆异常的无父节点的用户
                     //node1 = new TreeNode();
                     //node1.Tag = userTree.result[i].id.ToString();
@@ -286,12 +290,13 @@ namespace CheckRenewalPkg
 
 
             }
+            DisplayAndLog(errormsg,true);
 
         }
         public void button1_Click(object sender, EventArgs e)
         {
             this.treeView1.Nodes.Clear();
-            GetUserTree();
+            GetUserTree(false);
         }
         public string GetShowAllStr( )
         {
@@ -646,6 +651,7 @@ namespace CheckRenewalPkg
             foreach (string a in SearchResult)
             {
                 comboBox1.Items.Add(a);
+                DisplayAndLog(a+"\r\n", false);
             }
 
             comboBox1.SelectionStart = comboBox1.Text.Trim().Length;
@@ -688,6 +694,123 @@ namespace CheckRenewalPkg
             DisplayAndLogBatch(e.Result.ToString(), true);
 
         }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            this.treeView1.Nodes.Clear();
+            GetUserTree(true);
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            
+            this.button6.Text = "获取中";
+            this.button6.Enabled = false;
+
+            this.backgroundWorker2.RunWorkerAsync();
+        }
+        private string GetLastMonthBackMoney(string id,string period)
+        {
+            double backmoneySum = 0;
+            double renewalsSum = 0;
+            string result = "";
+            string tmp = "";
+            string url = ""; 
+            switch(period)
+            {
+                case "lastmonth":
+
+                    url = "http://open.m-m10010.com/api/GetHoldMonthAmountList?period=lastmonth&holdId=" + id;
+                    break;
+
+                default:
+                    url = "http://open.m-m10010.com/api/GetHoldMonthAmountList?holdId=" + id;
+                    break;
+
+            }
+            string response = GetResponseSafe(url);
+            if (response == "")
+            {
+                DisplayAndLog("holdId为" + id + "查不到啊亲\r\n", true);
+                return result;
+            }
+            ParamDefine.BackMoney bmlist = JsonConvert.DeserializeObject<ParamDefine.BackMoney>(response);
+            foreach (ParamDefine.BackMoneyResultItem bmr in bmlist.result)
+            {
+                tmp += bmr.iccid + "\t" + bmr.packageName + "\t" + bmr.renewalsPrice + "\t" + bmr.backPrice + "\t" + bmr.renewalsTime + "\r\n";
+                backmoneySum +=  (bmr.backPrice);
+                renewalsSum += bmr.renewalsPrice;
+            }
+
+            result = "ID为" + id + "\t笔数为\t" + bmlist.result.Count().ToString() + "\t总续费为\t" + renewalsSum.ToString() + "\t总返利为\t" + backmoneySum.ToString() + "\r\n" + tmp;
+            return result;
+        }
+        private void backgroundWorker2_DoWork(object sender, DoWorkEventArgs e)
+        {
+            string id = "";
+            if (treeView1.Nodes.Count == 0)
+            {
+                DisplayAndLog("请先刷新用户列表\r\n", true);
+                return;
+            }
+
+            if (treeView1.SelectedNode == null)
+            {
+
+                DisplayAndLog("请先选择用户\r\n", true);
+                return;
+            }
+            id = treeView1.SelectedNode.Tag.ToString();
+            DisplayAndLogBatch(treeView1.SelectedNode.Text.ToString(),true);
+            e.Result = GetLastMonthBackMoney(id, "lastmonth"); 
+        }
+
+        private void backgroundWorker2_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            this.button6.Text = "上月返利";
+            this.button6.Enabled = true;
+            DisplayAndLogBatch(e.Result.ToString(), true);
+            DisplayAndLogBatch("------------------------------------------------------------------------\r\n", true);
+        }
+
+        private void backgroundWorker3_DoWork(object sender, DoWorkEventArgs e)
+        {
+            string id = "";
+            if (treeView1.Nodes.Count == 0)
+            {
+                DisplayAndLog("请先刷新用户列表\r\n", true);
+                return;
+            }
+
+            if (treeView1.SelectedNode == null)
+            {
+
+                DisplayAndLog("请先选择用户\r\n", true);
+                return;
+            }
+            id = treeView1.SelectedNode.Tag.ToString();
+            DisplayAndLogBatch(treeView1.SelectedNode.Text.ToString(), true);
+            e.Result = GetLastMonthBackMoney(id, ""); 
+
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+
+            this.button7.Text = "获取中";
+            this.button7.Enabled = false;
+
+            this.backgroundWorker3.RunWorkerAsync();
+        }
+
+        private void backgroundWorker3_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            this.button7.Text = "本月返利";
+            this.button7.Enabled = true;
+            DisplayAndLogBatch(e.Result.ToString(), true);
+            DisplayAndLogBatch("------------------------------------------------------------------------\r\n", true);
+
+        }
     }
 }
 
@@ -700,6 +823,7 @@ namespace CheckRenewalPkg
  * Set-Cookie: UserCookie=UserID=1&UserName=admin&UserType=1&HoldID=1&HoldName=%e8%bf%90%e8%90%a5%e4%b8%ad%e5%bf%83&HoldLevel=1&HoldType=4&Token=UJWGJQSGDVMXVX6MHT082WWNCIS9TM22&LoginFromType=1&OEMClient=; path=/
  * 获取用户列表
  * http://demo.m-m10010.com/api/allholdnodes?id=1&parent=1
+ * http://demo.m-m10010.com/api/allholdnodes?id=1&parent=1&nodeListType=1&NJholdId=0&notIncludeCount=false
  * 
  * 用户的可续费套餐权限
  * http://demo.m-m10010.com/api/HoldRenewalsList/1496?allShow=true 
