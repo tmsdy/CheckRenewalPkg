@@ -20,7 +20,7 @@ namespace CheckRenewalPkg
 {
     public partial class Form1 : Form
     {
-        string sVer = "V1.0.5";
+        string sVer = "V1.0.6";
  
         string sApiUrl = "http://demo.m-m10010.com/";
         string sLogFileName = "";
@@ -809,6 +809,79 @@ namespace CheckRenewalPkg
             this.button7.Enabled = true;
             DisplayAndLogBatch(e.Result.ToString(), true);
             DisplayAndLogBatch("------------------------------------------------------------------------\r\n", true);
+
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            this.button8.Text = "获取中";
+            this.button8.Enabled = false;
+
+            this.backgroundWorker4.RunWorkerAsync();
+        }
+
+        private void backgroundWorker4_DoWork(object sender, DoWorkEventArgs e)
+        {
+            string id = "";
+            if (treeView1.Nodes.Count == 0)
+            {
+                DisplayAndLog("请先刷新用户列表\r\n", true);
+                return;
+            }
+
+            if (treeView1.SelectedNode == null)
+            {
+
+                DisplayAndLog("请先选择用户\r\n", true);
+                return;
+            }
+            id = treeView1.SelectedNode.Tag.ToString();
+            DisplayAndLogBatch(treeView1.SelectedNode.Text.ToString()+"\t", true);
+            e.Result = GetRenewalsTotal(id); 
+
+        }
+
+        private void backgroundWorker4_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+
+            this.button8.Text = "续费汇总";
+            this.button8.Enabled = true;
+            DisplayAndLogBatch(e.Result.ToString(), true);
+            DisplayAndLogBatch("------------------------------------------------------------------------\r\n", true);
+        }
+        private string GetRenewalsTotal(string id)
+        {
+            double backmoneySum = 0;
+            double renewalsSum = 0;
+            string result = "";
+            string tmp = "";
+            string url = "";
+
+            url = "http://demo.m-m10010.com/api/NewReportRenewalsTotalForHoldInfo?holdId=" + id;
+                   
+            string response = GetResponseSafe(url);
+            if (response == "")
+            {
+                DisplayAndLog("holdId为" + id + "查不到啊亲\r\n", true);
+                return result;
+            }
+            ParamDefine.RenewalsTotal rt = JsonConvert.DeserializeObject<ParamDefine.RenewalsTotal>(response);
+            ParamDefine.RenewalsTotalResult rtresult = rt.result;
+
+            tmp += "总卡数\t" + rtresult.allCount +
+                "\t有效续费卡\t" + rtresult.renewalsCount +
+                "\t总续费金额\t" + rtresult.renewalsAmount +
+                "\t总返利金额\t" + rtresult.backAmount +
+                "\t累计ARPU\t" + (rtresult.renewalsAmount / rtresult.renewalsCount).ToString("#0.00") +
+                "\t有效续费率\t" + string.Format("{0:0.00%}", ((double)rtresult.renewalsCount / (rtresult.ltActivatedCount + rtresult.ltStopCount))) +
+                "\t续费率\t"    +  string.Format("{0:0.00%}", ((double)rtresult.renewalsCount / (rtresult.allCount)))  +
+                "\t使用率\t"    +  string.Format("{0:0.00%}", ((double)(rtresult.ltActivatedCount + rtresult.ltStopCount) / rtresult.ltAllCount))  +
+                "\t脱网率\t"    +  string.Format("{0:0.00%}", ((double)rtresult.ltOutCount / (rtresult.ltActivatedCount + rtresult.ltStopCount)))  +
+                "\t复充率\t"    +  string.Format("{0:0.00%}", ((double)rtresult.twiceRenewalsCount / (rtresult.renewalsCount))) + "\r\n";
+
+            result =  tmp;
+            return result;
+
 
         }
     }

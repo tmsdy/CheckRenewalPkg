@@ -248,5 +248,103 @@ namespace CheckRenewalPkg
             public List<BackMoneyResultItem> result { get; set; }
         }
         /// //////////////////////////////////////////////XXXX结束///////////////////////////////////////////////////////////////
+        /// 
+        /// 
+        /// 
+        public class RenewalsTotalResult
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public int allCount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public int ltAllCount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public int ltActivatedCount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public int ltStopCount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public int ltOutCount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public int twiceRenewalsCount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public double renewalsAmount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public int renewalsCount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public int ltRenewalsCount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public double backAmount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public int lastDayAllCount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public int lastDayActivatedCount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public int lastDayStopCount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public int lastDayOutCount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public int lastDayTwiceRenewalsCount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public double lastDayRenewalsAmount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public int lastDayRenewalsCount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public double lastDayBackAmount { get; set; }
+        }
+
+        public class RenewalsTotal
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public int error { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string reason { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public RenewalsTotalResult result { get; set; }
+        }
+        /// 
+        /// 
+        /// 
+
     }
 }
