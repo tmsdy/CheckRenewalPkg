@@ -343,7 +343,71 @@ namespace CheckRenewalPkg
             public RenewalsTotalResult result { get; set; }
         }
         /// 
-        /// 
+        ///////////////////////////////////////月续费汇总/////////////////////////////////////////////////////////
+        public class MonthRenewalsTotalResultItem
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string date { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string addSimCount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string simCount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string times { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public double amount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public double usage { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string stopTimes { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string stopAmount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string stopDays { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string firstTimes { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string firstAmount { get; set; }
+        }
+
+        public class MonthRenewalsTotal
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string error { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string reason { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<MonthRenewalsTotalResultItem> result { get; set; }
+        }
+        /////////////////////////////////////////////////////////////////////////////////////////////////
         /// 
 
     }
