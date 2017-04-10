@@ -841,8 +841,21 @@ namespace CheckRenewalPkg
                     DisplayAndLog("请先选择用户\r\n", true);
                     return;
                 }
+                tmp += "\t总卡数\t" +
+                      "已激活卡\t" +
+                      "已停用卡\t" +
+                      "有效续费卡\t" +
+                      "总续费金额\t" +
+                      "总返利金额\t" +
+                      "累计ARPU\t" +
+                      "有效续费率\t" +
+                      "续费率\t" +
+                      "使用率\t" +
+                      "脱网率\t" +
+                      "复充率\r\n";
+                DisplayAndLog(tmp, true);
                 id = treeView1.SelectedNode.Tag.ToString();
-                DisplayAndLog(treeView1.SelectedNode.Text.ToString() + "\t", true);
+                DisplayAndLog(treeView1.SelectedNode.Text.ToString() , true);
                 DisplayAndLog(GetRenewalsTotal(id,true), true);
 
 
@@ -853,12 +866,14 @@ namespace CheckRenewalPkg
                 //4715,4716,5108,5521,5288,5015,5013,5014,5116
                 //MIFI NEW
                 //5519,6423,6314,6304,5877,5905,5891,5287,5377,5523,5926,5411,5362
+                //MIFI普通
+                //,"4289","2127","5107","4933","4853","5018","5019","4927","4854","5020","2374","1495","3089","2468","2518","3331","5361","2764"
                 //车联网AL
                 //4978,6257,5342,4982,4984,4682,4717,
                 //车联网其它
                 //4125,3164,5236,4001,2201,5341,4761,4462,4566,6175,5232,4301,4108,4382,4026,1303,
 
-                tmp += "\t\t总卡数\t" +
+                tmp += "\t总卡数\t" +
                           "已激活卡\t" +
                           "已停用卡\t" +
                           "有效续费卡\t" +
@@ -871,19 +886,23 @@ namespace CheckRenewalPkg
                           "脱网率\t" +
                           "复充率\r\n";
                 DisplayAndLog(tmp, true);
-                string[] idlist = { "4715", "4716", "5108", "5521", "5288", "5015", "5013", "5014", "5116", "5519", "6423", "6314", "6304", "5877", "5905", "5891", "5287", "5377", "5523", "5926", "5411", "5362", "4978", "6257", "5342", "4982", "4984", "4682", "4717", "4125", "3164", "5236", "4001", "2201", "5341", "4761", "4462", "4566", "6175", "5232", "4301", "4108", "4382", "4026", "1303" };
+                string[] idlist = { "4715", "4716", "5108", "5521", "5288", "5015", "5013", "5014", "5116", 
+                                      "5519", "6423", "6314", "6304", "5877", "5905", "5891", "5287", "5377", "5523", "5926", "5411", "5362",
+                                      "4289", "2127", "5107", "4933", "4853", "5018", "5019", "4927", "4854", "5020", "2374", "1495", "3089", "2468", "2518", "3331", "5361", "2764", 
+                                      "4978", "6257", "5342", "4982", "4984", "4682", "4717",
+                                      "4125", "3164", "5236", "4001", "2201", "5341", "4761", "4462", "4566", "6175", "5232", "4301", "4108", "4382", "4026", "1303" };
                 foreach (string idid in idlist)
                 {
                     treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
                     if (null == treeView1.SelectedNode)
                     {
-                        DisplayAndLog("未知用户ID为" + idid + "\t" + GetRenewalsTotal(idid,false), true);
+                        DisplayAndLog("未知用户ID为" + idid  + GetRenewalsTotal(idid,false), true);
                         continue;
                     }
 
                     //treeView1.Select();
 
-                    DisplayAndLog(treeView1.SelectedNode.Text.ToString() + "\t", true);
+                    DisplayAndLog(treeView1.SelectedNode.Text.ToString() , true);
                     DisplayAndLog(GetRenewalsTotal(idid,false), true);
                 }
 
@@ -953,24 +972,24 @@ namespace CheckRenewalPkg
             }
             ParamDefine.RenewalsTotal rt = JsonConvert.DeserializeObject<ParamDefine.RenewalsTotal>(response);
             ParamDefine.RenewalsTotalResult rtresult = rt.result;
-            if (isDisplayTitle)
-            {
-                tmp += "总卡数\t" + rtresult.allCount +
-                      "\t已激活卡\t" + rtresult.ltActivatedCount +
-                      "\t已停用卡\t" + rtresult.ltStopCount +
-                      "\t有效续费卡\t" + rtresult.renewalsCount +
-                      "\t总续费金额\t" + rtresult.renewalsAmount +
-                      "\t总返利金额\t" + rtresult.backAmount +
-                      "\t累计ARPU\t" + (rtresult.renewalsAmount / rtresult.renewalsCount).ToString("#0.00") +
-                      "\t有效续费率\t" + string.Format("{0:0.00%}", ((double)rtresult.renewalsCount / (rtresult.ltActivatedCount + rtresult.ltStopCount))) +
-                      "\t续费率\t" + string.Format("{0:0.00%}", ((double)rtresult.renewalsCount / (rtresult.allCount))) +
-                      "\t使用率\t" + string.Format("{0:0.00%}", ((double)(rtresult.ltActivatedCount + rtresult.ltStopCount) / rtresult.ltAllCount)) +
-                      "\t脱网率\t" + string.Format("{0:0.00%}", ((double)rtresult.ltOutCount / (rtresult.ltActivatedCount + rtresult.ltStopCount))) +
-                      "\t复充率\t" + string.Format("{0:0.00%}", ((double)rtresult.twiceRenewalsCount / (rtresult.renewalsCount))) + "\t";
+            //if (isDisplayTitle)
+            //{
+            //    tmp += "总卡数\t" + rtresult.allCount +
+            //          "\t已激活卡\t" + rtresult.ltActivatedCount +
+            //          "\t已停用卡\t" + rtresult.ltStopCount +
+            //          "\t有效续费卡\t" + rtresult.renewalsCount +
+            //          "\t总续费金额\t" + rtresult.renewalsAmount +
+            //          "\t总返利金额\t" + rtresult.backAmount +
+            //          "\t累计ARPU\t" + (rtresult.renewalsAmount / rtresult.renewalsCount).ToString("#0.00") +
+            //          "\t有效续费率\t" + string.Format("{0:0.00%}", ((double)rtresult.renewalsCount / (rtresult.ltActivatedCount + rtresult.ltStopCount))) +
+            //          "\t续费率\t" + string.Format("{0:0.00%}", ((double)rtresult.renewalsCount / (rtresult.allCount))) +
+            //          "\t使用率\t" + string.Format("{0:0.00%}", ((double)(rtresult.ltActivatedCount + rtresult.ltStopCount) / rtresult.ltAllCount)) +
+            //          "\t脱网率\t" + string.Format("{0:0.00%}", ((double)rtresult.ltOutCount / (rtresult.ltActivatedCount + rtresult.ltStopCount))) +
+            //          "\t复充率\t" + string.Format("{0:0.00%}", ((double)rtresult.twiceRenewalsCount / (rtresult.renewalsCount))) + "\t";
 
-            }
-            else
-            { 
+            //}
+            //else
+            //{ 
                 tmp += "\t" + rtresult.allCount +
                        "\t" + rtresult.ltActivatedCount +
                        "\t" + rtresult.ltStopCount +
@@ -984,7 +1003,7 @@ namespace CheckRenewalPkg
                        "\t" + string.Format("{0:0.00%}", ((double)rtresult.ltOutCount / (rtresult.ltActivatedCount + rtresult.ltStopCount))) +
                        "\t" + string.Format("{0:0.00%}", ((double)rtresult.twiceRenewalsCount / (rtresult.renewalsCount))) + "\t";
          
-            }
+            //}
 
             tmp += GetMonthRenewalsTotal(id);
             result = tmp.Replace("非数字", "0");
