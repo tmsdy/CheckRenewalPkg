@@ -256,6 +256,12 @@ namespace CheckRenewalPkg
             TreeNode nodeParent;
             int id = 0;
             ParamDefine.UserTree userTree = JsonConvert.DeserializeObject<ParamDefine.UserTree>(a);
+
+
+            if (userTree == null)
+                return;
+            if (userTree.result == null)
+                return;
             for (int i = 0; i < userTree.result.Count; i++)
             {
                 if (treeView1.Nodes.Count == 0)
@@ -342,6 +348,8 @@ namespace CheckRenewalPkg
                 }
             }
             ParamDefine.RenewalsPackage rp = JsonConvert.DeserializeObject<ParamDefine.RenewalsPackage>(response);
+            if (rp.result == null)
+                return result;
             foreach (ParamDefine.RenewalsPackageItem rpi in rp.result)
             {
                 if (isSpecialPkg == false)
@@ -391,6 +399,8 @@ namespace CheckRenewalPkg
                 return result;
             }
             ParamDefine.HoldRenewalsList hrl = JsonConvert.DeserializeObject<ParamDefine.HoldRenewalsList>(response);
+            if (hrl.result == null)
+                return result;
             foreach (ParamDefine.HoldList user in hrl.result)
             {
                 foreach (ParamDefine.PackageListItem pkg in user.PackageList)
@@ -719,7 +729,16 @@ namespace CheckRenewalPkg
 
             this.button2.Text = "获取套餐列表";
             this.button2.Enabled = true;
-            DisplayAndLogBatch(e.Result.ToString(), true);
+
+            bool isVerySpeed = Convert.ToBoolean(InvokeHelper.Get(this.checkBox4, "Checked"));
+           if(isVerySpeed)
+           {
+               DisplayAndLogBatch(e.Result.ToString(), false);
+           }
+            else
+           {
+               DisplayAndLogBatch(e.Result.ToString(), true);
+           }
 
         }
 
@@ -763,6 +782,8 @@ namespace CheckRenewalPkg
                 return result;
             }
             ParamDefine.BackMoney bmlist = JsonConvert.DeserializeObject<ParamDefine.BackMoney>(response);
+            if (bmlist.result == null)
+                return result;
             foreach (ParamDefine.BackMoneyResultItem bmr in bmlist.result)
             {
                 tmp += bmr.iccid + "\t" + bmr.packageName + "\t" + bmr.renewalsPrice + "\t" + bmr.backPrice + "\t" + bmr.renewalsTime + "\r\n";
@@ -1022,6 +1043,9 @@ namespace CheckRenewalPkg
             //}
             //else
             //{ 
+
+            if (rtresult == null)
+                return result;
                 tmp += "\t" + rtresult.allCount +
                        "\t" + rtresult.ltActivatedCount +
                        "\t" + rtresult.ltStopCount +
