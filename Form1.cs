@@ -20,7 +20,7 @@ namespace CheckRenewalPkg
 {
     public partial class Form1 : Form
     {
-        string sVer = "V1.0.7";
+        string sVer = "V1.0.8";
 
         string sApiUrl = "http://demo.m-m10010.com/";
         string sLogFileName = "";
@@ -319,6 +319,12 @@ namespace CheckRenewalPkg
             string response = "";
             string result = "";
 
+            bool isSpecialPkg = Convert.ToBoolean(InvokeHelper.Get(this.checkBox3, "Checked"));
+            string specialPkg = InvokeHelper.Get(this.textBox1, "Text").ToString().Trim();
+
+            if(string.IsNullOrEmpty(specialPkg))
+                isSpecialPkg = false;
+            
             if (id == "")
             {
                 DisplayAndLog("ID不合法\r\n", true);
@@ -338,11 +344,26 @@ namespace CheckRenewalPkg
             ParamDefine.RenewalsPackage rp = JsonConvert.DeserializeObject<ParamDefine.RenewalsPackage>(response);
             foreach (ParamDefine.RenewalsPackageItem rpi in rp.result)
             {
-                result += "@\t\t\t\t\t└--" + rpi.PackageName.PadRight(20) + "\t@R" + rpi.UnitPrice + "\t@R" + rpi.BackPrice + "\r\n";
-                if (rpi.UnitPrice == "0.01")
+                if (isSpecialPkg == false)
                 {
-                    result += "\t@R!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\r\n"; 
+                    result += "@\t\t\t\t\t└--" + rpi.PackageName.PadRight(20) + "\t@R" + rpi.UnitPrice + "\t@R" + rpi.BackPrice + "\r\n";
+                    if (rpi.UnitPrice == "0.01")
+                    {
+                        result += "\t@R!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\r\n"; 
+                    }
                 }
+                else
+                {
+                    if(specialPkg==rpi.PackageName)
+                    {
+                        result += "@\t\t\t\t\t└--" + rpi.PackageName.PadRight(20) + "\t@R" + rpi.UnitPrice + "\t@R" + rpi.BackPrice + "\r\n";
+                        if (rpi.UnitPrice == "0.01")
+                        {
+                            result += "\t@R!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\r\n";
+                        }
+                    }
+                }
+            
             }
 
 
@@ -1022,6 +1043,36 @@ namespace CheckRenewalPkg
             this.button9.Enabled = false;
 
             this.backgroundWorker4.RunWorkerAsync("single");
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            if(checkBox2.Checked == false)
+            {
+                this.textBox1.Enabled = false;
+                this.checkBox3.Enabled = false;
+            }
+            else
+            {
+
+                this.textBox1.Enabled = true;
+                this.checkBox3.Enabled = true;
+            }
+            this.checkBox3.Checked = false;
+        }
+
+        private void checkBox3_CheckedChanged(object sender, EventArgs e)
+        {
+
+            if (checkBox3.Checked == false)
+            {
+                this.textBox1.Enabled = false; 
+            }
+            else
+            {
+
+                this.textBox1.Enabled = true; 
+            }
         }
     }
 }
