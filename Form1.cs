@@ -339,6 +339,10 @@ namespace CheckRenewalPkg
             foreach (ParamDefine.RenewalsPackageItem rpi in rp.result)
             {
                 result += "@\t\t\t\t\t└--" + rpi.PackageName.PadRight(20) + "\t@R" + rpi.UnitPrice + "\t@R" + rpi.BackPrice + "\r\n";
+                if (rpi.UnitPrice == "0.01")
+                {
+                    result += "\t@R!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\r\n"; 
+                }
             }
 
 
