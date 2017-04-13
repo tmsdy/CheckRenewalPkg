@@ -697,6 +697,7 @@ namespace CheckRenewalPkg
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             string id = "";
+            e.Result = "";
             if (treeView1.Nodes.Count == 0)
             {
                 DisplayAndLog("请先刷新用户列表\r\n", true);
@@ -775,6 +776,8 @@ namespace CheckRenewalPkg
         private void backgroundWorker2_DoWork(object sender, DoWorkEventArgs e)
         {
             string id = "";
+
+            e.Result = "";
             if (treeView1.Nodes.Count == 0)
             {
                 DisplayAndLog("请先刷新用户列表\r\n", true);
@@ -803,6 +806,8 @@ namespace CheckRenewalPkg
         private void backgroundWorker3_DoWork(object sender, DoWorkEventArgs e)
         {
             string id = "";
+
+            e.Result = "";
             if (treeView1.Nodes.Count == 0)
             {
                 DisplayAndLog("请先刷新用户列表\r\n", true);
@@ -852,6 +857,8 @@ namespace CheckRenewalPkg
             string id = "";
             string tmp = "";
             string whichway = e.Argument.ToString();
+
+            e.Result = "";
             if (whichway == "single")
             {
                 if (treeView1.Nodes.Count == 0)
