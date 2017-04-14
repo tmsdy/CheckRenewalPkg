@@ -35,6 +35,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.button4 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button9 = new System.Windows.Forms.Button();
@@ -50,7 +51,6 @@
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker3 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker4 = new System.ComponentModel.BackgroundWorker();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -148,8 +148,20 @@
             this.comboBox1.TextChanged += new System.EventHandler(this.comboBox1_TextChanged);
             this.comboBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.comboBox1_KeyUp);
             // 
+            // checkBox4
+            // 
+            this.checkBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Location = new System.Drawing.Point(513, 648);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(84, 16);
+            this.checkBox4.TabIndex = 14;
+            this.checkBox4.Text = "不显示结果";
+            this.checkBox4.UseVisualStyleBackColor = true;
+            // 
             // checkBox3
             // 
+            this.checkBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBox3.AutoSize = true;
             this.checkBox3.Location = new System.Drawing.Point(435, 649);
             this.checkBox3.Name = "checkBox3";
@@ -161,6 +173,7 @@
             // 
             // textBox1
             // 
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.textBox1.Location = new System.Drawing.Point(278, 647);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(148, 21);
@@ -288,16 +301,6 @@
             // 
             this.backgroundWorker4.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker4_DoWork);
             this.backgroundWorker4.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker4_RunWorkerCompleted);
-            // 
-            // checkBox4
-            // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(513, 648);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(84, 16);
-            this.checkBox4.TabIndex = 14;
-            this.checkBox4.Text = "不显示结果";
-            this.checkBox4.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
