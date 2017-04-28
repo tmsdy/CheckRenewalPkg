@@ -408,7 +408,184 @@ namespace CheckRenewalPkg
             public List<MonthRenewalsTotalResultItem> result { get; set; }
         }
         /////////////////////////////////////////////////////////////////////////////////////////////////
-        /// 
 
+
+
+
+
+
+
+
+        /////////////////////////////////////////////用量数据////////////////////////////////////////////////////
+        public class SimStatisticsListItem
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string sourceType { get; set; }
+            /// <summary>
+            /// 全部
+            /// </summary>
+            public string sourceName { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string allNum { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string stockNum { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string testableNum { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string canactivateNum { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string activatedNum { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string stopedNum { get; set; }
+        }
+
+        public class SourceListItem
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string sourceType { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string sourceName { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string amountUsage { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string validCount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string validAvgUsage { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string iAmountUsage { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string iValidCount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string iValidAvgUsage { get; set; }
+        }
+
+        public class DayStatisticsListItem
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string statDay { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public double amountUsage { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string validCount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public double validAvgUsage { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string iAmountUsage { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string iValidCount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string iValidAvgUsage { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<SourceListItem> sourceList { get; set; }
+        } 
+  
+
+        public class MonthStatisticsListItem
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string statMonth { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string amountUsage { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<SourceListItem> sourceList { get; set; }
+        }
+
+        public class FlowReportResult
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string holdId { get; set; }
+            /// <summary>
+            /// M上海函夏贸易AL
+            /// </summary>
+            public string holdName { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string updateTime { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<SimStatisticsListItem> simStatisticsList { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<DayStatisticsListItem> dayStatisticsList { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<MonthStatisticsListItem> monthStatisticsList { get; set; }
+        }
+
+        public class FlowReportRoot
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public int error { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string reason { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public FlowReportResult result { get; set; }
+        }
+
+ /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 }

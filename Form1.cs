@@ -20,7 +20,7 @@ namespace CheckRenewalPkg
 {
     public partial class Form1 : Form
     {
-        string sVer = "V1.0.8";
+        string sVer = "V1.0.9";
         string[] skipUserList = { "麦谷测试电信卡", "MG测试电信卡", "续费转仓", "0531081测试勿动", "娜姐", "接口调试(联通)", "麦谷内部人员", "ZYR_麦联宝测试", "ZYR_研发部调试卡" ,
                                 "ZYR_客服体验", "ZYR_其他人员试用", "SDY_体验测试", "ZW_后视镜测试", "123", "123-01", "123-02", "实名奖励套餐测试", "ZYR_内部测试卡",
                                 "ZYR_麦谷测试_YD", "ZYR_麦谷测试_DX", "ZYR_麦谷测试_LT","Jaffe_S85", "海如测试"};
@@ -251,6 +251,7 @@ namespace CheckRenewalPkg
         }
         public void RefreshUserTree(string a, bool isDisplayGhostUser)
         {
+            string usertree = "";
             string errormsg = "";
             if (a == "")
                 return;
@@ -273,7 +274,7 @@ namespace CheckRenewalPkg
                     node1.Text = userTree.result[i].name.ToString();
                     node1.ToolTipText = userTree.result[i].id.ToString();
                     treeView1.Nodes.Add(node1);
-
+                    usertree += node1.Text + "\t" + node1.ToolTipText+ "\r\n";
                     continue;
                 }
                 TreeNode root = treeView1.Nodes[0];
@@ -286,6 +287,7 @@ namespace CheckRenewalPkg
                     node1.Text = userTree.result[i].name.ToString();
                     node1.ToolTipText = userTree.result[i].id.ToString();
                     nodeParent.Nodes.Add(node1);
+                    usertree += node1.Text + "\t" + node1.ToolTipText + "\r\n";
                 }
                 else
                 {
@@ -300,6 +302,7 @@ namespace CheckRenewalPkg
 
 
             }
+            //DisplayAndLog(usertree, true);
             DisplayAndLog(errormsg, true);
 
         }
@@ -420,7 +423,7 @@ namespace CheckRenewalPkg
                     if ((isVerySpeed)&&(isSkip(user.HoldName)))
                         continue;
 
-                    pkgDescArr[pkg.Type] += ("@" + user.HoldName.PadRight(20) + "\tCUCC\t@B" + pkg.PackageName.PadRight(20) + "\t@" + pkg.UnitPrice + "\t" + pkg.BackPrice + "\t");
+                    pkgDescArr[pkg.Type] += ("@" + user.HoldName.PadRight(20) + "\tCUCC\t@B" + pkg.PackageName.PadRight(20) + "\t@" + pkg.UnitPrice + "\t" + pkg.BackPrice + "\t" + (Convert.ToDouble(pkg.BackPrice) / Convert.ToDouble(pkg.UnitPrice)).ToString("0.00%") + "\t");
                     pkgDescArr[pkg.Type] += ((pkg.TopLevel == "0") || (pkg.TopLevel == "10")) ? "" : "@R荐" + pkg.TopLevel;
                     if (isGetPkgRenelwalPkg)
                     {
@@ -934,16 +937,38 @@ namespace CheckRenewalPkg
             }
             else
             {
-                //MIFI重要
-                //4715,4716,5108,5521,5288,5015,5013,5014,5116
+                //MIFI AL VIP
+                //高科,燕遥,宇荪,羽嘉,粤烨,澳先,酷比,盛世创展,蓝熊猫,秒通,星博睿,伊雷克,盛世
+                //"6779","5287","5521","5288","5377","5108","4715","4716","5015","5013","5014","5116","7009",
+
+                //MIFI AL 普通
+                //宏软,东方睿智,亿晨,帝成,金德,函夏,莲腾,枚山,闪谷,悟虎,亿竖,私人,通恒伟创,微络斯,新丰慧,珠峰讯,致恒达,
+                // "6367","6423","6947","6314","6975","5877","7242","6945","5905","5891","6362","5523","5926","6734","5411","5362","6317",
+
                 //MIFI NEW
-                //5519,6423,6314,6304,5877,5905,5891,5287,5377,5523,5926,5411,5362
+                //畅玩互娱,速叮通
+                //"5519","6304",
+
                 //MIFI普通
-                //,"4289","2127","5107","4933","4853","5018","5019","4927","4854","5020","2374","1495","3089","2468","2518","3331","5361","2764"
-                //车联网AL
-                //4978,6257,5342,4982,4984,4682,4717,
-                //车联网其它
-                //4125,3164,5236,4001,2201,5341,4761,4462,4566,6175,5232,4301,4108,4382,4026,1303,
+                //东方睿智,珠峰讯,高科,羽嘉,澳先,酷比,蓝熊猫,秒通,盛世创展,星博睿,沃德盛世,物联网基地,
+                //"6424","5361","6780","5293","5107","4933","5018","5019","4927","5020","7008","7269",
+
+                //导航
+                //润乐 爱影 奥车 魁途 三一 索菱 罗姆 永盛杰 永盛杰  卓兴威
+                //"6980","6750","4988","6787","5426","4026","4382","4108","2201","4982",
+
+                //车联网
+                //H_VIP50,H_VIP付费,H已续费,H未续费,H海南成杰汽车,H江圳_爱培科,H卡卡_凌度,安信翔,八零后,北斗传奇,丁威特,索行电子,途龙,维系欧,欣万和,征路者,卓派,东莞润禾车品电子C,天之眼_C,欣和先知C,众创伟业C,艾米,保速捷C,凌途C,四维星图C,泰瑞视C,3G绑带_L,威仕特麦联宝
+                //"3410","2987","3411","3412","3369","1230","1272","2727","2330","5501","3395","1280","3164","3747","4001","3548","2199","6054","5236","6257","5341","3695","6710","6723","6729","6837","5129","4125",
+
+                //车联网 AL
+                //惠普AL,润禾车AL,天之眼_AL,创维汽车AL,欣和先知AL,众创伟业AL,智行至美_AL,威仕特_AL,威仕特_ALIC,
+                //"6087","6052","4978","6212","6231","5342","4682","4717","6569",
+
+                //POS
+                //亿地,马克,富博,科伟,惠联,丰宁,紫仪,迦之南,欧尔,东颍,小宝贝,新瑞,盛世,易付,灯火
+                //"3686","6063","2700","4087","3930","4817","6773","4035","3406","4923","3815","2467","3936","4897","4858"
+
 
                 tmp += "\t总卡数\t" +
                           "已激活卡\t" +
@@ -958,11 +983,14 @@ namespace CheckRenewalPkg
                           "脱网率\t" +
                           "复充率\r\n";
                 DisplayAndLog(tmp, true);
-                string[] idlist = { "4715", "4716", "5108", "5521", "5288", "5015", "5013", "5014", "5116", 
-                                      "5519", "6423", "6314", "6304", "5877", "5905", "5891", "5287", "5377", "5523", "5926", "5411", "5362",
-                                      "4289", "2127", "5107", "4933", "4853", "5018", "5019", "4927", "4854", "5020", "2374", "1495", "3089", "2468", "2518", "3331", "5361", "2764", 
-                                      "4978", "6257", "5342", "4982", "4984", "4682", "4717",
-                                      "4125", "3164", "5236", "4001", "2201", "5341", "4761", "4462", "4566", "6175", "5232", "4301", "4108", "4382", "4026", "1303" };
+                string[] idlist = {"6779","5287","5521","5288","5377","5108","4715","4716","5015","5013","5014","5116","7009",
+                                    "6367","6423","6947","6314","6975","5877","7242","6945","5905","5891","6362","5523","5926","6734","5411","5362","6317",
+                                    "5519","6304",
+                                    "6424","5361","6780","5293","5107","4933","5018","5019","4927","5020","7008","7269",
+                                    "6980","6750","4988","6787","5426","4026","4382","4108","2201","4982",
+                                    "3410","2987","3411","3412","3369","1230","1272","2727","2330","5501","3395","1280","3164","3747","4001","3548","2199","6054","5236","6257","5341","3695","6710","6723","6729","6837","5129","4125",
+                                    "6087","6052","4978","6212","6231","5342","4682","4717","6569",
+                                    "3686","6063","2700","4087","3930","4817","6773","4035","3406","4923","3815","2467","3936","4897","4858"  };
                 foreach (string idid in idlist)
                 {
                     treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
@@ -1124,6 +1152,145 @@ namespace CheckRenewalPkg
                 this.textBox1.Enabled = true; 
             }
         }
+
+        private void PrintRecursive(TreeNode treeNode)
+        {
+            // Print the node. 
+
+            DisplayAndLog(treeNode.Text + "\t" + treeNode.ToolTipText + "\r\n", false);
+            // Print each node recursively.
+            foreach (TreeNode tn in treeNode.Nodes)
+            {
+                PrintRecursive(tn);
+            }
+        }
+
+ 
+        private void button10_Click(object sender, EventArgs e)
+        {
+            // Print each node recursively.
+            TreeNodeCollection nodes = treeView1.Nodes;
+            foreach (TreeNode n in nodes)
+            {
+                PrintRecursive(n);
+            }
+        }
+        public string GetUsageTotal(string id,bool isDisplayTitle)
+        {
+            string result = "";
+            string tmp = "";
+            string url = "";
+          
+            url = sApiUrl + "/api/ReportFlowHold?holdId=" + id;
+
+            string response = GetResponseSafe(url);
+            if (response == "")
+            {
+                DisplayAndLog("holdId为" + id + "查不到啊亲\r\n", true);
+                return result;
+            }
+            ParamDefine.FlowReportRoot frr = JsonConvert.DeserializeObject<ParamDefine.FlowReportRoot>(response);
+            ParamDefine.FlowReportResult frrResult = frr.result;
+            if (frrResult == null || frrResult.dayStatisticsList == null)
+                return "查不到结果\r\n";
+
+             foreach (ParamDefine.DayStatisticsListItem daylist in frrResult.dayStatisticsList)
+             {
+                 tmp += daylist.statDay + "\t" + daylist.amountUsage.ToString("0.00") + "\t" + daylist.validCount + "\t" + daylist.validAvgUsage.ToString("0.00") + "\t";
+             }
+
+             tmp += "\r\n";
+             return tmp;
+
+             
+        }
+        private void button11_Click(object sender, EventArgs e)
+        {
+            this.button11.Text = "获取中";
+            this.button11.Enabled = false;
+
+            this.backgroundWorker5.RunWorkerAsync("single");
+        }
+
+        private void backgroundWorker5_DoWork(object sender, DoWorkEventArgs e)
+        {
+
+            string id = "";
+            string tmp = "";
+            string whichway = e.Argument.ToString();
+
+            e.Result = "";
+            if (whichway == "single")
+            {
+                if (treeView1.Nodes.Count == 0)
+                {
+                    DisplayAndLog("请先刷新用户列表\r\n", true);
+                    return;
+                }
+
+                if (treeView1.SelectedNode == null)
+                {
+
+                    DisplayAndLog("请先选择用户\r\n", true);
+                    return;
+                }
+
+                DisplayAndLog(tmp, true);
+                id = treeView1.SelectedNode.Tag.ToString();
+                DisplayAndLog(treeView1.SelectedNode.Text.ToString() + "\t", true);
+                DisplayAndLog(GetUsageTotal(id, true), true);
+
+
+            }
+            else
+            {
+
+                DisplayAndLog(tmp, true);
+                //D导航,LB,后视镜V,艾米,3G绑带,WST_AL,WST_ALIC,威仕特麦联宝,M电商S,M电商V,M渠道,小流量V,小流量体验,,,,,,,,,
+                string[] idlist = { "4123", "1323", "1281", "3695", "5129", "4717", "6569", "4125", "5467", "2332", "6927", "2898", "2673" };
+                foreach (string idid in idlist)
+                {
+                    treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
+                    if (null == treeView1.SelectedNode)
+                    {
+                        DisplayAndLog("未知用户ID为" + idid +"\t" + GetRenewalsTotal(idid, false), true);
+                        continue;
+                    }
+
+                    //treeView1.Select();
+
+                    DisplayAndLog(treeView1.SelectedNode.Text.ToString(), true);
+                    DisplayAndLog(GetUsageTotal(idid, false), true);
+                }
+
+            }
+
+            e.Result = whichway;
+        }
+
+        private void backgroundWorker5_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (e.Result.ToString() == "single")
+            {
+                this.button11.Text = "单个用量汇总";
+                this.button11.Enabled = true;
+            }
+            else
+            {
+                this.button12.Text = "检查用量汇总";
+                this.button12.Enabled = true;
+            }
+
+            DisplayAndLogBatch("------------------------------------------------------------------------\r\n", true);
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            this.button12.Text = "获取中";
+            this.button12.Enabled = false;
+
+            this.backgroundWorker5.RunWorkerAsync("multi");
+        }
     }
 }
 
@@ -1143,6 +1310,9 @@ namespace CheckRenewalPkg
  * 
  * 套餐的可续费套餐
  * http://demo.m-m10010.com/api/RenewalsPackage?id=17547
+ * 
+ * 月用量报表
+ * http://demo.m-m10010.com/api/ReportFlowHold?holdId=5877
  
  
  */
