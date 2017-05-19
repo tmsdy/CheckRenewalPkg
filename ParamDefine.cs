@@ -586,6 +586,47 @@ namespace CheckRenewalPkg
             public FlowReportResult result { get; set; }
         }
 
- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////老续费 begin//////////////////////////////////////////////////////////////
+        public class OldRenewalsRootResultItem
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public int SummSort { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string totalDay { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public int renewalsTimes { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public double renewalsAmount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public double MA5 { get; set; }
+        }
+
+        public class OldRenewalsRoot
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public int error { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string reason { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<OldRenewalsRootResultItem> result { get; set; }
+        }
+        ///////////////////////////////////////////老续费 end //////////////////////////////////////////////////////////////
     }
 }

@@ -20,7 +20,7 @@ namespace CheckRenewalPkg
 {
     public partial class Form1 : Form
     {
-        string sVer = "V1.1.0";
+        string sVer = "V1.1.1";
         string[] skipUserList = { "麦谷测试电信卡", "MG测试电信卡", "续费转仓", "0531081测试勿动", "娜姐", "接口调试(联通)", "麦谷内部人员", "ZYR_麦联宝测试", "ZYR_研发部调试卡" ,
                                 "ZYR_客服体验", "ZYR_其他人员试用", "SDY_体验测试", "ZW_后视镜测试", "123", "123-01", "123-02", "实名奖励套餐测试", "ZYR_内部测试卡",
                                 "ZYR_麦谷测试_YD", "ZYR_麦谷测试_DX", "ZYR_麦谷测试_LT","Jaffe_S85", "海如测试"};
@@ -1175,6 +1175,34 @@ namespace CheckRenewalPkg
                 PrintRecursive(n);
             }
         }
+        public string GetOldRenewals(string id, bool isDisplayTitle)
+        {
+            string result = "";
+            string tmp = "";
+            string url = "";
+
+            url = sApiUrl + "/api/ReportRenewalsTotalForDay?payee=MAPGOO&packageId=0&holdId=" + id;
+
+            string response = GetResponseSafe(url);
+            if (response == "")
+            {
+                DisplayAndLog("holdId为" + id + "查不到啊亲\r\n", true);
+                return result;
+            }
+            ParamDefine.OldRenewalsRoot orr = JsonConvert.DeserializeObject<ParamDefine.OldRenewalsRoot>(response);
+  
+            if (orr == null)
+                return "查不到结果\r\n";
+
+            foreach (ParamDefine.OldRenewalsRootResultItem orritem in orr.result)
+            {
+                tmp += orritem.totalDay + "\t" + orritem.renewalsTimes + "\t" + orritem.renewalsAmount.ToString("0.00") + "\t" +  orritem.MA5.ToString("0.00") + "\r\n";
+            }
+
+            tmp += "\r\n";
+            return tmp;
+
+        }
         public string GetUsageTotal(string id,bool isDisplayTitle)
         {
             string result = "";
@@ -1290,6 +1318,86 @@ namespace CheckRenewalPkg
             this.button12.Enabled = false;
 
             this.backgroundWorker5.RunWorkerAsync("multi");
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            this.button13.Text = "获取中";
+            this.button13.Enabled = false;
+
+            this.backgroundWorker6.RunWorkerAsync("single");
+        }
+
+        private void backgroundWorker6_DoWork(object sender, DoWorkEventArgs e)
+        {
+
+            string id = "";
+            string tmp = "";
+            string whichway = e.Argument.ToString();
+
+            e.Result = "";
+            if (whichway == "single")
+            {
+                if (treeView1.Nodes.Count == 0)
+                {
+                    DisplayAndLog("请先刷新用户列表\r\n", true);
+                    return;
+                }
+
+                if (treeView1.SelectedNode == null)
+                {
+
+                    DisplayAndLog("请先选择用户\r\n", true);
+                    return;
+                }
+
+                DisplayAndLog(tmp, true);
+                id = treeView1.SelectedNode.Tag.ToString();
+                DisplayAndLog(treeView1.SelectedNode.Text.ToString() + "\t", true);
+                DisplayAndLog(GetOldRenewals(id, true), true);
+
+
+            }
+            else
+            {
+
+                //DisplayAndLog(tmp, true);
+                ////D导航,LB,后视镜V,艾米,3G绑带,WST_AL,WST_ALIC,威仕特麦联宝,M电商S,M电商V,M渠道,小流量V,小流量体验,,,,,,,,,
+                //string[] idlist = { "4123", "1323", "1281", "3695", "5129", "4717", "6569", "4125", "5467", "2332", "6927", "2898", "2673" };
+                //foreach (string idid in idlist)
+                //{
+                //    treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
+                //    if (null == treeView1.SelectedNode)
+                //    {
+                //        DisplayAndLog("未知用户ID为" + idid + "\t" + GetRenewalsTotal(idid, false), true);
+                //        continue;
+                //    }
+
+                //    //treeView1.Select();
+
+                //    DisplayAndLog(treeView1.SelectedNode.Text.ToString(), true);
+                //    DisplayAndLog(GetUsageTotal(idid, false), true);
+                //}
+
+            }
+
+            e.Result = whichway;
+        }
+
+        private void backgroundWorker6_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (e.Result.ToString() == "single")
+            {
+                this.button13.Text = "老续费";
+                this.button13.Enabled = true;
+            }
+            //else
+            //{
+            //    this.button12.Text = "检查用量汇总";
+            //    this.button12.Enabled = true;
+            //}
+
+            DisplayAndLogBatch("------------------------------------------------------------------------\r\n", true);
         }
     }
 }
