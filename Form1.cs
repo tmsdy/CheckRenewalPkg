@@ -20,7 +20,7 @@ namespace CheckRenewalPkg
 {
     public partial class Form1 : Form
     {
-        string sVer = "V1.1.1";
+        string sVer = "V1.1.3";
         string[] skipUserList = { "麦谷测试电信卡", "MG测试电信卡", "续费转仓", "0531081测试勿动", "娜姐", "接口调试(联通)", "麦谷内部人员", "ZYR_麦联宝测试", "ZYR_研发部调试卡" ,
                                 "ZYR_客服体验", "ZYR_其他人员试用", "SDY_体验测试", "ZW_后视镜测试", "123", "123-01", "123-02", "实名奖励套餐测试", "ZYR_内部测试卡",
                                 "ZYR_麦谷测试_YD", "ZYR_麦谷测试_DX", "ZYR_麦谷测试_LT","Jaffe_S85", "海如测试"};
@@ -954,8 +954,8 @@ namespace CheckRenewalPkg
                 //"6424","5361","6780","5293","5107","4933","5018","5019","4927","5020","7008","7269",
 
                 //导航
-                //润乐 爱影 奥车 魁途 三一 索菱 罗姆 永盛杰 永盛杰  卓兴威
-                //"6980","6750","4988","6787","5426","4026","4382","4108","2201","4982",
+                //润乐 爱影 奥车 魁途 三一 索菱 罗姆 永盛杰 永盛杰  卓兴威              福嘉太  浩谷  骏哥 车领航    拓步 途锐(易图)
+                //"6980","6750","4988","6787","5426","4026","4382","4108","2201","4982","6791","7460","7868","8058","7329","7632",
 
                 //车联网
                 //H_VIP50,H_VIP付费,H已续费,H未续费,H海南成杰汽车,H江圳_爱培科,H卡卡_凌度,安信翔,八零后,北斗传奇,丁威特,索行电子,途龙,维系欧,欣万和,征路者,卓派,东莞润禾车品电子C,天之眼_C,欣和先知C,众创伟业C,艾米,保速捷C,凌途C,四维星图C,泰瑞视C,3G绑带_L,威仕特麦联宝
@@ -983,14 +983,16 @@ namespace CheckRenewalPkg
                           "脱网率\t" +
                           "复充率\r\n";
                 DisplayAndLog(tmp, true);
-                string[] idlist = {"6779","5287","5521","5288","5377","5108","4715","4716","5015","5013","5014","5116","7009",
+                string[] idlist = {
+                                      "6779","5287","5521","5288","5377","5108","4715","4716","5015","5013","5014","5116","7009",
                                     "6367","6423","6947","6314","6975","5877","7242","6945","5905","5891","6362","5523","5926","6734","5411","5362","6317",
                                     "5519","6304",
                                     "6424","5361","6780","5293","5107","4933","5018","5019","4927","5020","7008","7269",
-                                    "6980","6750","4988","6787","5426","4026","4382","4108","2201","4982",
+                                    "6980","6750","4988","6787","5426","4026","4382","4108","2201","4982","6791","7460","7868","8058","7329","7632",
                                     "3410","2987","3411","3412","3369","1230","1272","2727","2330","5501","3395","1280","3164","3747","4001","3548","2199","6054","5236","6257","5341","3695","6710","6723","6729","6837","5129","4125",
                                     "6087","6052","4978","6212","6231","5342","4682","4717","6569",
-                                    "3686","6063","2700","4087","3930","4817","6773","4035","3406","4923","3815","2467","3936","4897","4858"  };
+                                    "3686","6063","2700","4087","3930","4817","6773","4035","3406","4923","3815","2467","3936","4897","4858"  
+                                  };
                 foreach (string idid in idlist)
                 {
                     treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
@@ -1048,8 +1050,8 @@ namespace CheckRenewalPkg
             foreach (ParamDefine.MonthRenewalsTotalResultItem mrtresult in mrt.result)
             {
                 tmp += mrtresult.date + "\t" +
-                    mrtresult.amount + "\t" +
-                    mrtresult.usage + "\t" +
+                    mrtresult.amount.ToString("#0") + "\t" +
+                    mrtresult.usage.ToString("#0") + "\t" +
                     (mrtresult.amount / mrtresult.usage * 1024.00D).ToString("#0.00") + "\t";
             }
             result = tmp + "\r\n";
@@ -1097,8 +1099,8 @@ namespace CheckRenewalPkg
                        "\t" + rtresult.ltActivatedCount +
                        "\t" + rtresult.ltStopCount +
                        "\t" + rtresult.renewalsCount +
-                       "\t" + rtresult.renewalsAmount +
-                       "\t" + rtresult.backAmount +
+                       "\t" + rtresult.renewalsAmount.ToString("#0") +
+                       "\t" + rtresult.backAmount.ToString("#0") +
                        "\t" + (rtresult.renewalsAmount / rtresult.renewalsCount).ToString("#0.00") +
                        "\t" + string.Format("{0:0.00%}", ((double)rtresult.renewalsCount / (rtresult.ltActivatedCount + rtresult.ltStopCount))) +
                        "\t" + string.Format("{0:0.00%}", ((double)rtresult.renewalsCount / (rtresult.allCount))) +
