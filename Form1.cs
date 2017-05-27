@@ -1224,7 +1224,8 @@ namespace CheckRenewalPkg
 
              foreach (ParamDefine.DayStatisticsListItem daylist in frrResult.dayStatisticsList)
              {
-                 tmp += daylist.statDay + "\t" + daylist.amountUsage.ToString("0.00") + "\t" + daylist.validCount + "\t" + daylist.validAvgUsage.ToString("0.00") + "\t";
+                 //tmp += daylist.statDay + "\t" + daylist.amountUsage.ToString("0.00") + "\t" + daylist.validCount + "\t" + daylist.validAvgUsage.ToString("0.00") + "\t";
+                 tmp += daylist.statDay + "\t" + daylist.amountUsage.ToString("0.00") + "\t" + daylist.validCount  + "\t";
              }
 
              tmp += "\r\n";
@@ -1287,7 +1288,7 @@ namespace CheckRenewalPkg
 
                     //treeView1.Select();
 
-                    DisplayAndLog(treeView1.SelectedNode.Text.ToString(), true);
+                    DisplayAndLog(treeView1.SelectedNode.Text.ToString() + "\t", true);
                     DisplayAndLog(GetUsageTotal(idid, false), true);
                 }
 
