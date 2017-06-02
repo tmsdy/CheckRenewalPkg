@@ -1277,8 +1277,8 @@ namespace CheckRenewalPkg
             {
 
                 DisplayAndLog(tmp, true);
-                //D导航,LB,后视镜V,艾米,3G绑带,WST_AL,威仕特麦联宝,M电商S,M电商V,M渠道,小流量V,小流量体验,,,,,,,,,
-                string[] idlist = { "4123", "1323", "1281", "3695", "5129", "4717", "4125", "5467", "2332", "6927", "2898", "2673" };
+                //D导航,LB,后视镜V,艾米,3G绑带,WST_AL,威仕特麦联宝,M电商S,M电商V,小流量V,小流量体验,,,,,,,,,
+                string[] idlist = { "4123", "1323", "1281", "3695", "5129", "4717", "4125", "5467", "2332", "2898", "2673" };
                 foreach (string idid in idlist)
                 {
                     treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
