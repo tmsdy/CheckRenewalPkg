@@ -20,7 +20,7 @@ namespace CheckRenewalPkg
 {
     public partial class Form1 : Form
     {
-        string sVer = "V1.1.1";
+        string sVer = "V1.1.2";
         string[] skipUserList = { "麦谷测试电信卡", "MG测试电信卡", "续费转仓", "0531081测试勿动", "娜姐", "接口调试(联通)", "麦谷内部人员", "ZYR_麦联宝测试", "ZYR_研发部调试卡" ,
                                 "ZYR_客服体验", "ZYR_其他人员试用", "SDY_体验测试", "ZW_后视镜测试", "123", "123-01", "123-02", "实名奖励套餐测试", "ZYR_内部测试卡",
                                 "ZYR_麦谷测试_YD", "ZYR_麦谷测试_DX", "ZYR_麦谷测试_LT","Jaffe_S85", "海如测试"};
@@ -29,6 +29,11 @@ namespace CheckRenewalPkg
         string slogfilepath = "";
         private object filelocker = new object();
         public List<string> SearchResult;
+
+        public static Encoding RequestEncoding = _Encoding.UTF8;
+        public static Encoding ResponseEncoding = _Encoding.UTF8;
+
+
         public Form1()
         {
             CheckForIllegalCrossThreadCalls = false;
@@ -58,6 +63,91 @@ namespace CheckRenewalPkg
             }
             GetUserTree(false);
             //RefreshUserTree(ParamDefine.UserTreeDefault);
+        }
+        public struct _Encoding
+        {
+            public static Encoding UTF8;
+            public static Encoding GB2312;
+            public static Encoding ASCII;
+            static _Encoding()
+            {
+                UTF8 = Encoding.UTF8;
+                GB2312 = Encoding.GetEncoding("gb2312");
+                ASCII = Encoding.ASCII;
+            }
+        }
+        public static string CreatePostHttpResponse(byte[] data, string url, int? timeout, string userAgent, string cookies, WebProxy wp)
+        {
+
+            Stream responseStream;
+
+            try
+            {
+                if (string.IsNullOrEmpty(url))
+                {
+                    throw new ArgumentNullException("url");
+                }
+                //ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
+                HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+                request.Method = "POST";
+                request.ContentType = "application/x-www-form-urlencoded";
+                request.ContentLength = data.Length;
+                request.KeepAlive = false;
+                request.UserAgent = Program.DefaultUserAgent;
+                request.CookieContainer = new CookieContainer();
+                request.CookieContainer = Program.MLBCookie;
+                request.Timeout = 300000;
+                request.ReadWriteTimeout = 50000;
+                request.CookieContainer = new CookieContainer();
+                request.CookieContainer = Program.MLBCookie;
+
+                if (!string.IsNullOrEmpty(userAgent))
+                {
+                    request.UserAgent = userAgent;
+                }
+                if (timeout.HasValue)
+                {
+                    request.Timeout = timeout.Value;
+                }
+                Stream requestStream = request.GetRequestStream();
+                requestStream.Write(data, 0, data.Length);
+                requestStream.Close();
+                try
+                {
+                    responseStream = request.GetResponse().GetResponseStream();
+                }
+                catch (Exception exception)
+                {
+                    return "";
+                }
+                string str = "";
+                using (StreamReader reader = new StreamReader(responseStream, ResponseEncoding))
+                {
+                    str = reader.ReadToEnd();
+                }
+                responseStream.Close();
+                return str;
+
+            }
+            catch (WebException webEx)
+            {
+                System.Diagnostics.Debug.WriteLine(webEx.Message.ToString() + " \r\n");
+                return null;
+
+            }
+
+        }
+        public static string PostDataToUrl(string data, string url)
+        {
+            return PostResponseSafe(RequestEncoding.GetBytes(data), url);
+        }
+        public static string PostResponseSafe(byte[] data, string url)
+        {
+
+            string result = CreatePostHttpResponse(data, url, null, null, null, null);
+
+
+            return result;
         }
         private static bool CheckValidationResult(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors)
         {
@@ -1399,6 +1489,139 @@ namespace CheckRenewalPkg
             //}
 
             DisplayAndLogBatch("------------------------------------------------------------------------\r\n", true);
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("格式为：  用户名，登录名，用户类型，密码");
+            this.button14.Enabled = false;
+            this.backgroundWorker7.RunWorkerAsync(); 
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            this.button15.Enabled = false;
+            this.backgroundWorker8.RunWorkerAsync(); 
+        }
+
+
+        private string CreateUser(string parentid,string displayname,string loginname,string usertype,string password)
+        {
+            string result = "";
+            string post = "txtHoldName={1}&txtUserName={2}&txtUserPass={4}&txtReUserPass={5}&sltHoldType={3}&txtContacter=&txtContacterTel=&viewWXRenewals=1&sltProvince=0&txtAddress=&txtRemark=&hid_ParentHoldID={0}&hid_HoldID=&hid_Province=&hid_City=&hid_Region=&hid_GroupHoldIds=&hid_GroupHoldNames=";
+            string postWithParam = string.Format(post, parentid, displayname, loginname, usertype, password, password);
+           result = PostDataToUrl(postWithParam, "http://demo.m-m10010.com/hold/Info");
+           if (string.IsNullOrEmpty(result))
+               result = "失败";
+
+           return result.Split(';')[0];
+        }
+        private void backgroundWorker7_DoWork(object sender, DoWorkEventArgs e)
+        {
+            string username = this.richTextBox1.Text;
+            string[] usernamelist = username.Split('\n');
+            int count = usernamelist.Count();
+            string result = "";
+            InvokeHelper.Set(this.richTextBox1, "Text", "");
+
+            string selectedUserId = treeView1.SelectedNode.Tag.ToString();
+            if(selectedUserId == "1")           
+            {
+                DisplayAndLog("不能在大账号下建子账号\r\n", true);
+                return;
+            }
+            DisplayAndLog(treeView1.SelectedNode.Text.ToString() + "\r\n", true);
+            string displayname = "";
+            string loginname = "";
+            string usertype = "6";
+            string password = "8989123";
+            for (int i=0; i < count; i++)
+            {
+                if(string.IsNullOrEmpty(usernamelist[i].Trim()))
+                    continue;
+
+                switch(usernamelist[i].Split(',').Length)
+                    {
+                    case 1:
+                            displayname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[0]);
+                            result = CreateUser(selectedUserId, displayname, displayname, usertype, password);
+                            break;
+                    case 2:
+                            displayname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[0]);
+                            loginname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[1]);
+                            result = CreateUser(selectedUserId, displayname, loginname, usertype, password);
+                            break;
+                    case 3:
+                            displayname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[0]);
+                            loginname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[1]);
+                            usertype = usernamelist[i].Trim().Split(',')[2];
+                            result = CreateUser(selectedUserId, displayname, loginname, usertype, password);
+                            break;
+                    case 4:
+                            displayname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[0]);
+                            loginname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[1]);
+                            usertype = usernamelist[i].Trim().Split(',')[2];
+                            password = usernamelist[i].Trim().Split(',')[3];
+                            result = CreateUser(selectedUserId, displayname, loginname, usertype, password);
+                            break;
+
+                }
+                DisplayAndLog(usernamelist[i] + result+"\r\n", true);
+            }
+        }
+
+        private void backgroundWorker7_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            this.button14.Enabled = true;
+        }
+
+        private void backgroundWorker8_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            this.button15.Enabled = true;
+        }
+
+        private string CreateUserRenewals(TreeNode tn)
+        {
+            string result = "";
+            if (tn == null) 
+                return result;
+
+
+
+            foreach (TreeNode tns in tn.Nodes)
+            {
+                CreateUserRenewals(tns);
+            }
+
+            string post = "HoldName=aaaa&WXPayId=0&HoldId={0}";
+            string postWithParam = string.Format(post, tn.Tag.ToString()    );
+            result = PostDataToUrl(postWithParam, "http://demo.m-m10010.com/SysWxPay/Info");
+            if (string.IsNullOrEmpty(result))
+            {
+                    DisplayAndLog( "失败\r\n",true);
+                    
+            }
+            else
+            {
+                DisplayAndLog (result.Split(';')[0] + "\r\n",true);
+            }
+                       
+
+            return result;
+        }
+
+        private void backgroundWorker8_DoWork(object sender, DoWorkEventArgs e)
+        {
+            string selectedUserId = treeView1.SelectedNode.Tag.ToString();
+            if (selectedUserId == "1")
+            {
+                DisplayAndLog("怎么你选了大账号\r\n", true);
+                return;
+            }
+
+            TreeNode selectednode = treeView1.SelectedNode;
+            CreateUserRenewals(selectednode);
+
         }
     }
 }
