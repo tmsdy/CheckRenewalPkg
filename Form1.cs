@@ -1600,12 +1600,12 @@ namespace CheckRenewalPkg
             result = PostDataToUrl(postWithParam, "http://demo.m-m10010.com/SysWxPay/Info");
             if (string.IsNullOrEmpty(result))
             {
-                    DisplayAndLog( "失败\r\n",true);
+                 DisplayAndLog( tn.Text + "失败\r\n",true);
                     
             }
             else
             {
-                DisplayAndLog (result.Split(';')[0] + "\r\n",true);
+                DisplayAndLog(tn.Text + result.Split(';')[0] + "\r\n", true);
             }
                        
 
