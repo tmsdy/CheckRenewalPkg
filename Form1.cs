@@ -20,7 +20,7 @@ namespace CheckRenewalPkg
 {
     public partial class Form1 : Form
     {
-        string sVer = "V1.1.3";
+        string sVer = "V1.1.4";
         string[] skipUserList = { "麦谷测试电信卡", "MG测试电信卡", "续费转仓", "0531081测试勿动", "娜姐", "接口调试(联通)", "麦谷内部人员", "ZYR_麦联宝测试", "ZYR_研发部调试卡" ,
                                 "ZYR_客服体验", "ZYR_其他人员试用", "SDY_体验测试", "ZW_后视镜测试", "123", "123-01", "123-02", "实名奖励套餐测试", "ZYR_内部测试卡",
                                 "ZYR_麦谷测试_YD", "ZYR_麦谷测试_DX", "ZYR_麦谷测试_LT","Jaffe_S85", "海如测试"};
@@ -1495,9 +1495,24 @@ namespace CheckRenewalPkg
 
         private void button14_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("格式为：  用户名，登录名，用户类型，密码");
-            this.button14.Enabled = false;
-            this.backgroundWorker7.RunWorkerAsync(); 
+            string s = this.richTextBox1.Text;
+            if((s.IndexOf('(')>0)&&(s.IndexOf(')')>0))
+            {
+                MessageBox.Show("用户名不允许带\"(\" \")\"\r\n");
+                return;
+            }
+
+           DialogResult dr= MessageBox.Show("格式为：  用户名，登录名，用户类型，密码\r\n" +  this.richTextBox1.Text, "提示", MessageBoxButtons.OKCancel);
+           if (dr == DialogResult.OK)
+           {
+               this.button14.Enabled = false;
+               this.backgroundWorker7.RunWorkerAsync(); 
+           }
+           else if (dr == DialogResult.Cancel)
+           {
+                
+           }
+
         }
 
         private void button15_Click(object sender, EventArgs e)
