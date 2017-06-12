@@ -20,7 +20,7 @@ namespace CheckRenewalPkg
 {
     public partial class Form1 : Form
     {
-        string sVer = "V1.1.5";
+        string sVer = "V1.1.6";
         string[] skipUserList = { "麦谷测试电信卡", "MG测试电信卡", "续费转仓", "0531081测试勿动", "娜姐", "接口调试(联通)", "麦谷内部人员", "ZYR_麦联宝测试", "ZYR_研发部调试卡" ,
                                 "ZYR_客服体验", "ZYR_其他人员试用", "SDY_体验测试", "ZW_后视镜测试", "123", "123-01", "123-02", "实名奖励套餐测试", "ZYR_内部测试卡",
                                 "ZYR_麦谷测试_YD", "ZYR_麦谷测试_DX", "ZYR_麦谷测试_LT","Jaffe_S85", "海如测试"};
@@ -1295,7 +1295,74 @@ namespace CheckRenewalPkg
             return tmp;
 
         }
-        public string GetUsageTotal(string id,bool isDisplayTitle)
+        public void CalcAverage(List<int> countlist,List<double> usagelist)
+        {
+
+            if((countlist == null)||(usagelist == null))
+                return;
+
+            int count1 = countlist.Count();
+            int count2 = usagelist.Count() ;
+            if ((count1 <= 0) || (count2 <= 0))
+                return; 
+            string result_count = "";
+            string result_usage = "";
+            string result_avarage = "";
+
+            int count = (count1 >= count2) ? count2 : count1;
+            int userCounts = count / 30;
+            int totalSum = 0;
+            double usageSum = 0;
+            for (int i = 0; i < 30; i++)
+            {
+                totalSum = 0;
+                usageSum = 0;
+                for (int j = 0; j + i < count; j+=30)
+                {
+                    usageSum += usagelist[j + i];
+                    totalSum += countlist[j + i];
+                }
+                result_usage += usageSum.ToString("0.00") + "\t";
+                result_count += totalSum + "\t";
+                result_avarage += (usageSum/totalSum).ToString("0.00") + "\t";
+
+            }
+            DisplayAndLog(result_usage + "\r\n" + result_count + "\r\n" + result_avarage + "\r\n --------------------- \r\n", true);
+            countlist.Clear();
+            usagelist.Clear();
+
+        }
+        public string GetUsageTotal(string id, bool isDisplayTitle)
+        {
+            string result = "";
+            string tmp = "";
+            string url = "";
+
+            url = sApiUrl + "/api/ReportFlowHold?holdId=" + id;
+
+            string response = GetResponseSafe(url);
+            if (response == "")
+            {
+                DisplayAndLog("holdId为" + id + "查不到啊亲\r\n", true);
+                return result;
+            }
+            ParamDefine.FlowReportRoot frr = JsonConvert.DeserializeObject<ParamDefine.FlowReportRoot>(response);
+            ParamDefine.FlowReportResult frrResult = frr.result;
+            if (frrResult == null || frrResult.dayStatisticsList == null)
+                return "查不到结果\r\n";
+
+            foreach (ParamDefine.DayStatisticsListItem daylist in frrResult.dayStatisticsList)
+            {
+                //tmp += daylist.statDay + "\t" + daylist.amountUsage.ToString("0.00") + "\t" + daylist.validCount + "\t" + daylist.validAvgUsage.ToString("0.00") + "\t";
+                tmp += daylist.statDay + "\t" + daylist.amountUsage.ToString("0.00") + "\t" + daylist.validCount + "\t";
+            }
+
+            tmp += "\r\n";
+            return tmp;
+
+
+        }
+        public string GetUsageTotal(string id,bool isDisplayTitle,List<int> countlist,List<double> usagelist)
         {
             string result = "";
             string tmp = "";
@@ -1318,6 +1385,8 @@ namespace CheckRenewalPkg
              {
                  //tmp += daylist.statDay + "\t" + daylist.amountUsage.ToString("0.00") + "\t" + daylist.validCount + "\t" + daylist.validAvgUsage.ToString("0.00") + "\t";
                  tmp += daylist.statDay + "\t" + daylist.amountUsage.ToString("0.00") + "\t" + daylist.validCount  + "\t";
+                 countlist.Add(Convert.ToInt32(daylist.validCount));
+                 usagelist.Add(daylist.amountUsage);
              }
 
              tmp += "\r\n";
@@ -1339,7 +1408,9 @@ namespace CheckRenewalPkg
             string id = "";
             string tmp = "";
             string whichway = e.Argument.ToString();
-
+            List<int> Countlist = new List<int> { };
+            List<double> Usagelist = new List<double> { };
+               
             
 
             e.Result = "";
@@ -1370,22 +1441,49 @@ namespace CheckRenewalPkg
 
                 DisplayAndLog(tmp, true);
                 //D导航,LB,后视镜V,艾米,3G绑带,WST_AL,威仕特麦联宝,M电商S,M电商V,小流量V,小流量体验,,,,,,,,,
-                string[] idlist = { "4123", "1323", "1281", "3695", "5129", "4717", "4125", "5467", "2332", "2898", "2673" };
-                foreach (string idid in idlist)
+                //string[] idlist = { "4123", "1323", "1281", "3695", "5129", "4717", "4125", "5467", "2332", "2898", "2673" };
+                string[] idlistVec = { "4123", "1323", "1281", "3695", "5129", "4717", "4125"  };
+                string[] idlistMifi = {   "5467", "2332"  };
+                string[] idlistPos = { "2898", "2673" };
+                foreach (string idid in idlistVec)
                 {
                     treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
                     if (null == treeView1.SelectedNode)
                     {
                         DisplayAndLog("未知用户ID为" + idid +"\t" + GetRenewalsTotal(idid, false), true);
                         continue;
-                    }
-
-                    //treeView1.Select();
+                    } 
 
                     DisplayAndLog(treeView1.SelectedNode.Text.ToString() + "\t", true);
-                    DisplayAndLog(GetUsageTotal(idid, false), true);
+                    DisplayAndLog(GetUsageTotal(idid, false, Countlist,Usagelist), true);
                 }
+                CalcAverage(Countlist, Usagelist);
+                foreach (string idid in idlistMifi)
+                {
+                    treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
+                    if (null == treeView1.SelectedNode)
+                    {
+                        DisplayAndLog("未知用户ID为" + idid + "\t" + GetRenewalsTotal(idid, false), true);
+                        continue;
+                    }
 
+                    DisplayAndLog(treeView1.SelectedNode.Text.ToString() + "\t", true);
+                    DisplayAndLog(GetUsageTotal(idid, false, Countlist, Usagelist), true);
+                }
+                CalcAverage(Countlist, Usagelist);
+                foreach (string idid in idlistPos)
+                {
+                    treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
+                    if (null == treeView1.SelectedNode)
+                    {
+                        DisplayAndLog("未知用户ID为" + idid + "\t" + GetRenewalsTotal(idid, false), true);
+                        continue;
+                    }
+
+                    DisplayAndLog(treeView1.SelectedNode.Text.ToString() + "\t", true);
+                    DisplayAndLog(GetUsageTotal(idid, false, Countlist, Usagelist), true);
+                }
+                CalcAverage(Countlist, Usagelist);
             }
 
             e.Result = whichway;
