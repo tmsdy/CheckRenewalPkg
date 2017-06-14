@@ -20,7 +20,7 @@ namespace CheckRenewalPkg
 {
     public partial class Form1 : Form
     {
-        string sVer = "V1.1.6";
+        string sVer = "V1.1.7";
         string[] skipUserList = { "麦谷测试电信卡", "MG测试电信卡", "续费转仓", "0531081测试勿动", "娜姐", "接口调试(联通)", "麦谷内部人员", "ZYR_麦联宝测试", "ZYR_研发部调试卡" ,
                                 "ZYR_客服体验", "ZYR_其他人员试用", "SDY_体验测试", "ZW_后视镜测试", "123", "123-01", "123-02", "实名奖励套餐测试", "ZYR_内部测试卡",
                                 "ZYR_麦谷测试_YD", "ZYR_麦谷测试_DX", "ZYR_麦谷测试_LT","Jaffe_S85", "海如测试"};
@@ -1739,6 +1739,39 @@ namespace CheckRenewalPkg
             TreeNode selectednode = treeView1.SelectedNode;
             CreateUserRenewals(selectednode);
 
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            backgroundWorker9.RunWorkerAsync();
+
+        }
+        private string PringUserTree(TreeNode tn)
+        {
+            string result = "";
+            if (tn == null)
+                return result;
+
+
+
+            foreach (TreeNode tns in tn.Nodes)
+            {
+                PringUserTree(tns);
+            }
+
+
+            DisplayAndLog(tn.Text + "\t" + tn.Tag    + "\r\n", true);
+       
+
+            return result;
+        }
+        private void backgroundWorker9_DoWork(object sender, DoWorkEventArgs e)
+        {
+            string selectedUserId = treeView1.SelectedNode.Tag.ToString();
+ 
+
+            TreeNode selectednode = treeView1.SelectedNode;
+            PringUserTree(selectednode);
         }
     }
 }
