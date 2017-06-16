@@ -20,11 +20,12 @@ namespace CheckRenewalPkg
 {
     public partial class Form1 : Form
     {
-        string sVer = "V1.1.7";
+        string sVer = "V1.1.8";
         string[] skipUserList = { "麦谷测试电信卡", "MG测试电信卡", "续费转仓", "0531081测试勿动", "娜姐", "接口调试(联通)", "麦谷内部人员", "ZYR_麦联宝测试", "ZYR_研发部调试卡" ,
                                 "ZYR_客服体验", "ZYR_其他人员试用", "SDY_体验测试", "ZW_后视镜测试", "123", "123-01", "123-02", "实名奖励套餐测试", "ZYR_内部测试卡",
                                 "ZYR_麦谷测试_YD", "ZYR_麦谷测试_DX", "ZYR_麦谷测试_LT","Jaffe_S85", "海如测试"};
-        string sApiUrl = "http://demo.m-m10010.com/";
+        string sApiUrl = Program.sGloableDomailUrl;
+        string sOpenUrl = "http://open.m-m10010.com";
         string sLogFileName = "";
         string slogfilepath = "";
         private object filelocker = new object();
@@ -431,7 +432,7 @@ namespace CheckRenewalPkg
                 DisplayAndLog("ID不合法\r\n", true);
                 return result;
             }
-            string url = sApiUrl + "api/RenewalsPackage?id=" + id;
+            string url = sApiUrl + "/api/RenewalsPackage?id=" + id;
             response = GetResponseSafe(url);
             if (response == "")
             {
@@ -496,7 +497,7 @@ namespace CheckRenewalPkg
                 DisplayAndLog("ID不合法\r\n", true);
                 return result;
             }
-            string url = sApiUrl + "api/HoldRenewalsList/" + id + GetShowAllStr();
+            string url = sApiUrl + "/api/HoldRenewalsList/" + id + GetShowAllStr();
             response = GetResponseSafe(url);
             if (response == "")
             {
@@ -879,11 +880,11 @@ namespace CheckRenewalPkg
             {
                 case "lastmonth":
 
-                    url = "http://open.m-m10010.com/api/GetHoldMonthAmountList?period=lastmonth&holdId=" + id;
+                    url = sOpenUrl + "/api/GetHoldMonthAmountList?period=lastmonth&holdId=" + id;
                     break;
 
                 default:
-                    url = "http://open.m-m10010.com/api/GetHoldMonthAmountList?holdId=" + id;
+                    url =sOpenUrl + "/api/GetHoldMonthAmountList?holdId=" + id;
                     break;
 
             }
@@ -1546,7 +1547,7 @@ namespace CheckRenewalPkg
 
                 DisplayAndLog(tmp, true);
                 id = treeView1.SelectedNode.Tag.ToString();
-                DisplayAndLog(treeView1.SelectedNode.Text.ToString() + "\t", true);
+                DisplayAndLog(treeView1.SelectedNode.Text.ToString() + "\r\n日期\t笔数\t续费金额\t5日均值\r\n", true);
                 DisplayAndLog(GetOldRenewals(id, true), true);
 
 
@@ -1627,7 +1628,7 @@ namespace CheckRenewalPkg
             string result = "";
             string post = "txtHoldName={1}&txtUserName={2}&txtUserPass={4}&txtReUserPass={5}&sltHoldType={3}&txtContacter=&txtContacterTel=&viewWXRenewals=1&sltProvince=0&txtAddress=&txtRemark=&hid_ParentHoldID={0}&hid_HoldID=&hid_Province=&hid_City=&hid_Region=&hid_GroupHoldIds=&hid_GroupHoldNames=";
             string postWithParam = string.Format(post, parentid, displayname, loginname, usertype, password, password);
-           result = PostDataToUrl(postWithParam, "http://demo.m-m10010.com/hold/Info");
+           result = PostDataToUrl(postWithParam, sApiUrl+"/hold/Info");
            if (string.IsNullOrEmpty(result))
                result = "失败";
 
@@ -1712,7 +1713,7 @@ namespace CheckRenewalPkg
 
             string post = "HoldName=aaaa&WXPayId=0&HoldId={0}";
             string postWithParam = string.Format(post, tn.Tag.ToString()    );
-            result = PostDataToUrl(postWithParam, "http://demo.m-m10010.com/SysWxPay/Info");
+            result = PostDataToUrl(postWithParam, sApiUrl+"/SysWxPay/Info");
             if (string.IsNullOrEmpty(result))
             {
                  DisplayAndLog( tn.Text + "失败\r\n",true);
@@ -1773,6 +1774,8 @@ namespace CheckRenewalPkg
             TreeNode selectednode = treeView1.SelectedNode;
             PringUserTree(selectednode);
         }
+
+ 
     }
 }
 

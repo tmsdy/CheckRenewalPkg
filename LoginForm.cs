@@ -42,7 +42,7 @@ namespace CheckRenewalPkg
             {
                 byte[] data = Encoding.ASCII.GetBytes(postdata);
                 string cookie;
-                HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(Program.sLoginUrl);
+                HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(Program.sGloableDomailUrl + "/User/login");
                 myRequest.Method = "POST";
                 myRequest.UserAgent = Program.DefaultUserAgent;
                 myRequest.ContentType = "application/x-www-form-urlencoded";
@@ -70,7 +70,7 @@ namespace CheckRenewalPkg
                     string a = myResponse.GetResponseHeader("Set-Cookie");
                     cookie = myResponse.Headers.Get("Set-Cookie");
                     SetUserId(cookie);
-                    Program.MLBCookie.SetCookies(new Uri(Program.sCookHeader), cookie);
+                    Program.MLBCookie.SetCookies(new Uri(Program.sGloableDomailUrl), cookie);
                     myResponse.Dispose();
                     myResponse.Close(); 
 
