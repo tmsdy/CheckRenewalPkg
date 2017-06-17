@@ -20,7 +20,7 @@ namespace CheckRenewalPkg
 {
     public partial class Form1 : Form
     {
-        string sVer = "V1.1.8";
+        string sVer = "V1.1.9";
         string[] skipUserList = { "麦谷测试电信卡", "MG测试电信卡", "续费转仓", "0531081测试勿动", "娜姐", "接口调试(联通)", "麦谷内部人员", "ZYR_麦联宝测试", "ZYR_研发部调试卡" ,
                                 "ZYR_客服体验", "ZYR_其他人员试用", "SDY_体验测试", "ZW_后视镜测试", "123", "123-01", "123-02", "实名奖励套餐测试", "ZYR_内部测试卡",
                                 "ZYR_麦谷测试_YD", "ZYR_麦谷测试_DX", "ZYR_麦谷测试_LT","Jaffe_S85", "海如测试"};
@@ -1049,8 +1049,8 @@ namespace CheckRenewalPkg
                 //"6980","6750","4988","6787","5426","4026","4382","4108","2201","4982","6791","7460","7868","8058","7329","7632", 
 
                 //车联网
-                //H_VIP50,H_VIP付费,H已续费,H未续费,H海南成杰汽车,H江圳_爱培科,H卡卡_凌度,安信翔,八零后,北斗传奇,丁威特,索行电子,途龙,维系欧,欣万和,征路者,卓派,东莞润禾车品电子C,天之眼_C,欣和先知C,众创伟业C,艾米,保速捷C,凌途C,四维星图C,泰瑞视C,3G绑带_L,威仕特麦联宝
-                //"3410","2987","3411","3412","3369","1230","1272","2727","2330","5501","3395","1280","3164","3747","4001","3548","2199","6054","5236","6257","5341","3695","6710","6723","6729","6837","5129","4125",
+                //H_VIP50,H_VIP付费,H已续费,H未续费,H海南成杰汽车,H江圳_爱培科,H卡卡_凌度,安信翔,八零后,北斗传奇,丁威特,索行电子,途龙,欣万和,卓派,东莞润禾车品电子C,天之眼_C,欣和先知C,众创伟业C,艾米,保速捷C,凌途C,四维星图C,泰瑞视C,3G绑带_L,威仕特麦联宝
+                //"3410","2987","3411","3412","3369","1230","1272","2727","2330","5501","3395","1280","3164","4001","2199","6054","5236","6257","5341","3695","6710","6723","6729","6837","5129","4125",
 
                 //车联网 AL
                 //惠普AL,润禾车AL,天之眼_AL,创维汽车AL,欣和先知AL,众创伟业AL,智行至美_AL,威仕特_AL,威仕特_ALIC,
@@ -1080,7 +1080,7 @@ namespace CheckRenewalPkg
                                     "5519","6304",
                                     "6424","5361","6780","5293","5107","4933","5018","5019","4927","5020","7008","7269","6556","6889",
                                     "6980","6750","4988","6787","5426","4026","4382","4108","2201","4982","6791","7460","7868","8058","7329","7632",
-                                    "3410","2987","3411","3412","3369","1230","1272","2727","2330","5501","3395","1280","3164","3747","4001","3548","2199","6054","5236","6257","5341","3695","6710","6723","6729","6837","5129","4125",
+                                   "3410","2987","3411","3412","3369","1230","1272","2727","2330","5501","3395","1280","3164","4001","2199","6054","5236","6257","5341","3695","6710","6723","6729","6837","5129","4125",
                                     "6087","6052","4978","6212","6231","5342","4682","4717","6569",
                                     "3686","6063","2700","4087","3930","4817","6773","4035","3406","4923","3815","2467","3936","4897","4858"  
                                   };
@@ -1296,7 +1296,7 @@ namespace CheckRenewalPkg
             return tmp;
 
         }
-        public void CalcAverage(List<int> countlist,List<double> usagelist)
+        public void  CalcAverage(List<int> countlist,List<double> usagelist)
         {
 
             if((countlist == null)||(usagelist == null))
@@ -1451,39 +1451,42 @@ namespace CheckRenewalPkg
                     treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
                     if (null == treeView1.SelectedNode)
                     {
-                        DisplayAndLog("未知用户ID为" + idid +"\t" + GetRenewalsTotal(idid, false), true);
+                        DisplayAndLog("未知用户ID为" + idid +"\t"  , true);
                         continue;
                     } 
 
                     DisplayAndLog(treeView1.SelectedNode.Text.ToString() + "\t", true);
                     DisplayAndLog(GetUsageTotal(idid, false, Countlist,Usagelist), true);
                 }
+                DisplayAndLog("-------车载-------\r\n", true);
                 CalcAverage(Countlist, Usagelist);
                 foreach (string idid in idlistMifi)
                 {
                     treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
                     if (null == treeView1.SelectedNode)
                     {
-                        DisplayAndLog("未知用户ID为" + idid + "\t" + GetRenewalsTotal(idid, false), true);
+                        DisplayAndLog("未知用户ID为" + idid + "\t"  , true);
                         continue;
                     }
 
                     DisplayAndLog(treeView1.SelectedNode.Text.ToString() + "\t", true);
                     DisplayAndLog(GetUsageTotal(idid, false, Countlist, Usagelist), true);
                 }
+                DisplayAndLog("-------MIFi-------\r\n", true);
                 CalcAverage(Countlist, Usagelist);
                 foreach (string idid in idlistPos)
                 {
                     treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
                     if (null == treeView1.SelectedNode)
                     {
-                        DisplayAndLog("未知用户ID为" + idid + "\t" + GetRenewalsTotal(idid, false), true);
+                        DisplayAndLog("未知用户ID为" + idid + "\t"  , true);
                         continue;
                     }
 
                     DisplayAndLog(treeView1.SelectedNode.Text.ToString() + "\t", true);
                     DisplayAndLog(GetUsageTotal(idid, false, Countlist, Usagelist), true);
                 }
+                DisplayAndLog("-------POS-------\r\n", true);
                 CalcAverage(Countlist, Usagelist);
             }
 
