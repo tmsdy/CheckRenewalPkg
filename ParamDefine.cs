@@ -628,5 +628,68 @@ namespace CheckRenewalPkg
             public List<OldRenewalsRootResultItem> result { get; set; }
         }
         ///////////////////////////////////////////老续费 end //////////////////////////////////////////////////////////////
+
+
+
+
+        ///////////////////////////////////////////续费明细的汇总 begin //////////////////////////////////////////////////////////////
+
+
+        public class RenewalsOrderSumTotalItem
+        {
+            /// <summary>
+            /// 30M(首年激活套餐)
+            /// </summary>
+            public string packageName { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public int times { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public double usage { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public double amount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public double backPrice { get; set; }
+        }
+
+        public class RenewalsOrderSumResult
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<RenewalsOrderSumTotalItem> Total { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+           // public List<object> Order { get; set; }
+        }
+
+        public class RenewalsOrderSum
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string error { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string reason { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public RenewalsOrderSumResult result { get; set; }
+        }
+
+
+        ///////////////////////////////////////////续费明细的汇总 end //////////////////////////////////////////////////////////////
+
+
     }
 }

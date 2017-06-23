@@ -20,7 +20,7 @@ namespace CheckRenewalPkg
 {
     public partial class Form1 : Form
     {
-        string sVer = "V1.1.9";
+        string sVer = "V1.2.0";
         string[] skipUserList = { "麦谷测试电信卡", "MG测试电信卡", "续费转仓", "0531081测试勿动", "娜姐", "接口调试(联通)", "麦谷内部人员", "ZYR_麦联宝测试", "ZYR_研发部调试卡" ,
                                 "ZYR_客服体验", "ZYR_其他人员试用", "SDY_体验测试", "ZW_后视镜测试", "123", "123-01", "123-02", "实名奖励套餐测试", "ZYR_内部测试卡",
                                 "ZYR_麦谷测试_YD", "ZYR_麦谷测试_DX", "ZYR_麦谷测试_LT","Jaffe_S85", "海如测试", "陈碧淼", "MG娜姐", "Telecom_S5"};
@@ -1776,6 +1776,178 @@ namespace CheckRenewalPkg
 
             TreeNode selectednode = treeView1.SelectedNode;
             PringUserTree(selectednode);
+        }
+
+        public string GetRenewalsOrderSum(string id, string  source)
+        {
+            string result = "";
+            string tmp = "";
+            string url = "";
+
+            int times = 0;
+            double usage = 0;
+            double amount = 0;
+            double backPrice = 0;
+
+            string stime = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
+            string etime = DateTime.Now.ToString("yyyy-MM-dd");
+            string sourceid = "";
+            //转换卡源
+            switch(source)
+            {
+                case "S1":
+                case "s1":
+                case  "1":
+                    sourceid = "2";
+                    break;
+                case "S2":
+                case "s2":
+                case "2":
+                    sourceid = "1";
+                    break;
+                case "S5":
+                case "s5":
+                case "5":
+                    sourceid = "82";
+                    break;
+            }
+
+            //http://demo.m-m10010.com/api/ReportRenewalsOrderTotal?holdid=1&ComeFrom=undefined&timeType=4&timeType=4&stime=2017-06-23%2000:00:00&etime=2017-06-23%2023:59:59&order=&id=&PayState=1&simState=-1&RenewalsState=&minamonth=&psize=60000&payee=&source=&access=&packageType=
+
+            url = sApiUrl + "/api/ReportRenewalsOrderTotal?holdid=" + id + "&ComeFrom=undefined&timeType=4&timeType=4&stime=" + stime + "%2000:00:00&etime=" + etime + "%2023:59:59&order=&id=&PayState=1&simState=-1&RenewalsState=&minamonth=&psize=60000&payee=&source=" + sourceid + "&access=&packageType=";
+
+            string response = GetResponseSafe(url);
+            if (response == "")
+            {
+                DisplayAndLog("holdId为" + id + "查不到啊亲\r\n", true);
+                return result;
+            }
+            ParamDefine.RenewalsOrderSum orr = JsonConvert.DeserializeObject<ParamDefine.RenewalsOrderSum>(response);
+
+            if ((orr == null)|| (orr.result == null) || (orr.result.Total == null))
+                return "查不到结果\r\n";
+
+            foreach (ParamDefine.RenewalsOrderSumTotalItem orritem in orr.result.Total)
+            {
+                times += orritem.times;
+                usage += orritem.usage;
+                amount += orritem.amount;
+                backPrice += orritem.backPrice;
+            }
+
+            //tmp += "卡源:" + source + "\t总续费次数:" + times + "\t总续费金额:" + amount + "\t总返利金额:" + backPrice + " \r\n";
+            tmp +=   source + "\t" + times + "\t" + amount + "\t" + backPrice + " \r\n";
+            return tmp;
+        }
+        private void backgroundWorker10_DoWork(object sender, DoWorkEventArgs e)
+        {
+
+            string id = "";
+            string tmp = "";
+            string whichway = e.Argument.ToString();
+            string username ="";
+            e.Result = "";
+            DisplayAndLog("\t卡源\t次数\t续费金额\t返利金额\r\n", true);
+            if (whichway == "single")
+            {
+                if (treeView1.Nodes.Count == 0)
+                {
+                    DisplayAndLog("请先刷新用户列表\r\n", true);
+                    return;
+                }
+
+                if (treeView1.SelectedNode == null)
+                {
+
+                    DisplayAndLog("请先选择用户\r\n", true);
+                    return;
+                }
+                 
+                id = treeView1.SelectedNode.Tag.ToString();
+                
+
+                username = treeView1.SelectedNode.Text.ToString();
+                DisplayAndLog(username + "\t" + GetRenewalsOrderSum(id, "S1"), true);
+                DisplayAndLog(username + "\t" +GetRenewalsOrderSum(id, "S2"), true);
+                DisplayAndLog(username + "\t" +GetRenewalsOrderSum(id, "S5"), true);
+
+
+            }
+            else
+            {
+                //D导航,LB,后视镜V,艾米,3G绑带,WST_AL,威仕特麦联宝,M电商S,M电商V,小流量V,小流量体验,,,,,,,,,
+                string[] idlist = { "4123", "1323", "1281", "3695", "5129", "4717", "4125", "5467", "2332", "2898", "2673" };
+ 
+                foreach (string idid in idlist)
+                {
+                    treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
+                    if (null == treeView1.SelectedNode)
+                    {
+                        DisplayAndLog("未知用户ID为" + idid + "\t" + GetRenewalsOrderSum(idid, "S1"), true);
+                        continue;
+                    }
+                    username = treeView1.SelectedNode.Text.ToString();
+                    DisplayAndLog(username + "\t" + GetRenewalsOrderSum(idid, "S1"), true);
+                }
+                foreach (string idid in idlist)
+                {
+                    treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
+                    if (null == treeView1.SelectedNode)
+                    {
+                        DisplayAndLog("未知用户ID为" + idid + "\t" + GetRenewalsOrderSum(idid, "S2"), true);
+                        continue;
+                    }
+                    username = treeView1.SelectedNode.Text.ToString();
+                    DisplayAndLog(username + "\t" + GetRenewalsOrderSum(idid, "S2"), true);
+                }
+                foreach (string idid in idlist)
+                {
+                    treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
+                    if (null == treeView1.SelectedNode)
+                    {
+                        DisplayAndLog("未知用户ID为" + idid + "\t" + GetRenewalsOrderSum(idid, "S5"), true);
+                        continue;
+                    }
+                    username = treeView1.SelectedNode.Text.ToString();
+                    DisplayAndLog(username + "\t" + GetRenewalsOrderSum(idid, "S5"), true);
+                }
+
+            }
+
+            e.Result = whichway;
+        }
+
+        private void backgroundWorker10_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (e.Result.ToString() == "single")
+            {
+                this.button17.Text = "续费按卡源";
+                this.button17.Enabled = true;
+            }
+            else
+            {
+                this.button18.Text = "*续费按卡源";
+                this.button18.Enabled = true;
+            }
+
+            DisplayAndLogBatch("------------------------------------------------------------------------\r\n", true);
+        }
+
+        private void button17_Click(object sender, EventArgs e)
+        {
+            this.button17.Text = "获取中";
+            this.button17.Enabled = false;
+
+            this.backgroundWorker10.RunWorkerAsync("single");
+        }
+
+        private void button18_Click(object sender, EventArgs e)
+        {
+
+            this.button18.Text = "获取中";
+            this.button18.Enabled = false;
+
+            this.backgroundWorker10.RunWorkerAsync("multi");
         }
 
  

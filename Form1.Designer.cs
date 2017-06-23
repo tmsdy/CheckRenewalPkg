@@ -35,6 +35,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.button4 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.button17 = new System.Windows.Forms.Button();
             this.button16 = new System.Windows.Forms.Button();
             this.button15 = new System.Windows.Forms.Button();
             this.button14 = new System.Windows.Forms.Button();
@@ -63,6 +64,8 @@
             this.backgroundWorker7 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker8 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker9 = new System.ComponentModel.BackgroundWorker();
+            this.backgroundWorker10 = new System.ComponentModel.BackgroundWorker();
+            this.button18 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -83,7 +86,7 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button1.Location = new System.Drawing.Point(5, 657);
+            this.button1.Location = new System.Drawing.Point(5, 636);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 2;
@@ -94,7 +97,7 @@
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button2.Location = new System.Drawing.Point(86, 657);
+            this.button2.Location = new System.Drawing.Point(86, 636);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(88, 23);
             this.button2.TabIndex = 3;
@@ -118,6 +121,8 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.button18);
+            this.splitContainer1.Panel2.Controls.Add(this.button17);
             this.splitContainer1.Panel2.Controls.Add(this.button16);
             this.splitContainer1.Panel2.Controls.Add(this.button15);
             this.splitContainer1.Panel2.Controls.Add(this.button14);
@@ -167,10 +172,21 @@
             this.comboBox1.TextChanged += new System.EventHandler(this.comboBox1_TextChanged);
             this.comboBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.comboBox1_KeyUp);
             // 
+            // button17
+            // 
+            this.button17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button17.Location = new System.Drawing.Point(5, 665);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(75, 23);
+            this.button17.TabIndex = 21;
+            this.button17.Text = "续费按卡源";
+            this.button17.UseVisualStyleBackColor = true;
+            this.button17.Click += new System.EventHandler(this.button17_Click);
+            // 
             // button16
             // 
             this.button16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button16.Location = new System.Drawing.Point(824, 634);
+            this.button16.Location = new System.Drawing.Point(824, 613);
             this.button16.Name = "button16";
             this.button16.Size = new System.Drawing.Size(75, 23);
             this.button16.TabIndex = 20;
@@ -181,7 +197,7 @@
             // button15
             // 
             this.button15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button15.Location = new System.Drawing.Point(729, 634);
+            this.button15.Location = new System.Drawing.Point(729, 613);
             this.button15.Name = "button15";
             this.button15.Size = new System.Drawing.Size(89, 23);
             this.button15.TabIndex = 19;
@@ -192,7 +208,7 @@
             // button14
             // 
             this.button14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button14.Location = new System.Drawing.Point(631, 634);
+            this.button14.Location = new System.Drawing.Point(631, 613);
             this.button14.Name = "button14";
             this.button14.Size = new System.Drawing.Size(92, 23);
             this.button14.TabIndex = 18;
@@ -203,7 +219,7 @@
             // button13
             // 
             this.button13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button13.Location = new System.Drawing.Point(824, 657);
+            this.button13.Location = new System.Drawing.Point(824, 636);
             this.button13.Name = "button13";
             this.button13.Size = new System.Drawing.Size(75, 23);
             this.button13.TabIndex = 17;
@@ -214,7 +230,7 @@
             // button12
             // 
             this.button12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button12.Location = new System.Drawing.Point(729, 657);
+            this.button12.Location = new System.Drawing.Point(729, 636);
             this.button12.Name = "button12";
             this.button12.Size = new System.Drawing.Size(89, 23);
             this.button12.TabIndex = 16;
@@ -237,7 +253,7 @@
             // 
             this.checkBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(513, 634);
+            this.checkBox4.Location = new System.Drawing.Point(513, 613);
             this.checkBox4.Name = "checkBox4";
             this.checkBox4.Size = new System.Drawing.Size(84, 16);
             this.checkBox4.TabIndex = 14;
@@ -248,7 +264,7 @@
             // 
             this.checkBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(435, 635);
+            this.checkBox3.Location = new System.Drawing.Point(435, 614);
             this.checkBox3.Name = "checkBox3";
             this.checkBox3.Size = new System.Drawing.Size(72, 16);
             this.checkBox3.TabIndex = 13;
@@ -259,7 +275,7 @@
             // textBox1
             // 
             this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.textBox1.Location = new System.Drawing.Point(278, 633);
+            this.textBox1.Location = new System.Drawing.Point(278, 612);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(148, 21);
             this.textBox1.TabIndex = 12;
@@ -267,7 +283,7 @@
             // button11
             // 
             this.button11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button11.Location = new System.Drawing.Point(631, 657);
+            this.button11.Location = new System.Drawing.Point(631, 636);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(92, 23);
             this.button11.TabIndex = 11;
@@ -278,7 +294,7 @@
             // button9
             // 
             this.button9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button9.Location = new System.Drawing.Point(435, 657);
+            this.button9.Location = new System.Drawing.Point(435, 636);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(92, 23);
             this.button9.TabIndex = 11;
@@ -289,7 +305,7 @@
             // button8
             // 
             this.button8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button8.Location = new System.Drawing.Point(533, 657);
+            this.button8.Location = new System.Drawing.Point(533, 636);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(92, 23);
             this.button8.TabIndex = 10;
@@ -300,7 +316,7 @@
             // button7
             // 
             this.button7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button7.Location = new System.Drawing.Point(355, 657);
+            this.button7.Location = new System.Drawing.Point(355, 636);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(71, 23);
             this.button7.TabIndex = 10;
@@ -311,7 +327,7 @@
             // button6
             // 
             this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button6.Location = new System.Drawing.Point(278, 657);
+            this.button6.Location = new System.Drawing.Point(278, 636);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(71, 23);
             this.button6.TabIndex = 9;
@@ -322,7 +338,7 @@
             // button5
             // 
             this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button5.Location = new System.Drawing.Point(184, 658);
+            this.button5.Location = new System.Drawing.Point(184, 637);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(88, 23);
             this.button5.TabIndex = 8;
@@ -336,7 +352,7 @@
             this.checkBox2.AutoSize = true;
             this.checkBox2.Checked = true;
             this.checkBox2.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox2.Location = new System.Drawing.Point(128, 635);
+            this.checkBox2.Location = new System.Drawing.Point(128, 614);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(144, 16);
             this.checkBox2.TabIndex = 7;
@@ -359,7 +375,7 @@
             // 
             this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(14, 635);
+            this.checkBox1.Location = new System.Drawing.Point(14, 614);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(108, 16);
             this.checkBox1.TabIndex = 5;
@@ -374,7 +390,7 @@
             this.richTextBox1.Font = new System.Drawing.Font("新宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.richTextBox1.Location = new System.Drawing.Point(5, 3);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(995, 625);
+            this.richTextBox1.Size = new System.Drawing.Size(995, 603);
             this.richTextBox1.TabIndex = 4;
             this.richTextBox1.Text = "";
             // 
@@ -421,6 +437,22 @@
             // backgroundWorker9
             // 
             this.backgroundWorker9.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker9_DoWork);
+            // 
+            // backgroundWorker10
+            // 
+            this.backgroundWorker10.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker10_DoWork);
+            this.backgroundWorker10.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker10_RunWorkerCompleted);
+            // 
+            // button18
+            // 
+            this.button18.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button18.Location = new System.Drawing.Point(86, 665);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(88, 23);
+            this.button18.TabIndex = 22;
+            this.button18.Text = "*续费按卡源";
+            this.button18.UseVisualStyleBackColor = true;
+            this.button18.Click += new System.EventHandler(this.button18_Click);
             // 
             // Form1
             // 
@@ -478,6 +510,9 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker8;
         private System.Windows.Forms.Button button16;
         private System.ComponentModel.BackgroundWorker backgroundWorker9;
+        private System.Windows.Forms.Button button17;
+        private System.ComponentModel.BackgroundWorker backgroundWorker10;
+        private System.Windows.Forms.Button button18;
     }
 }
 
