@@ -1829,6 +1829,8 @@ namespace CheckRenewalPkg
 
             foreach (ParamDefine.RenewalsOrderSumTotalItem orritem in orr.result.Total)
             {
+                if (orritem.packageName.Contains("奖励套餐"))
+                    continue;
                 times += orritem.times;
                 usage += orritem.usage;
                 amount += orritem.amount;
