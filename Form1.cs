@@ -1838,7 +1838,7 @@ namespace CheckRenewalPkg
             }
 
             //tmp += "卡源:" + source + "\t总续费次数:" + times + "\t总续费金额:" + amount + "\t总返利金额:" + backPrice + " \r\n";
-            tmp +=   source + "\t" + times + "\t" + amount + "\t" + backPrice + " \r\n";
+            tmp += source + "\t" + times + "\t" + amount + "\t" + usage + " \r\n";
             return tmp;
         }
         private void backgroundWorker10_DoWork(object sender, DoWorkEventArgs e)
@@ -1849,7 +1849,7 @@ namespace CheckRenewalPkg
             string whichway = e.Argument.ToString();
             string username ="";
             e.Result = "";
-            DisplayAndLog("\t卡源\t次数\t续费金额\t返利金额\r\n", true);
+            DisplayAndLog("\t卡源\t续费次数\t续费金额\t总用量\r\n", true);
             if (whichway == "single")
             {
                 if (treeView1.Nodes.Count == 0)
