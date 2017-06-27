@@ -34,7 +34,12 @@ namespace CheckRenewalPkg
         public static Encoding RequestEncoding = _Encoding.UTF8;
         public static Encoding ResponseEncoding = _Encoding.UTF8;
 
-
+        public struct renewalsPeriod
+        {
+            public string whichway;
+            public string stime;
+            public string etime;
+        }
         public Form1()
         {
             CheckForIllegalCrossThreadCalls = false;
@@ -1839,21 +1844,25 @@ namespace CheckRenewalPkg
             tmp += source + "\t" + times + "\t" + amount + "\t" + usage + " \r\n";
             return tmp;
         }
+
         private void backgroundWorker10_DoWork(object sender, DoWorkEventArgs e)
         {
 
             string id = "";
             string tmp = "";
-            string whichway = e.Argument.ToString();
+            
+            renewalsPeriod rp =( renewalsPeriod )e.Argument;
             string username ="";
             e.Result = "";
 
-            string stime = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
-            string etime = DateTime.Now.ToString("yyyy-MM-dd");
+            string stime = rp.stime;
+            string etime = rp.etime;
+            //string stime = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
+            //string etime = DateTime.Now.ToString("yyyy-MM-dd");
 
             DisplayAndLog("数据采样时间段:" + stime + "---" + etime + "\r\n最近7天续费汇总\r\n", true);
             DisplayAndLog("\t卡源\t续费次数\t续费金额\t总用量\r\n", true);
-            if (whichway == "single")
+            if (rp.whichway == "single")
             {
                 if (treeView1.Nodes.Count == 0)
                 {
@@ -1919,7 +1928,7 @@ namespace CheckRenewalPkg
 
             }
 
-            e.Result = whichway;
+            e.Result = rp.whichway;
         }
 
         private void backgroundWorker10_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -1938,21 +1947,58 @@ namespace CheckRenewalPkg
             DisplayAndLogBatch("------------------------------------------------------------------------\r\n", true);
         }
 
+  
         private void button17_Click(object sender, EventArgs e)
         {
             this.button17.Text = "获取中";
             this.button17.Enabled = false;
+            renewalsPeriod rp;
+            rp.whichway = "single";
 
-            this.backgroundWorker10.RunWorkerAsync("single");
+            if (radioButton2.Checked)
+            {
+                rp.stime = DateTime.Now.ToString("yyyy-MM") + "-01";
+                rp.etime = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+            else if (radioButton3.Checked)
+            {
+                rp.stime = DateTime.Now.AddMonths(-1).ToString("yyyy-MM") + "-01"; ;
+                rp.etime = DateTime.Now.AddDays(-(DateTime.Now.Day)).ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                rp.stime = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
+                rp.etime = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+           this.backgroundWorker10.RunWorkerAsync(rp);
         }
+
+ 
 
         private void button18_Click(object sender, EventArgs e)
         {
 
             this.button18.Text = "获取中";
             this.button18.Enabled = false;
+            renewalsPeriod rp;
 
-            this.backgroundWorker10.RunWorkerAsync("multi");
+            rp.whichway = "multi";
+            if (radioButton2.Checked)
+            {
+                rp.stime = DateTime.Now.ToString("yyyy-MM") + "-01";
+                rp.etime = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+            else if (radioButton3.Checked)
+            {
+                rp.stime = DateTime.Now.AddMonths(-1).ToString("yyyy-MM") + "-01"; ;
+                rp.etime = DateTime.Now.AddDays(-(DateTime.Now.Day)).ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                rp.stime = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
+                rp.etime = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+            this.backgroundWorker10.RunWorkerAsync(rp);
         }
 
  
