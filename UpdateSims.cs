@@ -109,22 +109,24 @@ namespace CheckRenewalPkg
         private void button1_Click(object sender, EventArgs e)
         {
 
-            string post = "{\"iccids\":[\"";
-            for (int i = 0; i < richTextBox1.Lines.Count(); i++)
-            {
-                post += richTextBox1.Lines[i].Trim();
-                if (i == richTextBox1.Lines.Count() - 1)
-                    post += "\"]}";
-                else
-                    post += "\",\"";
-            }
-            richTextBox2.AppendText(PostDataToUrl(post, "http://demo.m-m10010.com/api/BatchUpdateTerminalUsageByICCIDs") + "\r\n");
-            //this.button1.Enabled = false;
-            //backgroundWorker1.RunWorkerAsync(); 
+            //string post = "{\"iccids\":[\"";
+            //for (int i = 0; i < richTextBox1.Lines.Count(); i++)
+            //{
+            //    post += richTextBox1.Lines[i].Trim();
+            //    if (i == richTextBox1.Lines.Count() - 1)
+            //        post += "\"]}";
+            //    else
+            //        post += "\",\"";
+            //}
+            //richTextBox2.AppendText(PostDataToUrl(post, "http://demo.m-m10010.com/api/BatchUpdateTerminalUsageByICCIDs") + "\r\n");
+            this.button1.Enabled = false;
+            backgroundWorker1.RunWorkerAsync(); 
         }
 
         private void UpdateSims_Load(object sender, EventArgs e)
         {
+
+            this.Text += Program.sVer;
             DateTime dt = DateTime.Now;
             string date = "";
             List< string> dit_status = new List< string>();
@@ -158,6 +160,55 @@ namespace CheckRenewalPkg
             post += ",\"statMonth\":\"" + this.comboBox1.Text + "\"}";
             //richTextBox2.AppendText(post + "\r\n");
             richTextBox2.AppendText(PostDataToUrl(post, "http://demo.m-m10010.com/api/UpdateTerminalsMonthUsage") + "\r\n");
+        }
+
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            string[] str = InvokeHelper.Get(this.richTextBox1, "Text").ToString().Trim().Replace("\r\n\r\n", "\r\n").Replace("\r\n\r\n", "\r\n").Split('\n');
+            string result = "";
+            StringBuilder postdata = new StringBuilder();
+            int count = str.Count();
+            int updateRatePlanLimitCount = 50;
+            int totalTimes = (int)Math.Ceiling((double)count / updateRatePlanLimitCount);
+            int i = 0;
+            for (int times = 0; times < totalTimes; times++)
+            {
+
+                InvokeHelper.Set(button1, "Text", (times + 1).ToString() + "/" + totalTimes.ToString()); 
+                //richTextBox2.AppendText((times + 1).ToString() + "/" + totalTimes.ToString() + "\r\n");
+                postdata.Clear();
+                 postdata.Append("{\"iccids\":[\"" );
+                for (i = 0; (i < updateRatePlanLimitCount) && (times * updateRatePlanLimitCount + i < count); i++)
+                {
+                    postdata.Append(str[times * updateRatePlanLimitCount + i].Trim());
+                    if ((times * updateRatePlanLimitCount + i == count - 1) || (i == updateRatePlanLimitCount - 1))
+                    {
+                        postdata.Append("\"]}");
+                    }
+                    else
+                    {
+                        postdata.Append("\",\"");
+                    }
+
+                }
+                try
+                {
+                    InvokeHelper.Set(richTextBox2, "Text", InvokeHelper.Get(this.richTextBox2, "Text").ToString() + PostDataToUrl(postdata.ToString(), "http://demo.m-m10010.com/api/BatchUpdateTerminalUsageByICCIDs") + "\r\n");
+
+                }
+                catch
+                {
+                    InvokeHelper.Set(richTextBox2, "Text", InvokeHelper.Get(this.richTextBox2, "Text").ToString() + "异常\r\n");
+
+                }
+            }
+
+        }
+
+        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            this.button1.Enabled = true;
+            InvokeHelper.Set(button1, "Text", "卡同步");
         }
 
         //{"iccids":["123","234"]}
