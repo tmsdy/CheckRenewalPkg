@@ -133,7 +133,7 @@ namespace CheckRenewalPkg
             if(clickcount++ >=4)
             {
                 clickcount = 0;
-                UpdateSims us = new UpdateSims();
+                UpdateSims us = new UpdateSims( );
                 us.Show();
                 this.Hide();
 

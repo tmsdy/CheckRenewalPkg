@@ -101,9 +101,7 @@ namespace CheckRenewalPkg
                 request.ContentType = "application/x-www-form-urlencoded";
                 request.ContentLength = data.Length;
                 request.KeepAlive = false;
-                request.UserAgent = Program.DefaultUserAgent;
-                request.CookieContainer = new CookieContainer();
-                request.CookieContainer = Program.MLBCookie;
+                request.UserAgent = Program.DefaultUserAgent; 
                 request.Timeout = 300000;
                 request.ReadWriteTimeout = 50000;
                 request.CookieContainer = new CookieContainer();
@@ -2193,6 +2191,12 @@ namespace CheckRenewalPkg
             this.backgroundWorker11.RunWorkerAsync(rp);
         }
         #endregion
+
+        private void button21_Click(object sender, EventArgs e)
+        {
+            UpdateSims us = new UpdateSims( );
+            us.Show();
+        }
 
 
 

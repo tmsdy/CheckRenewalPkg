@@ -12,16 +12,19 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Net.Security;
 using System.IO;
+using System.Diagnostics;
 
 
 namespace CheckRenewalPkg
 {
     public partial class UpdateSims : Form
     {
+        Form1 parentForm;
         public static Encoding RequestEncoding = _Encoding.UTF8;
         public static Encoding ResponseEncoding = _Encoding.UTF8;
-        public UpdateSims()
+        public UpdateSims( )
         {
+            //parentForm = f;
             InitializeComponent();
         }
         public struct _Encoding
@@ -57,7 +60,9 @@ namespace CheckRenewalPkg
                 request.CookieContainer = new CookieContainer();
                 request.CookieContainer = Program.MLBCookie;
                 request.Timeout = 300000;
-                request.ReadWriteTimeout = 50000;
+                request.ReadWriteTimeout = 50000; 
+                request.CookieContainer = new CookieContainer();
+                request.CookieContainer = Program.MLBCookie;
                 if (!string.IsNullOrEmpty(userAgent))
                 {
                     request.UserAgent = userAgent;
@@ -118,13 +123,14 @@ namespace CheckRenewalPkg
             //    else
             //        post += "\",\"";
             //}
-            //richTextBox2.AppendText(PostDataToUrl(post, "http://demo.m-m10010.com/api/BatchUpdateTerminalUsageByICCIDs") + "\r\n");
+            //richTextBox2.AppendText(PostDataToUrl(post,,Program.sGloableDomailUrl + "/api/BatchUpdateTerminalUsageByICCIDs") + "\r\n");
             this.button1.Enabled = false;
             backgroundWorker1.RunWorkerAsync(); 
         }
 
         private void UpdateSims_Load(object sender, EventArgs e)
         {
+            this.richTextBox1.MaxLength = 9999999;
 
             this.Text += Program.sVer;
             DateTime dt = DateTime.Now;
@@ -141,7 +147,7 @@ namespace CheckRenewalPkg
 
         private void UpdateSims_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Application.Exit();
+            
         }
 
  
@@ -193,7 +199,7 @@ namespace CheckRenewalPkg
                 }
                 try
                 {
-                    InvokeHelper.Set(richTextBox2, "Text", InvokeHelper.Get(this.richTextBox2, "Text").ToString() + PostDataToUrl(postdata.ToString(), "http://demo.m-m10010.com/api/BatchUpdateTerminalUsageByICCIDs") + "\r\n");
+                    InvokeHelper.Set(richTextBox2, "Text", InvokeHelper.Get(this.richTextBox2, "Text").ToString() + PostDataToUrl(postdata.ToString(), Program.sGloableDomailUrl +"/api/BatchUpdateTerminalUsageByICCIDs") + "\r\n");
 
                 }
                 catch
@@ -211,9 +217,61 @@ namespace CheckRenewalPkg
             InvokeHelper.Set(button1, "Text", "卡同步");
         }
 
-        //{"iccids":["123","234"]}
+        private void button3_Click(object sender, EventArgs e)
+        {
+            this.button3.Enabled = false;
+            backgroundWorker2.RunWorkerAsync(); 
+        }
 
-        //http://demo.m-m10010.com/api/BatchUpdateTerminalUsageByICCIDs
-        //simIds[]=1110519&simIds[]=1110621&simIds[]=1110738&simIds[]=1110757&simIds[]=1110861&simIds[]=1110867&simIds[]=1110888&simIds[]=1110979&simIds[]=1110985
+        private void backgroundWorker2_DoWork(object sender, DoWorkEventArgs e)
+        {
+            string[] str = InvokeHelper.Get(this.richTextBox1, "Text").ToString().Trim().Replace("\r\n\r\n", "\r\n").Replace("\r\n\r\n", "\r\n").Split('\n');
+            string result = "";
+            StringBuilder postdata = new StringBuilder();
+            int count = str.Count();
+            int updateRatePlanLimitCount = 100;
+            int totalTimes = (int)Math.Ceiling((double)count / updateRatePlanLimitCount);
+            int i = 0;
+
+            Stopwatch sw = new Stopwatch();
+            for (int times = 0; times < totalTimes; times++)
+            {
+                sw.Reset();
+                sw.Start();
+                InvokeHelper.Set(button3, "Text", (times + 1).ToString() + "/" + totalTimes.ToString());
+                //richTextBox2.AppendText((times + 1).ToString() + "/" + totalTimes.ToString() + "\r\n");
+                postdata.Clear();
+                postdata.Append("{\"p\":1,\"pRowCount\":\"25\",\"storeState\":\"all\",\"loginHoldId\":\"89\",\"noChild\":0,\"key\":\"\",\"groupHoldId\":0,\"batchType\":\"2\",\"batchCardStr\":\"");
+                for (i = 0; (i < updateRatePlanLimitCount) && (times * updateRatePlanLimitCount + i < count); i++)
+                {
+                    postdata.Append(str[times * updateRatePlanLimitCount + i].Trim());
+                    postdata.Append("\n");
+  
+
+                }
+                postdata.Append("\",\"batchStart\":\"\",\"batchEnd\":\"\",\"batchNumber\":0,\"date\":\"201704\",\"cost\":\"0\"}");
+                try
+                {                    
+                    //结束计时  
+                    sw.Stop();
+                    //获取运行时间间隔  
+                    TimeSpan ts = sw.Elapsed;
+                    InvokeHelper.Set(richTextBox2, "Text", InvokeHelper.Get(this.richTextBox2, "Text").ToString() + PostDataToUrl(postdata.ToString(),Program.sGloableDomailUrl +  "/api/YDSimBill") );
+                    InvokeHelper.Set(richTextBox2, "Text", InvokeHelper.Get(this.richTextBox2, "Text").ToString() + " 耗时" + ts.TotalSeconds + "秒\r\n");
+                }
+                catch
+                {
+                    InvokeHelper.Set(richTextBox2, "Text", InvokeHelper.Get(this.richTextBox2, "Text").ToString() + "异常\r\n");
+
+                }
+            }
+        }
+
+        private void backgroundWorker2_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            this.button3.Enabled = true;
+            InvokeHelper.Set(button3, "Text", "预扣费");
+        }
+         
     }
 }
