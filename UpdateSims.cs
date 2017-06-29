@@ -251,12 +251,12 @@ namespace CheckRenewalPkg
                 }
                 postdata.Append("\",\"batchStart\":\"\",\"batchEnd\":\"\",\"batchNumber\":0,\"date\":\"201704\",\"cost\":\"0\"}");
                 try
-                {                    
+                {
+                    InvokeHelper.Set(richTextBox2, "Text", InvokeHelper.Get(this.richTextBox2, "Text").ToString() + PostDataToUrl(postdata.ToString(), Program.sGloableDomailUrl + "/api/YDSimBill"));
                     //结束计时  
                     sw.Stop();
                     //获取运行时间间隔  
                     TimeSpan ts = sw.Elapsed;
-                    InvokeHelper.Set(richTextBox2, "Text", InvokeHelper.Get(this.richTextBox2, "Text").ToString() + PostDataToUrl(postdata.ToString(),Program.sGloableDomailUrl +  "/api/YDSimBill") );
                     InvokeHelper.Set(richTextBox2, "Text", InvokeHelper.Get(this.richTextBox2, "Text").ToString() + " 耗时" + ts.TotalSeconds + "秒\r\n");
                 }
                 catch
