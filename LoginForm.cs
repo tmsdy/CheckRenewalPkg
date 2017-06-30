@@ -122,7 +122,7 @@ namespace CheckRenewalPkg
 
         private void LoginForm_Load(object sender, EventArgs e)
         {
-
+            this.radioButton1.Checked = true;
             this.Text += Program.sVer;
             //string response = "{\"error\":0,\"reason\":\"\",\"result\":{\"Total\":[{\"packageName\":\"1GB(一年有效)\",\"times\":36,\"usage\":36864.0,\"amount\":1079.64,\"backPrice\":216.0},{\"packageName\":\"4G(月叠加包)限时特惠\",\"times\":15,\"usage\":61440.0,\"amount\":585.0,\"backPrice\":117.0},{\"packageName\":\"12GB(半年有效)限时特惠\",\"times\":12,\"usage\":147456.0,\"amount\":1668.0,\"backPrice\":333.6},{\"packageName\":\"100M一年(体验套餐)\",\"times\":7,\"usage\":700.0,\"amount\":0.07,\"backPrice\":0.0},{\"packageName\":\"4GB(一年有效)\",\"times\":7,\"usage\":28672.0,\"amount\":699.93,\"backPrice\":140.0},{\"packageName\":\"2GB(一年有效)\",\"times\":6,\"usage\":12288.0,\"amount\":347.94,\"backPrice\":69.6},{\"packageName\":\"50GB(一年有效)限时钜惠\",\"times\":4,\"usage\":204800.0,\"amount\":1596.0,\"backPrice\":319.2},{\"packageName\":\"15GB(月叠加包)限时钜惠\",\"times\":3,\"usage\":46080.0,\"amount\":297.0,\"backPrice\":59.4},{\"packageName\":\"30GB(一年有效)限时钜惠\",\"times\":3,\"usage\":92160.0,\"amount\":747.0,\"backPrice\":149.4},{\"packageName\":\"12G 12个月(每月1G)\",\"times\":2,\"usage\":24576.0,\"amount\":399.98,\"backPrice\":80.0},{\"packageName\":\"48G 12个月(每月4G)\",\"times\":2,\"usage\":98304.0,\"amount\":799.98,\"backPrice\":160.0},{\"packageName\":\"1G(月叠加包)\",\"times\":1,\"usage\":1024.0,\"amount\":29.99,\"backPrice\":6.0},{\"packageName\":\"12GB(一年有效)\",\"times\":1,\"usage\":12288.0,\"amount\":259.99,\"backPrice\":52.0},{\"packageName\":\"60G 12个月(每月5G)\",\"times\":1,\"usage\":61440.0,\"amount\":499.99,\"backPrice\":100.0},{\"packageName\":\"8GB(一年有效)\",\"times\":1,\"usage\":8192.0,\"amount\":189.99,\"backPrice\":38.0},{\"packageName\":\"60GB 6个月(每月10G)限时钜惠\",\"times\":1,\"usage\":61440.0,\"amount\":399.0,\"backPrice\":79.8}],\"Order\":[]}}";
             //ParamDefine.RenewalsOrderSum orr = Newtonsoft.Json.JsonConvert.DeserializeObject<ParamDefine.RenewalsOrderSum>(response);
@@ -139,6 +139,16 @@ namespace CheckRenewalPkg
 
             }
 
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            Program.sGloableDomailUrl = "http://demo.m-m10010.com";  
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            Program.sGloableDomailUrl = "http://www.m-m10010.com";  
         }
     }
 }
