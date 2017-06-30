@@ -930,7 +930,7 @@ namespace CheckRenewalPkg
                 return;
             }
             id = treeView1.SelectedNode.Tag.ToString();
-            DisplayAndLogBatch(treeView1.SelectedNode.Text.ToString(), true);
+            DisplayAndLogBatch(treeView1.SelectedNode.Text.ToString().Split('(')[0], true);
             e.Result = GetLastMonthBackMoney(id, "lastmonth");
         }
 
@@ -960,7 +960,7 @@ namespace CheckRenewalPkg
                 return;
             }
             id = treeView1.SelectedNode.Tag.ToString();
-            DisplayAndLogBatch(treeView1.SelectedNode.Text.ToString(), true);
+            DisplayAndLogBatch(treeView1.SelectedNode.Text.ToString().Split('(')[0], true);
             e.Result = GetLastMonthBackMoney(id, "");
 
         }
@@ -1026,7 +1026,7 @@ namespace CheckRenewalPkg
                       "复充率\r\n";
                 DisplayAndLog(tmp, true);
                 id = treeView1.SelectedNode.Tag.ToString();
-                DisplayAndLog(treeView1.SelectedNode.Text.ToString() , true);
+                DisplayAndLog(treeView1.SelectedNode.Text.ToString().Split('(')[0] , true);
                 DisplayAndLog(GetRenewalsTotal(id,true), true);
 
 
@@ -1100,7 +1100,7 @@ namespace CheckRenewalPkg
 
                     //treeView1.Select();
 
-                    DisplayAndLog(treeView1.SelectedNode.Text.ToString() , true);
+                    DisplayAndLog(treeView1.SelectedNode.Text.ToString().Split('(')[0], true);
                     DisplayAndLog(GetRenewalsTotal(idid,false), true);
                 }
 
@@ -1437,7 +1437,7 @@ namespace CheckRenewalPkg
 
                 DisplayAndLog(tmp, true);
                 id = treeView1.SelectedNode.Tag.ToString();
-                DisplayAndLog(treeView1.SelectedNode.Text.ToString() + "\t", true);
+                DisplayAndLog(treeView1.SelectedNode.Text.ToString().Split('(')[0] + "\t", true);
                 DisplayAndLog(GetUsageTotal(id, true), true);
 
 
@@ -1458,9 +1458,9 @@ namespace CheckRenewalPkg
                     {
                         DisplayAndLog("未知用户ID为" + idid +"\t"  , true);
                         continue;
-                    } 
+                    }
 
-                    DisplayAndLog(treeView1.SelectedNode.Text.ToString() + "\t", true);
+                    DisplayAndLog(treeView1.SelectedNode.Text.ToString().Split('(')[0] + "\t", true);
                     DisplayAndLog(GetUsageTotal(idid, false, Countlist,Usagelist), true);
                 }
                 DisplayAndLog("-------车载-------\r\n", true);
@@ -1474,7 +1474,7 @@ namespace CheckRenewalPkg
                         continue;
                     }
 
-                    DisplayAndLog(treeView1.SelectedNode.Text.ToString() + "\t", true);
+                    DisplayAndLog(treeView1.SelectedNode.Text.ToString().Split('(')[0] + "\t", true);
                     DisplayAndLog(GetUsageTotal(idid, false, Countlist, Usagelist), true);
                 }
                 DisplayAndLog("-------MIFi-------\r\n", true);
@@ -1488,7 +1488,7 @@ namespace CheckRenewalPkg
                         continue;
                     }
 
-                    DisplayAndLog(treeView1.SelectedNode.Text.ToString() + "\t", true);
+                    DisplayAndLog(treeView1.SelectedNode.Text.ToString().Split('(')[0] + "\t", true);
                     DisplayAndLog(GetUsageTotal(idid, false, Countlist, Usagelist), true);
                 }
                 DisplayAndLog("-------POS-------\r\n", true);
@@ -1555,7 +1555,7 @@ namespace CheckRenewalPkg
 
                 DisplayAndLog(tmp, true);
                 id = treeView1.SelectedNode.Tag.ToString();
-                DisplayAndLog(treeView1.SelectedNode.Text.ToString() + "\r\n日期\t笔数\t续费金额\t5日均值\r\n", true);
+                DisplayAndLog(treeView1.SelectedNode.Text.ToString().Split('(')[0] + "\r\n日期\t笔数\t续费金额\t5日均值\r\n", true);
                 DisplayAndLog(GetOldRenewals(id, true), true);
 
 
@@ -1612,7 +1612,7 @@ namespace CheckRenewalPkg
                 return;
             }
 
-           DialogResult dr= MessageBox.Show("在这个账号下新建： " + treeView1.SelectedNode.Text.ToString()  + "\r\n格式为：  用户名，登录名，用户类型，密码\r\n" +  this.richTextBox1.Text, "提示", MessageBoxButtons.OKCancel);
+            DialogResult dr = MessageBox.Show("在这个账号下新建： " + treeView1.SelectedNode.Text.ToString().Split('(')[0] + "\r\n格式为：  用户名，登录名，用户类型，密码\r\n" + this.richTextBox1.Text, "提示", MessageBoxButtons.OKCancel);
            if (dr == DialogResult.OK)
            {
                this.button14.Enabled = false;
@@ -1651,7 +1651,7 @@ namespace CheckRenewalPkg
                 DisplayAndLog("不能在大账号下建子账号\r\n", true);
                 return;
             }
-            DisplayAndLog(treeView1.SelectedNode.Text.ToString() + "\r\n", true);
+            DisplayAndLog(treeView1.SelectedNode.Text.ToString().Split('(')[0] + "\r\n", true);
             string displayname = "";
             string loginname = "";
             string usertype = "6";
@@ -1887,7 +1887,7 @@ namespace CheckRenewalPkg
                 id = treeView1.SelectedNode.Tag.ToString();
                 
 
-                username = treeView1.SelectedNode.Text.ToString();
+                username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
                 DisplayAndLog(username + "\t" + GetRenewalsOrderSum(id, "S1", stime, etime), true);
                 DisplayAndLog(username + "\t" + GetRenewalsOrderSum(id, "S2", stime, etime), true);
                 DisplayAndLog(username + "\t" + GetRenewalsOrderSum(id, "S5", stime, etime), true);
@@ -1907,7 +1907,7 @@ namespace CheckRenewalPkg
                         DisplayAndLog("未知用户ID为" + idid + "\t" + GetRenewalsOrderSum(idid, "S1", stime, etime), true);
                         continue;
                     }
-                    username = treeView1.SelectedNode.Text.ToString();
+                    username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
                     DisplayAndLog(username + "\t" + GetRenewalsOrderSum(idid, "S1", stime, etime), true);
                 }
                 foreach (string idid in idlist)
@@ -1918,7 +1918,7 @@ namespace CheckRenewalPkg
                         DisplayAndLog("未知用户ID为" + idid + "\t" + GetRenewalsOrderSum(idid, "S2", stime, etime), true);
                         continue;
                     }
-                    username = treeView1.SelectedNode.Text.ToString();
+                    username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
                     DisplayAndLog(username + "\t" + GetRenewalsOrderSum(idid, "S2", stime, etime), true);
                 }
                 foreach (string idid in idlist)
@@ -1929,7 +1929,7 @@ namespace CheckRenewalPkg
                         DisplayAndLog("未知用户ID为" + idid + "\t" + GetRenewalsOrderSum(idid, "S5", stime, etime), true);
                         continue;
                     }
-                    username = treeView1.SelectedNode.Text.ToString();
+                    username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
                     DisplayAndLog(username + "\t" + GetRenewalsOrderSum(idid, "S5", stime, etime), true);
                 }
 
@@ -2117,7 +2117,7 @@ namespace CheckRenewalPkg
                 id = treeView1.SelectedNode.Tag.ToString();
 
 
-                username = treeView1.SelectedNode.Text.ToString();
+                username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
                 DisplayAndLog(username + "\t" + GetAMapRenewalsOrderSum(id,   stime, etime), true); 
 
 
@@ -2135,7 +2135,7 @@ namespace CheckRenewalPkg
                         DisplayAndLog("未知用户ID为" + idid + "\t" + GetAMapRenewalsOrderSum(idid,   stime, etime), true);
                         continue;
                     }
-                    username = treeView1.SelectedNode.Text.ToString();
+                    username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
                     DisplayAndLog(username + "\t" + GetAMapRenewalsOrderSum(idid,  stime, etime), true);
                 }
              
