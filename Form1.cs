@@ -1868,7 +1868,7 @@ namespace CheckRenewalPkg
             //string etime = DateTime.Now.ToString("yyyy-MM-dd");
 
             DisplayAndLog("数据采样时间段:" + stime + "---" + etime + "\r\n\t\t\t" + rp.desc + "\r\n", true);
-            DisplayAndLog("\t卡源\t续费次数\t续费金额\t总用量\t单笔ARPU\t每G售价\r\n", true);
+            DisplayAndLog("\t卡源\t续费次数\t续费金额\t总续费流量\t单笔ARPU\t每G售价\r\n", true);
             if (rp.whichway == "single")
             {
                 if (treeView1.Nodes.Count == 0)
