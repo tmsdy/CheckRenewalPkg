@@ -35,6 +35,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.button4 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.button21 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
@@ -73,7 +74,8 @@
             this.backgroundWorker9 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker10 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker11 = new System.ComponentModel.BackgroundWorker();
-            this.button21 = new System.Windows.Forms.Button();
+            this.button22 = new System.Windows.Forms.Button();
+            this.radioButton4 = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -181,9 +183,22 @@
             this.comboBox1.TextChanged += new System.EventHandler(this.comboBox1_TextChanged);
             this.comboBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.comboBox1_KeyUp);
             // 
+            // button21
+            // 
+            this.button21.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button21.Location = new System.Drawing.Point(905, 614);
+            this.button21.Name = "button21";
+            this.button21.Size = new System.Drawing.Size(75, 23);
+            this.button21.TabIndex = 24;
+            this.button21.Text = "同步";
+            this.button21.UseVisualStyleBackColor = true;
+            this.button21.Click += new System.EventHandler(this.button21_Click);
+            // 
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox1.Controls.Add(this.radioButton4);
+            this.groupBox1.Controls.Add(this.button22);
             this.groupBox1.Controls.Add(this.radioButton3);
             this.groupBox1.Controls.Add(this.radioButton2);
             this.groupBox1.Controls.Add(this.radioButton1);
@@ -193,14 +208,14 @@
             this.groupBox1.Controls.Add(this.button18);
             this.groupBox1.Location = new System.Drawing.Point(5, 658);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(532, 30);
+            this.groupBox1.Size = new System.Drawing.Size(718, 30);
             this.groupBox1.TabIndex = 23;
             this.groupBox1.TabStop = false;
             // 
             // radioButton3
             // 
             this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(135, 10);
+            this.radioButton3.Location = new System.Drawing.Point(189, 11);
             this.radioButton3.Name = "radioButton3";
             this.radioButton3.Size = new System.Drawing.Size(47, 16);
             this.radioButton3.TabIndex = 23;
@@ -211,7 +226,7 @@
             // radioButton2
             // 
             this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(80, 10);
+            this.radioButton2.Location = new System.Drawing.Point(134, 11);
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(47, 16);
             this.radioButton2.TabIndex = 23;
@@ -222,7 +237,7 @@
             // radioButton1
             // 
             this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(7, 10);
+            this.radioButton1.Location = new System.Drawing.Point(70, 11);
             this.radioButton1.Name = "radioButton1";
             this.radioButton1.Size = new System.Drawing.Size(65, 16);
             this.radioButton1.TabIndex = 23;
@@ -233,7 +248,7 @@
             // button20
             // 
             this.button20.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button20.Location = new System.Drawing.Point(370, 7);
+            this.button20.Location = new System.Drawing.Point(518, 8);
             this.button20.Name = "button20";
             this.button20.Size = new System.Drawing.Size(75, 23);
             this.button20.TabIndex = 21;
@@ -244,7 +259,7 @@
             // button19
             // 
             this.button19.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button19.Location = new System.Drawing.Point(451, 7);
+            this.button19.Location = new System.Drawing.Point(599, 8);
             this.button19.Name = "button19";
             this.button19.Size = new System.Drawing.Size(75, 23);
             this.button19.TabIndex = 21;
@@ -255,7 +270,7 @@
             // button17
             // 
             this.button17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button17.Location = new System.Drawing.Point(190, 7);
+            this.button17.Location = new System.Drawing.Point(244, 8);
             this.button17.Name = "button17";
             this.button17.Size = new System.Drawing.Size(75, 23);
             this.button17.TabIndex = 21;
@@ -266,7 +281,7 @@
             // button18
             // 
             this.button18.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button18.Location = new System.Drawing.Point(273, 7);
+            this.button18.Location = new System.Drawing.Point(327, 8);
             this.button18.Name = "button18";
             this.button18.Size = new System.Drawing.Size(88, 23);
             this.button18.TabIndex = 22;
@@ -539,16 +554,27 @@
             this.backgroundWorker11.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker11_DoWork);
             this.backgroundWorker11.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker11_RunWorkerCompleted);
             // 
-            // button21
+            // button22
             // 
-            this.button21.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button21.Location = new System.Drawing.Point(905, 614);
-            this.button21.Name = "button21";
-            this.button21.Size = new System.Drawing.Size(75, 23);
-            this.button21.TabIndex = 24;
-            this.button21.Text = "同步";
-            this.button21.UseVisualStyleBackColor = true;
-            this.button21.Click += new System.EventHandler(this.button21_Click);
+            this.button22.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button22.Location = new System.Drawing.Point(421, 8);
+            this.button22.Name = "button22";
+            this.button22.Size = new System.Drawing.Size(88, 23);
+            this.button22.TabIndex = 24;
+            this.button22.Text = "*重要客户";
+            this.button22.UseVisualStyleBackColor = true;
+            this.button22.Click += new System.EventHandler(this.button22_Click);
+            // 
+            // radioButton4
+            // 
+            this.radioButton4.AutoSize = true;
+            this.radioButton4.Location = new System.Drawing.Point(5, 11);
+            this.radioButton4.Name = "radioButton4";
+            this.radioButton4.Size = new System.Drawing.Size(65, 16);
+            this.radioButton4.TabIndex = 25;
+            this.radioButton4.TabStop = true;
+            this.radioButton4.Text = "前前7天";
+            this.radioButton4.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -619,6 +645,8 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker11;
         private System.Windows.Forms.Button button20;
         private System.Windows.Forms.Button button21;
+        private System.Windows.Forms.Button button22;
+        private System.Windows.Forms.RadioButton radioButton4;
     }
 }
 

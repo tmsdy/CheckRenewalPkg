@@ -1820,6 +1820,12 @@ namespace CheckRenewalPkg
                 case "5":
                     sourceid = "82";
                     break;
+                case "S0":
+                case "s0":
+                case "0":
+                case "all":
+                    sourceid = "";
+                    break;
             }
 
             //http://demo.m-m10010.com/api/ReportRenewalsOrderTotal?holdid=1&ComeFrom=undefined&timeType=4&timeType=4&stime=2017-06-23%2000:00:00&etime=2017-06-23%2023:59:59&order=&id=&PayState=1&simState=-1&RenewalsState=&minamonth=&psize=60000&payee=&source=&access=&packageType=
@@ -1894,6 +1900,23 @@ namespace CheckRenewalPkg
 
 
             }
+            else if(rp.whichway == "important")
+            {
+                                       //  LB,    艾米,     WST   酷比,  澳先, 宇荪    本腾, 伊雷克,,,,,,,,,
+                string[] idlist = {   "1323",  "3695", "1756", "1496", "2803", "5521", "2302", "9317" };
+
+                foreach (string idid in idlist)
+                {
+                    treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
+                    if (null == treeView1.SelectedNode)
+                    {
+                        DisplayAndLog("未知用户ID为" + idid + "\t" + GetRenewalsOrderSum(idid, "S1", stime, etime), true);
+                        continue;
+                    }
+                    username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
+                    DisplayAndLog(username + "\t" + GetRenewalsOrderSum(idid, "all", stime, etime), true);
+                }
+            }
             else
             {
                                    //D导航V,D导航T,   LB,   后视镜V, 艾米, WST_AL    M电商S,M电商V, M渠道  小流量V,小流量体验,,,,,,,,,
@@ -1944,14 +1967,22 @@ namespace CheckRenewalPkg
             {
                 this.button17.Text = "续费按卡源";
                 this.button17.Enabled = true;
+
+                DisplayAndLogBatch("\t------------------------------------------------------------------------\r\n", true);
             }
-            else
+            else if (e.Result.ToString() == "multi")
             {
                 this.button18.Text = "*续费按卡源";
                 this.button18.Enabled = true;
+
+                DisplayAndLogBatch("\t------------------------------------------------------------------------\r\n", true);
+            }
+            else if (e.Result.ToString() == "important")
+            {
+                this.button22.Text = "*重要客户";
+                this.button22.Enabled = true;
             }
 
-            DisplayAndLogBatch("\t------------------------------------------------------------------------\r\n", true);
         }
 
   
@@ -1974,10 +2005,16 @@ namespace CheckRenewalPkg
                 rp.etime = DateTime.Now.AddDays(-(DateTime.Now.Day)).ToString("yyyy-MM-dd");
                 rp.desc = "上月续费汇总";
             }
+            else if (radioButton4.Checked)
+            {
+                rp.stime = DateTime.Now.AddDays(-14).ToString("yyyy-MM-dd");
+                rp.etime = DateTime.Now.AddDays(-8).ToString("yyyy-MM-dd");
+                rp.desc = "前前7天续费汇总";
+            }
             else
             {
                 rp.stime = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
-                rp.etime = DateTime.Now.ToString("yyyy-MM-dd");
+                rp.etime = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
                 rp.desc = "最近7天续费汇总";
             }
            this.backgroundWorker10.RunWorkerAsync(rp);
@@ -2003,10 +2040,51 @@ namespace CheckRenewalPkg
                 rp.etime = DateTime.Now.AddDays(-(DateTime.Now.Day)).ToString("yyyy-MM-dd");
                 rp.desc = "上月续费汇总";
             }
+            else if (radioButton4.Checked)
+            {
+                rp.stime = DateTime.Now.AddDays(-14).ToString("yyyy-MM-dd");
+                rp.etime = DateTime.Now.AddDays(-8).ToString("yyyy-MM-dd");
+                rp.desc = "前前7天续费汇总";
+            }
             else
             {
                 rp.stime = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
+                rp.etime = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
+                rp.desc = "最近7天续费汇总";
+            }
+            this.backgroundWorker10.RunWorkerAsync(rp);
+        }
+
+        private void button22_Click(object sender, EventArgs e)
+        {
+            this.button22.Text = "获取中";
+            this.button22.Enabled = false;
+            renewalsPeriod rp;
+
+            rp.whichway = "important";
+  
+            if (radioButton2.Checked)
+            {
+                rp.stime = DateTime.Now.ToString("yyyy-MM") + "-01";
                 rp.etime = DateTime.Now.ToString("yyyy-MM-dd");
+                rp.desc = "本月续费汇总";
+            }
+            else if (radioButton3.Checked)
+            {
+                rp.stime = DateTime.Now.AddMonths(-1).ToString("yyyy-MM") + "-01"; ;
+                rp.etime = DateTime.Now.AddDays(-(DateTime.Now.Day)).ToString("yyyy-MM-dd");
+                rp.desc = "上月续费汇总";
+            }
+            else if (radioButton4.Checked)
+            {
+                rp.stime = DateTime.Now.AddDays(-14).ToString("yyyy-MM-dd");
+                rp.etime = DateTime.Now.AddDays(-8).ToString("yyyy-MM-dd");
+                rp.desc = "前前7天续费汇总";
+            }
+            else  
+            {
+                rp.stime = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
+                rp.etime = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
                 rp.desc = "最近7天续费汇总";
             }
             this.backgroundWorker10.RunWorkerAsync(rp);
