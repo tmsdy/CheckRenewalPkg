@@ -68,6 +68,7 @@ namespace CheckRenewalPkg
                 fsLogFile.Close();
 
             }
+            treeView1.DrawMode = TreeViewDrawMode.OwnerDrawText;
             GetUserTree(false);
             this.radioButton1.Checked = true;
             //RefreshUserTree(ParamDefine.UserTreeDefault);
@@ -404,8 +405,11 @@ namespace CheckRenewalPkg
         }
         public void button1_Click(object sender, EventArgs e)
         {
+
+            string id = treeView1.SelectedNode.Tag.ToString();
             this.treeView1.Nodes.Clear();
             GetUserTree(false);
+            treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], id);
         }
         public string GetShowAllStr()
         {
@@ -1694,6 +1698,8 @@ namespace CheckRenewalPkg
         private void backgroundWorker7_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             this.button14.Enabled = true;
+
+            button1_Click(sender, e);
         }
         #endregion
 
@@ -2274,6 +2280,25 @@ namespace CheckRenewalPkg
         {
             UpdateSims us = new UpdateSims( );
             us.Show();
+        }
+
+        private void treeView1_DrawNode(object sender, DrawTreeNodeEventArgs e)
+        {
+ 
+
+            if ((e.State & TreeNodeStates.Selected) != 0)
+            {
+                e.Graphics.FillRectangle(Brushes.Blue, e.Node.Bounds);
+                Font nodeFont = e.Node.NodeFont;
+                if (nodeFont == null) nodeFont = ((TreeView)sender).Font;
+                e.Graphics.DrawString(e.Node.Text, nodeFont, Brushes.White, Rectangle.Inflate(e.Bounds, 2, 0));
+            }
+            else
+            {
+                e.DrawDefault = true;
+            }
+  
+             
         }
 
 
