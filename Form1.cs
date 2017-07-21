@@ -2114,12 +2114,7 @@ namespace CheckRenewalPkg
             this.button17.Enabled = false;
             renewalsPeriod rp;
             rp.whichway = "single";
-            string a = InvokeHelper.Get(this.comboBox2, "SelectedText").ToString();
-            string b = InvokeHelper.Get(this.comboBox2, "SelectedValue").ToString();
-            string c = InvokeHelper.Get(this.comboBox2.selec, "SelectedItem").ToString();
-            DisplayAndLog(a + "\r\n", true);
-            DisplayAndLog(b + "\r\n", true);
-            DisplayAndLog(c + "\r\n", true);
+ 
             if (radioButton2.Checked)
             {
                 rp.stime = DateTime.Now.ToString("yyyy-MM") + "-01";
