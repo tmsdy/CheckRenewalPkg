@@ -46,7 +46,100 @@ namespace CheckRenewalPkg
             CheckForIllegalCrossThreadCalls = false;
             InitializeComponent();
         }
+        private void InitPayeeCombox()
+        {
+            List<KeyValuePair<object, string>> dit = new List<KeyValuePair<object, string>>();
+            dit.Add(new KeyValuePair<object, string>("", "所有收款方"));
+            dit.Add(new KeyValuePair<object, string>("MAPGOO", "MAPGOO"));
+            dit.Add(new KeyValuePair<object, string>("HUAZ", "HUAZ"));
+            dit.Add(new KeyValuePair<object, string>("MAPGOO_CDB", "MAPGOO_CDB"));
+            dit.Add(new KeyValuePair<object, string>("SZBY", "SZBY"));
+            dit.Add(new KeyValuePair<object, string>("WKTX", "WKTX"));
+            dit.Add(new KeyValuePair<object, string>("DXRJ", "DXRJ"));
+            dit.Add(new KeyValuePair<object, string>("TPZL", "TPZL"));
+            dit.Add(new KeyValuePair<object, string>("WFDW", "WFDW"));
+            dit.Add(new KeyValuePair<object, string>("BJQBK", "BJQBK"));
+            dit.Add(new KeyValuePair<object, string>("SZPFD", "SZPFD"));
+            dit.Add(new KeyValuePair<object, string>("QDLGWX", "QDLGWX"));
+            dit.Add(new KeyValuePair<object, string>("APK", "APK"));
+            dit.Add(new KeyValuePair<object, string>("HDSC888", "HDSC888"));
+            dit.Add(new KeyValuePair<object, string>("ZXTX", "ZXTX"));
+            dit.Add(new KeyValuePair<object, string>("SAIW", "SAIW"));
+            dit.Add(new KeyValuePair<object, string>("HUAZ", "HUAZ"));
+            dit.Add(new KeyValuePair<object, string>("GLW", "GLW"));
+            dit.Add(new KeyValuePair<object, string>("WST", "WST"));
+            dit.Add(new KeyValuePair<object, string>("TEST_N", "TEST_N"));
+            dit.Add(new KeyValuePair<object, string>("JKTS", "JKTS"));
+            dit.Add(new KeyValuePair<object, string>("JKTS_LT", "JKTS_LT"));
+            dit.Add(new KeyValuePair<object, string>("BLHDZ", "BLHDZ"));
+            dit.Add(new KeyValuePair<object, string>("KLD", "KLD"));
+            dit.Add(new KeyValuePair<object, string>("TEST", "TEST"));
+            dit.Add(new KeyValuePair<object, string>("FHXT", "FHXT"));
+            dit.Add(new KeyValuePair<object, string>("SZTL", "SZTL"));
+            dit.Add(new KeyValuePair<object, string>("JLXKDZ", "JLXKDZ"));
+            dit.Add(new KeyValuePair<object, string>("XUFEIZHUANGCANG", "XUFEIZHUANGCANG"));
+            dit.Add(new KeyValuePair<object, string>("TZY", "TZY"));
+            dit.Add(new KeyValuePair<object, string>("JWJWJWJWJW", "JWJWJWJWJW"));
+            dit.Add(new KeyValuePair<object, string>("AMTX", "AMTX"));
+            dit.Add(new KeyValuePair<object, string>("JACLW", "JACLW"));
+            dit.Add(new KeyValuePair<object, string>("RWY", "RWY"));
+            dit.Add(new KeyValuePair<object, string>("FYD", "FYD"));
+            dit.Add(new KeyValuePair<object, string>("HBKJ", "HBKJ"));
+            dit.Add(new KeyValuePair<object, string>("ZXZM", "ZXZM"));
+            dit.Add(new KeyValuePair<object, string>("HXQBTX", "HXQBTX"));
+            dit.Add(new KeyValuePair<object, string>("WLZSH", "WLZSH"));
+            dit.Add(new KeyValuePair<object, string>("ceshi", "ceshi"));
+            dit.Add(new KeyValuePair<object, string>("SZSL", "SZSL"));
+            dit.Add(new KeyValuePair<object, string>("TXCL", "TXCL"));
+            dit.Add(new KeyValuePair<object, string>("BJAYC", "BJAYC"));
+            dit.Add(new KeyValuePair<object, string>("CLB", "CLB"));
+            dit.Add(new KeyValuePair<object, string>("SKR", "SKR"));
+            dit.Add(new KeyValuePair<object, string>("XYCLW", "XYCLW"));
+            dit.Add(new KeyValuePair<object, string>("RONGJM", "RONGJM"));
+            dit.Add(new KeyValuePair<object, string>("CHUXIU", "CHUXIU"));
+            dit.Add(new KeyValuePair<object, string>("WSTCS", "WSTCS"));
+            dit.Add(new KeyValuePair<object, string>("DINGDING", "DINGDING"));
+            dit.Add(new KeyValuePair<object, string>("GDTEST", "GDTEST"));
+            dit.Add(new KeyValuePair<object, string>("MTB", "MTB"));
+            dit.Add(new KeyValuePair<object, string>("GDDT", "GDDT"));
+            dit.Add(new KeyValuePair<object, string>("JSKML", "JSKML"));
+            dit.Add(new KeyValuePair<object, string>("QJJ", "QJJ"));
+            dit.Add(new KeyValuePair<object, string>("水电费", "水电费"));
+            dit.Add(new KeyValuePair<object, string>("KEKEHUD", "KEKEHUD"));
+            dit.Add(new KeyValuePair<object, string>("KKSS", "KKSS"));
+            dit.Add(new KeyValuePair<object, string>("CWHY", "CWHY"));
+            dit.Add(new KeyValuePair<object, string>("SDT", "SDT"));
+            dit.Add(new KeyValuePair<object, string>("XMLONG", "XMLONG"));
+            dit.Add(new KeyValuePair<object, string>("ZZBJZZBJ", "ZZBJZZBJ"));
+            dit.Add(new KeyValuePair<object, string>("KEKEYDHUD", "KEKEYDHUD"));
+            dit.Add(new KeyValuePair<object, string>("SKYWORTH", "SKYWORTH"));
+            dit.Add(new KeyValuePair<object, string>("SDT", "SDT"));
+            dit.Add(new KeyValuePair<object, string>("LTT123", "LTT123"));
+            dit.Add(new KeyValuePair<object, string>("TEST", "TEST"));
+            dit.Add(new KeyValuePair<object, string>("HCQCDZ", "HCQCDZ"));
+            dit.Add(new KeyValuePair<object, string>("TURUI", "TURUI"));
+            dit.Add(new KeyValuePair<object, string>("HGYD", "HGYD"));
+            dit.Add(new KeyValuePair<object, string>("FENGZY", "FENGZY"));
+            dit.Add(new KeyValuePair<object, string>("HZHD", "HZHD"));
+            dit.Add(new KeyValuePair<object, string>("WXCF", "WXCF"));
+            dit.Add(new KeyValuePair<object, string>("CLBYD", "CLBYD"));
+            dit.Add(new KeyValuePair<object, string>("SDZY", "SDZY"));
+            dit.Add(new KeyValuePair<object, string>("YLTX", "YLTX"));
+            dit.Add(new KeyValuePair<object, string>("ALITEST", "ALITEST"));
+            dit.Add(new KeyValuePair<object, string>("MLRC", "MLRC"));
+            dit.Add(new KeyValuePair<object, string>("YLK_OFFL", "YLK_OFFL"));
+            dit.Add(new KeyValuePair<object, string>("GZYYXXKJ", "GZYYXXKJ"));
+            dit.Add(new KeyValuePair<object, string>("SHND", "SHND"));
+            dit.Add(new KeyValuePair<object, string>("SUOTIAN", "SUOTIAN"));
+            dit.Add(new KeyValuePair<object, string>("CHELIZI", "CHELIZI"));
+            dit.Add(new KeyValuePair<object, string>("yileike", "yileike"));
+             
+            this.comboBox2.DataSource = dit;
+            this.comboBox2.DisplayMember = "Value";
+            this.comboBox2.ValueMember = "Key"; ;
+            this.comboBox2.SelectedIndex = 0;
 
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
             this.Text += Program.sVer;
@@ -69,6 +162,7 @@ namespace CheckRenewalPkg
 
             }
             treeView1.DrawMode = TreeViewDrawMode.OwnerDrawText;
+            InitPayeeCombox();
             GetUserTree(false);
             this.radioButton1.Checked = true;
             //RefreshUserTree(ParamDefine.UserTreeDefault);
@@ -1279,34 +1373,6 @@ namespace CheckRenewalPkg
                 PrintRecursive(n);
             }
         }
-        public string GetOldRenewals(string id, bool isDisplayTitle)
-        {
-            string result = "";
-            string tmp = "";
-            string url = "";
-
-            url = sApiUrl + "/api/ReportRenewalsTotalForDay?payee=MAPGOO&packageId=0&holdId=" + id;
-
-            string response = GetResponseSafe(url);
-            if (response == "")
-            {
-                DisplayAndLog("holdId为" + id + "查不到啊亲\r\n", true);
-                return result;
-            }
-            ParamDefine.OldRenewalsRoot orr = JsonConvert.DeserializeObject<ParamDefine.OldRenewalsRoot>(response);
-  
-            if (orr == null)
-                return "查不到结果\r\n";
-
-            foreach (ParamDefine.OldRenewalsRootResultItem orritem in orr.result)
-            {
-                tmp += orritem.totalDay + "\t" + orritem.renewalsTimes + "\t" + orritem.renewalsAmount.ToString("0.00") + "\t" +  orritem.MA5.ToString("0.00") + "\r\n";
-            }
-
-            tmp += "\r\n";
-            return tmp;
-
-        }
         public void  CalcAverage(List<int> countlist,List<double> usagelist)
         {
 
@@ -1533,7 +1599,7 @@ namespace CheckRenewalPkg
 
             this.backgroundWorker5.RunWorkerAsync("multi");
         }
-
+        #region 老续费
         private void button13_Click(object sender, EventArgs e)
         {
             this.button13.Text = "获取中";
@@ -1542,6 +1608,35 @@ namespace CheckRenewalPkg
             this.backgroundWorker6.RunWorkerAsync("single");
         }
 
+
+        public string GetOldRenewals(string id, bool isDisplayTitle)
+        {
+            string result = "";
+            string tmp = "";
+            string url = "";
+            string payee = InvokeHelper.Get(this.comboBox2, "SelectedValue").ToString();
+            url = sApiUrl + "/api/ReportRenewalsTotalForDay?payee=" + payee +"&packageId=0&holdId=" + id;
+
+            string response = GetResponseSafe(url);
+            if (response == "")
+            {
+                DisplayAndLog("holdId为" + id + "查不到啊亲\r\n", true);
+                return result;
+            }
+            ParamDefine.OldRenewalsRoot orr = JsonConvert.DeserializeObject<ParamDefine.OldRenewalsRoot>(response);
+
+            if (orr == null)
+                return "查不到结果\r\n";
+
+            foreach (ParamDefine.OldRenewalsRootResultItem orritem in orr.result)
+            {
+                tmp += orritem.totalDay + "\t" + orritem.renewalsTimes + "\t" + orritem.renewalsAmount.ToString("0.00") + "\t" + orritem.MA5.ToString("0.00") + "\r\n";
+            }
+
+            tmp += "\r\n";
+            return tmp;
+
+        }
         private void backgroundWorker6_DoWork(object sender, DoWorkEventArgs e)
         {
 
@@ -1567,7 +1662,7 @@ namespace CheckRenewalPkg
 
                 DisplayAndLog(tmp, true);
                 id = treeView1.SelectedNode.Tag.ToString();
-                DisplayAndLog(treeView1.SelectedNode.Text.ToString().Split('(')[0] + "\r\n日期\t笔数\t续费金额\t5日均值\r\n", true);
+                DisplayAndLog(treeView1.SelectedNode.Text.ToString().Split('(')[0] + "\t收款方:" + InvokeHelper.Get(this.comboBox2, "Text").ToString() + "\r\n日期\t笔数\t续费金额\t5日均值\r\n", true);
                 DisplayAndLog(GetOldRenewals(id, true), true);
 
 
@@ -1575,23 +1670,7 @@ namespace CheckRenewalPkg
             else
             {
 
-                //DisplayAndLog(tmp, true);
-                ////D导航,LB,后视镜V,艾米,3G绑带,WST_AL,WST_ALIC,威仕特麦联宝,M电商S,M电商V,M渠道,小流量V,小流量体验,,,,,,,,,
-                //string[] idlist = { "4123", "1323", "1281", "3695", "5129", "4717", "6569", "4125", "5467", "2332", "6927", "2898", "2673" };
-                //foreach (string idid in idlist)
-                //{
-                //    treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
-                //    if (null == treeView1.SelectedNode)
-                //    {
-                //        DisplayAndLog("未知用户ID为" + idid + "\t" + GetRenewalsTotal(idid, false), true);
-                //        continue;
-                //    }
-
-                //    //treeView1.Select();
-
-                //    DisplayAndLog(treeView1.SelectedNode.Text.ToString(), true);
-                //    DisplayAndLog(GetUsageTotal(idid, false), true);
-                //}
+             //批量的老续费
 
             }
 
@@ -1613,7 +1692,7 @@ namespace CheckRenewalPkg
 
             DisplayAndLogBatch("------------------------------------------------------------------------\r\n", true);
         }
-
+        #endregion
         #region 批量新建下级用户
         private void button14_Click(object sender, EventArgs e)
         {
@@ -1841,10 +1920,11 @@ namespace CheckRenewalPkg
                     sourceid = "";
                     break;
             }
+            string payee = InvokeHelper.Get(this.comboBox2, "SelectedValue").ToString();
 
             //http://demo.m-m10010.com/api/ReportRenewalsOrderTotal?holdid=1&ComeFrom=undefined&timeType=4&timeType=4&stime=2017-06-23%2000:00:00&etime=2017-06-23%2023:59:59&order=&id=&PayState=1&simState=-1&RenewalsState=&minamonth=&psize=60000&payee=&source=&access=&packageType=
 
-            url = sApiUrl + "/api/ReportRenewalsOrderTotal?holdid=" + id + "&ComeFrom=undefined&timeType=4&timeType=4&stime=" + stime + "%2000:00:00&etime=" + etime + "%2023:59:59&order=&id=&PayState=1&simState=-1&RenewalsState=&minamonth=&psize=60000&payee=&source=" + sourceid + "&access=&packageType=";
+            url = sApiUrl + "/api/ReportRenewalsOrderTotal?holdid=" + id + "&ComeFrom=undefined&timeType=4&timeType=4&stime=" + stime + "%2000:00:00&etime=" + etime + "%2023:59:59&order=&id=&PayState=1&simState=-1&RenewalsState=&minamonth=&psize=60000&payee=" + payee + "&source=" + sourceid + "&access=&packageType=";
 
             string response = GetResponseSafe(url);
             if (response == "")
@@ -1887,7 +1967,7 @@ namespace CheckRenewalPkg
             //string stime = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
             //string etime = DateTime.Now.ToString("yyyy-MM-dd");
 
-            DisplayAndLog("数据采样时间段:" + stime + "---" + etime + "\r\n\t\t\t" + rp.desc + "\r\n", true);
+            DisplayAndLog("数据采样时间段:" + stime + "---" + etime + "\r\n\t\t\t" + rp.desc + "\t收款方:" + InvokeHelper.Get(this.comboBox2, "Text").ToString() + "\r\n", true);
             DisplayAndLog("\t卡源\t续费次数\t续费金额\t总续费流量\t单笔ARPU\t每G售价\r\n", true);
             if (rp.whichway == "single")
             {
@@ -2034,7 +2114,12 @@ namespace CheckRenewalPkg
             this.button17.Enabled = false;
             renewalsPeriod rp;
             rp.whichway = "single";
-
+            string a = InvokeHelper.Get(this.comboBox2, "SelectedText").ToString();
+            string b = InvokeHelper.Get(this.comboBox2, "SelectedValue").ToString();
+            string c = InvokeHelper.Get(this.comboBox2.selec, "SelectedItem").ToString();
+            DisplayAndLog(a + "\r\n", true);
+            DisplayAndLog(b + "\r\n", true);
+            DisplayAndLog(c + "\r\n", true);
             if (radioButton2.Checked)
             {
                 rp.stime = DateTime.Now.ToString("yyyy-MM") + "-01";
