@@ -1083,16 +1083,18 @@ namespace CheckRenewalPkg
                           "脱网率\t" +
                           "复充率\r\n";
                 DisplayAndLog(tmp, true);
-                string[] idlist = {
-                                      "6779","5287","5521","5288","5377","5108","4715","4716","5015","5013","5014","5116","7009","7987","7837",
-                                    "6367","6423","6947","6314","6975","5877","7242","6945","5905","5891","6362","5523","5926","6734","5411","5362","6317",
-                                    "5519","6304",
-                                    "6424","5361","6780","5293","5107","4933","5018","5019","4927","5020","7008","7269","6556","6889",
-                                    "6980","6750","4988","6787","5426","4026","4382","4108","2201","4982","6791","7460","7868","8058","7329","7632",
-                                   "3410","2987","3411","3412","3369","1230","1272","2727","2330","5501","3395","1280","3164","4001","2199","6054","5236","6257","5341","3695","6710","6723","6729","6837","5129","4125",
-                                    "6087","6052","4978","6212","6231","5342","4682","4717","6569",
-                                    "3686","6063","2700","4087","3930","4817","6773","4035","3406","4923","3815","2467","3936","4897","4858"  
-                                  };
+                //string[] idlist = {
+                //                      "6779","5287","5521","5288","5377","5108","4715","4716","5015","5013","5014","5116","7009","7987","7837",
+                //                    "6367","6423","6947","6314","6975","5877","7242","6945","5905","5891","6362","5523","5926","6734","5411","5362","6317",
+                //                    "5519","6304",
+                //                    "6424","5361","6780","5293","5107","4933","5018","5019","4927","5020","7008","7269","6556","6889",
+                //                    "6980","6750","4988","6787","5426","4026","4382","4108","2201","4982","6791","7460","7868","8058","7329","7632",
+                //                   "3410","2987","3411","3412","3369","1230","1272","2727","2330","5501","3395","1280","3164","4001","2199","6054","5236","6257","5341","3695","6710","6723","6729","6837","5129","4125",
+                //                    "6087","6052","4978","6212","6231","5342","4682","4717","6569",
+                //                    "3686","6063","2700","4087","3930","4817","6773","4035","3406","4923","3815","2467","3936","4897","4858"  
+                //                  };
+
+                List<string> idlist = configManager.GetValueStrList("Userlist", "alluserlist");
                 foreach (string idid in idlist)
                 {
                     treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
@@ -1450,11 +1452,17 @@ namespace CheckRenewalPkg
             {
 
                 DisplayAndLog(tmp, true);
-                //D导航,LB,后视镜V,艾米,3G绑带,WST_AL,威仕特麦联宝,M电商S,M电商V,小流量V,小流量体验,,,,,,,,,
-                //string[] idlist = { "4123", "1323", "1281", "3695", "5129", "4717", "4125", "5467", "2332", "2898", "2673" };
-                string[] idlistVec = { "4123", "1323", "1281", "3695", "5129", "4717", "4125"  };
-                string[] idlistMifi = {   "5467", "2332"  };
-                string[] idlistPos = { "2898", "2673" };
+                //D导航,LB,后视镜V,艾米,3G绑带,WST_AL,威仕特麦联宝,M电商S,M电商V,小流量V,小流量体验,,,,,,,,, 
+                //string[] idlistVec = { "4123", "1323", "1281", "3695", "5129", "4717", "4125"  };
+                //string[] idlistMifi = {   "5467", "2332"  };
+                //string[] idlistPos = { "2898", "2673" };
+
+
+                List<string> idlistVec = configManager.GetValueStrList("Userlist", "UsageUserVec");
+                List<string> idlistMifi = configManager.GetValueStrList("Userlist", "UsageUserMifi");
+                List<string> idlistPos = configManager.GetValueStrList("Userlist", "UsageUserPos");
+
+
                 foreach (string idid in idlistVec)
                 {
                     treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
@@ -1906,17 +1914,39 @@ namespace CheckRenewalPkg
 
 
             }
+            else if (rp.whichway == "singalimportant")
+            {
+                if (treeView1.Nodes.Count == 0)
+                {
+                    DisplayAndLog("请先刷新用户列表\r\n", true);
+                    return;
+                }
+
+                if (treeView1.SelectedNode == null)
+                {
+
+                    DisplayAndLog("请先选择用户\r\n", true);
+                    return;
+                }
+
+                id = treeView1.SelectedNode.Tag.ToString();
+
+                username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
+                DisplayAndLog(username + "\t" + GetRenewalsOrderSum(id, "all", stime, etime), true);
+
+            }
             else if(rp.whichway == "important")
             {
                                        //  LB,    艾米,     WST   酷比,  澳先, 宇荪    本腾, 伊雷克,,,,,,,,,
-                string[] idlist = {   "1323",  "3695", "1756", "1496", "2803", "5521", "2302", "9317" };
+                //string[] idlist = {   "1323",  "3695", "1756", "1496", "2803", "5521", "2302", "9317" };
 
+                List<string> idlist = configManager.GetValueStrList("Userlist", "importantCustomers");
                 foreach (string idid in idlist)
                 {
                     treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
                     if (null == treeView1.SelectedNode)
                     {
-                        DisplayAndLog("未知用户ID为" + idid + "\t" + GetRenewalsOrderSum(idid, "S1", stime, etime), true);
+                        DisplayAndLog("未知用户ID为" + idid + "\t" + GetRenewalsOrderSum(idid, "all", stime, etime), true);
                         continue;
                     }
                     username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
@@ -1926,8 +1956,9 @@ namespace CheckRenewalPkg
             else
             {
                                    //D导航V,D导航T,   LB,   后视镜V, 艾米, WST_AL    M电商S,M电商V, M渠道  小流量V,小流量体验,,,,,,,,,
-                string[] idlist = { "4123", "8752", "1323", "1281", "3695", "1756", "5467", "2332", "6927", "2898", "2673" };
- 
+                //string[] idlist = { "4123", "8752", "1323", "1281", "3695", "1756", "5467", "2332", "6927", "2898", "2673" };
+
+                List<string> idlist = configManager.GetValueStrList("Userlist", "renewalsbysource");
                 foreach (string idid in idlist)
                 {
                     treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
@@ -1988,7 +2019,12 @@ namespace CheckRenewalPkg
                 this.button22.Text = "*重要客户";
                 this.button22.Enabled = true;
             }
-
+            else if (e.Result.ToString() == "singalimportant")
+            {
+                this.button23.Text = "重要客户";
+                this.button23.Enabled = true;
+            }
+            
         }
 
   
@@ -2095,7 +2131,40 @@ namespace CheckRenewalPkg
             }
             this.backgroundWorker10.RunWorkerAsync(rp);
         }
+        private void button23_Click(object sender, EventArgs e)
+        {
+            this.button23.Text = "获取中";
+            this.button23.Enabled = false;
+            renewalsPeriod rp;
 
+            rp.whichway = "singalimportant";
+
+            if (radioButton2.Checked)
+            {
+                rp.stime = DateTime.Now.ToString("yyyy-MM") + "-01";
+                rp.etime = DateTime.Now.ToString("yyyy-MM-dd");
+                rp.desc = "本月续费汇总";
+            }
+            else if (radioButton3.Checked)
+            {
+                rp.stime = DateTime.Now.AddMonths(-1).ToString("yyyy-MM") + "-01"; ;
+                rp.etime = DateTime.Now.AddDays(-(DateTime.Now.Day)).ToString("yyyy-MM-dd");
+                rp.desc = "上月续费汇总";
+            }
+            else if (radioButton4.Checked)
+            {
+                rp.stime = DateTime.Now.AddDays(-14).ToString("yyyy-MM-dd");
+                rp.etime = DateTime.Now.AddDays(-8).ToString("yyyy-MM-dd");
+                rp.desc = "前前7天续费汇总";
+            }
+            else
+            {
+                rp.stime = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
+                rp.etime = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
+                rp.desc = "最近7天续费汇总";
+            }
+            this.backgroundWorker10.RunWorkerAsync(rp);
+        }
         #endregion  
 
         #region 高德对账
@@ -2209,8 +2278,9 @@ namespace CheckRenewalPkg
             else
             {
                                     //WST    艾米     渠道  天之眼  欣和  大账号
-                string[] idlist = { "1756", "3695", "1323", "3628", "6258", "937"  };
+                //string[] idlist = { "1756", "3695", "1323", "3628", "6258", "937"  };
 
+                List<string> idlist = configManager.GetValueStrList("Userlist", "GDrenewals");
                 foreach (string idid in idlist)
                 {
                     treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
@@ -2300,6 +2370,8 @@ namespace CheckRenewalPkg
   
              
         }
+
+
 
 
 
