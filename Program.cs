@@ -10,7 +10,7 @@ namespace CheckRenewalPkg
 {
     static class Program
     {
-        public static string sVer = "V1.2.8";
+        public static string sVer = "V1.2.9";
         public static string UserId;
         public static CookieContainer MLBCookie = new CookieContainer();
         public static string sGloableDomailUrl = "http://demo.m-m10010.com";  

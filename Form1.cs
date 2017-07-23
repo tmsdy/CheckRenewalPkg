@@ -40,6 +40,7 @@ namespace CheckRenewalPkg
             public string stime;
             public string etime;
             public string desc;
+            public double days;
         }
         public Form1()
         {
@@ -1431,8 +1432,8 @@ namespace CheckRenewalPkg
 
             foreach (ParamDefine.DayStatisticsListItem daylist in frrResult.dayStatisticsList)
             {
-                //tmp += daylist.statDay + "\t" + daylist.amountUsage.ToString("0.00") + "\t" + daylist.validCount + "\t" + daylist.validAvgUsage.ToString("0.00") + "\t";
-                tmp += daylist.statDay + "\t" + daylist.amountUsage.ToString("0.00") + "\t" + daylist.validCount + "\t";
+               tmp += daylist.statDay + "\t" + daylist.amountUsage.ToString("0.00") + "\t" + daylist.validCount + "\t" + daylist.validAvgUsage.ToString("0.00") + "\t";
+                //tmp += daylist.statDay + "\t" + daylist.amountUsage.ToString("0.00") + "\t" + daylist.validCount + "\t";
             }
 
             tmp += "\r\n";
@@ -1883,7 +1884,7 @@ namespace CheckRenewalPkg
         #endregion
 
         #region 续费汇总 按卡源
-        public string GetRenewalsOrderSum(string id, string  source,string stime,string etime)
+        public string GetRenewalsOrderSum(string id, string  source,string stime,string etime,double days)
         {
             string result = "";
             string tmp = "";
@@ -1948,7 +1949,7 @@ namespace CheckRenewalPkg
             }
 
             //tmp += "卡源:" + source + "\t总续费次数:" + times + "\t总续费金额:" + amount + "\t总返利金额:" + backPrice + " \r\n";
-            tmp += source + "\t" + times + "\t" + amount + "\t" + usage + "\t" + (amount / times).ToString("0.00") + "\t" + (amount / usage * 1024).ToString("0.00") + " \r\n";
+            tmp += source + "\t" + times + "\t" + amount.ToString("0") + "\t" + usage + "\t" + (amount / times).ToString("0.00") + "\t" + (amount / usage * 1024).ToString("0.00") + "\t" + (amount / days).ToString("0.00") + " \r\n";
             return tmp;
         }
 
@@ -1964,11 +1965,10 @@ namespace CheckRenewalPkg
 
             string stime = rp.stime;
             string etime = rp.etime;
-            //string stime = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
-            //string etime = DateTime.Now.ToString("yyyy-MM-dd");
+            double days = rp.days;
 
             DisplayAndLog("数据采样时间段:" + stime + "---" + etime + "\r\n\t\t\t" + rp.desc + "\t收款方:" + InvokeHelper.Get(this.comboBox2, "Text").ToString() + "\r\n", true);
-            DisplayAndLog("\t卡源\t续费次数\t续费金额\t总续费流量\t单笔ARPU\t每G售价\r\n", true);
+            DisplayAndLog("\t卡源\t续费次数\t续费金额\t总续费流量\t单笔ARPU\t每G售价\t日均续费\r\n", true);
             if (rp.whichway == "single")
             {
                 if (treeView1.Nodes.Count == 0)
@@ -1988,9 +1988,9 @@ namespace CheckRenewalPkg
                 
 
                 username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
-                DisplayAndLog(username + "\t" + GetRenewalsOrderSum(id, "S1", stime, etime), true);
-                DisplayAndLog(username + "\t" + GetRenewalsOrderSum(id, "S2", stime, etime), true);
-                DisplayAndLog(username + "\t" + GetRenewalsOrderSum(id, "S5", stime, etime), true);
+                DisplayAndLog(username + "\t" + GetRenewalsOrderSum(id, "S1", stime, etime,days), true);
+                DisplayAndLog(username + "\t" + GetRenewalsOrderSum(id, "S2", stime, etime,days), true);
+                DisplayAndLog(username + "\t" + GetRenewalsOrderSum(id, "S5", stime, etime,days), true);
 
 
             }
@@ -2012,7 +2012,7 @@ namespace CheckRenewalPkg
                 id = treeView1.SelectedNode.Tag.ToString();
 
                 username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
-                DisplayAndLog(username + "\t" + GetRenewalsOrderSum(id, "all", stime, etime), true);
+                DisplayAndLog(username + "\t" + GetRenewalsOrderSum(id, "all", stime, etime, days), true);
 
             }
             else if(rp.whichway == "important")
@@ -2026,11 +2026,11 @@ namespace CheckRenewalPkg
                     treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
                     if (null == treeView1.SelectedNode)
                     {
-                        DisplayAndLog("未知用户ID为" + idid + "\t" + GetRenewalsOrderSum(idid, "all", stime, etime), true);
+                        DisplayAndLog("未知用户ID为" + idid + "\t" + GetRenewalsOrderSum(idid, "all", stime, etime, days), true);
                         continue;
                     }
                     username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
-                    DisplayAndLog(username + "\t" + GetRenewalsOrderSum(idid, "all", stime, etime), true);
+                    DisplayAndLog(username + "\t" + GetRenewalsOrderSum(idid, "all", stime, etime, days), true);
                 }
             }
             else
@@ -2044,33 +2044,33 @@ namespace CheckRenewalPkg
                     treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
                     if (null == treeView1.SelectedNode)
                     {
-                        DisplayAndLog("未知用户ID为" + idid + "\t" + GetRenewalsOrderSum(idid, "S1", stime, etime), true);
+                        DisplayAndLog("未知用户ID为" + idid + "\t" + GetRenewalsOrderSum(idid, "S1", stime, etime, days), true);
                         continue;
                     }
                     username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
-                    DisplayAndLog(username + "\t" + GetRenewalsOrderSum(idid, "S1", stime, etime), true);
+                    DisplayAndLog(username + "\t" + GetRenewalsOrderSum(idid, "S1", stime, etime, days), true);
                 }
                 foreach (string idid in idlist)
                 {
                     treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
                     if (null == treeView1.SelectedNode)
                     {
-                        DisplayAndLog("未知用户ID为" + idid + "\t" + GetRenewalsOrderSum(idid, "S2", stime, etime), true);
+                        DisplayAndLog("未知用户ID为" + idid + "\t" + GetRenewalsOrderSum(idid, "S2", stime, etime, days), true);
                         continue;
                     }
                     username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
-                    DisplayAndLog(username + "\t" + GetRenewalsOrderSum(idid, "S2", stime, etime), true);
+                    DisplayAndLog(username + "\t" + GetRenewalsOrderSum(idid, "S2", stime, etime, days), true);
                 }
                 foreach (string idid in idlist)
                 {
                     treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
                     if (null == treeView1.SelectedNode)
                     {
-                        DisplayAndLog("未知用户ID为" + idid + "\t" + GetRenewalsOrderSum(idid, "S5", stime, etime), true);
+                        DisplayAndLog("未知用户ID为" + idid + "\t" + GetRenewalsOrderSum(idid, "S5", stime, etime, days), true);
                         continue;
                     }
                     username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
-                    DisplayAndLog(username + "\t" + GetRenewalsOrderSum(idid, "S5", stime, etime), true);
+                    DisplayAndLog(username + "\t" + GetRenewalsOrderSum(idid, "S5", stime, etime, days), true);
                 }
 
             }
@@ -2114,30 +2114,35 @@ namespace CheckRenewalPkg
             this.button17.Enabled = false;
             renewalsPeriod rp;
             rp.whichway = "single";
- 
+             DateTime nowtime = DateTime.Now;
             if (radioButton2.Checked)
             {
-                rp.stime = DateTime.Now.ToString("yyyy-MM") + "-01";
-                rp.etime = DateTime.Now.ToString("yyyy-MM-dd");
+                
+                rp.stime = nowtime.ToString("yyyy-MM") + "-01";
+                rp.etime = nowtime.ToString("yyyy-MM-dd");
                 rp.desc = "本月续费汇总";
+                rp.days = nowtime.Day - 1 +  nowtime.Hour/24.0;
             }
             else if (radioButton3.Checked)
             {
-                rp.stime = DateTime.Now.AddMonths(-1).ToString("yyyy-MM") + "-01"; ;
-                rp.etime = DateTime.Now.AddDays(-(DateTime.Now.Day)).ToString("yyyy-MM-dd");
+                rp.stime = nowtime.AddMonths(-1).ToString("yyyy-MM") + "-01"; ;
+                rp.etime = nowtime.AddDays(-(nowtime.Day)).ToString("yyyy-MM-dd");
                 rp.desc = "上月续费汇总";
+                rp.days = Convert.ToInt32(nowtime.AddDays(-(nowtime.Day)).ToString("dd"));
             }
             else if (radioButton4.Checked)
             {
-                rp.stime = DateTime.Now.AddDays(-14).ToString("yyyy-MM-dd");
-                rp.etime = DateTime.Now.AddDays(-8).ToString("yyyy-MM-dd");
+                rp.stime = nowtime.AddDays(-14).ToString("yyyy-MM-dd");
+                rp.etime = nowtime.AddDays(-8).ToString("yyyy-MM-dd");
                 rp.desc = "前前7天续费汇总";
+                rp.days = 7.0;
             }
             else
             {
-                rp.stime = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
-                rp.etime = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
+                rp.stime = nowtime.AddDays(-7).ToString("yyyy-MM-dd");
+                rp.etime = nowtime.AddDays(-1).ToString("yyyy-MM-dd");
                 rp.desc = "最近7天续费汇总";
+                rp.days = 7.0;
             }
            this.backgroundWorker10.RunWorkerAsync(rp);
         }
@@ -2150,29 +2155,35 @@ namespace CheckRenewalPkg
             renewalsPeriod rp;
 
             rp.whichway = "multi";
+            DateTime nowtime = DateTime.Now;
             if (radioButton2.Checked)
             {
-                rp.stime = DateTime.Now.ToString("yyyy-MM") + "-01";
-                rp.etime = DateTime.Now.ToString("yyyy-MM-dd");
+
+                rp.stime = nowtime.ToString("yyyy-MM") + "-01";
+                rp.etime = nowtime.ToString("yyyy-MM-dd");
                 rp.desc = "本月续费汇总";
+                rp.days = nowtime.Day - 1 +  nowtime.Hour/24.0;;
             }
             else if (radioButton3.Checked)
             {
-                rp.stime = DateTime.Now.AddMonths(-1).ToString("yyyy-MM") + "-01"; ;
-                rp.etime = DateTime.Now.AddDays(-(DateTime.Now.Day)).ToString("yyyy-MM-dd");
+                rp.stime = nowtime.AddMonths(-1).ToString("yyyy-MM") + "-01"; ;
+                rp.etime = nowtime.AddDays(-(nowtime.Day)).ToString("yyyy-MM-dd");
                 rp.desc = "上月续费汇总";
+                rp.days = Convert.ToInt32(nowtime.AddDays(-(nowtime.Day)).ToString("dd"));
             }
             else if (radioButton4.Checked)
             {
-                rp.stime = DateTime.Now.AddDays(-14).ToString("yyyy-MM-dd");
-                rp.etime = DateTime.Now.AddDays(-8).ToString("yyyy-MM-dd");
+                rp.stime = nowtime.AddDays(-14).ToString("yyyy-MM-dd");
+                rp.etime = nowtime.AddDays(-8).ToString("yyyy-MM-dd");
                 rp.desc = "前前7天续费汇总";
+                rp.days = 7.0;
             }
             else
             {
-                rp.stime = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
-                rp.etime = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
+                rp.stime = nowtime.AddDays(-7).ToString("yyyy-MM-dd");
+                rp.etime = nowtime.AddDays(-1).ToString("yyyy-MM-dd");
                 rp.desc = "最近7天续费汇总";
+                rp.days = 7.0;
             }
             this.backgroundWorker10.RunWorkerAsync(rp);
         }
@@ -2184,30 +2195,35 @@ namespace CheckRenewalPkg
             renewalsPeriod rp;
 
             rp.whichway = "important";
-  
+            DateTime nowtime = DateTime.Now;
             if (radioButton2.Checked)
             {
-                rp.stime = DateTime.Now.ToString("yyyy-MM") + "-01";
-                rp.etime = DateTime.Now.ToString("yyyy-MM-dd");
+
+                rp.stime = nowtime.ToString("yyyy-MM") + "-01";
+                rp.etime = nowtime.ToString("yyyy-MM-dd");
                 rp.desc = "本月续费汇总";
+                rp.days = nowtime.Day - 1 +  nowtime.Hour/24.0;;
             }
             else if (radioButton3.Checked)
             {
-                rp.stime = DateTime.Now.AddMonths(-1).ToString("yyyy-MM") + "-01"; ;
-                rp.etime = DateTime.Now.AddDays(-(DateTime.Now.Day)).ToString("yyyy-MM-dd");
+                rp.stime = nowtime.AddMonths(-1).ToString("yyyy-MM") + "-01"; ;
+                rp.etime = nowtime.AddDays(-(nowtime.Day)).ToString("yyyy-MM-dd");
                 rp.desc = "上月续费汇总";
+                rp.days = Convert.ToInt32(nowtime.AddDays(-(nowtime.Day)).ToString("dd"));
             }
             else if (radioButton4.Checked)
             {
-                rp.stime = DateTime.Now.AddDays(-14).ToString("yyyy-MM-dd");
-                rp.etime = DateTime.Now.AddDays(-8).ToString("yyyy-MM-dd");
+                rp.stime = nowtime.AddDays(-14).ToString("yyyy-MM-dd");
+                rp.etime = nowtime.AddDays(-8).ToString("yyyy-MM-dd");
                 rp.desc = "前前7天续费汇总";
+                rp.days = 7.0;
             }
-            else  
+            else
             {
-                rp.stime = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
-                rp.etime = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
+                rp.stime = nowtime.AddDays(-7).ToString("yyyy-MM-dd");
+                rp.etime = nowtime.AddDays(-1).ToString("yyyy-MM-dd");
                 rp.desc = "最近7天续费汇总";
+                rp.days = 7.0;
             }
             this.backgroundWorker10.RunWorkerAsync(rp);
         }
@@ -2218,30 +2234,35 @@ namespace CheckRenewalPkg
             renewalsPeriod rp;
 
             rp.whichway = "singalimportant";
-
+            DateTime nowtime = DateTime.Now;
             if (radioButton2.Checked)
             {
-                rp.stime = DateTime.Now.ToString("yyyy-MM") + "-01";
-                rp.etime = DateTime.Now.ToString("yyyy-MM-dd");
+
+                rp.stime = nowtime.ToString("yyyy-MM") + "-01";
+                rp.etime = nowtime.ToString("yyyy-MM-dd");
                 rp.desc = "本月续费汇总";
+                rp.days = nowtime.Day - 1 +  nowtime.Hour/24.0;;
             }
             else if (radioButton3.Checked)
             {
-                rp.stime = DateTime.Now.AddMonths(-1).ToString("yyyy-MM") + "-01"; ;
-                rp.etime = DateTime.Now.AddDays(-(DateTime.Now.Day)).ToString("yyyy-MM-dd");
+                rp.stime = nowtime.AddMonths(-1).ToString("yyyy-MM") + "-01"; ;
+                rp.etime = nowtime.AddDays(-(nowtime.Day)).ToString("yyyy-MM-dd");
                 rp.desc = "上月续费汇总";
+                rp.days = Convert.ToInt32(nowtime.AddDays(-(nowtime.Day)).ToString("dd"));
             }
             else if (radioButton4.Checked)
             {
-                rp.stime = DateTime.Now.AddDays(-14).ToString("yyyy-MM-dd");
-                rp.etime = DateTime.Now.AddDays(-8).ToString("yyyy-MM-dd");
+                rp.stime = nowtime.AddDays(-14).ToString("yyyy-MM-dd");
+                rp.etime = nowtime.AddDays(-8).ToString("yyyy-MM-dd");
                 rp.desc = "前前7天续费汇总";
+                rp.days = 7.0;
             }
             else
             {
-                rp.stime = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
-                rp.etime = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
+                rp.stime = nowtime.AddDays(-7).ToString("yyyy-MM-dd");
+                rp.etime = nowtime.AddDays(-1).ToString("yyyy-MM-dd");
                 rp.desc = "最近7天续费汇总";
+                rp.days = 7.0;
             }
             this.backgroundWorker10.RunWorkerAsync(rp);
         }
@@ -2295,23 +2316,35 @@ namespace CheckRenewalPkg
             renewalsPeriod rp;
 
             rp.whichway = "multi";
+            DateTime nowtime = DateTime.Now;
             if (radioButton2.Checked)
             {
-                rp.stime = DateTime.Now.ToString("yyyy-MM") + "-01";
-                rp.etime = DateTime.Now.ToString("yyyy-MM-dd");
+
+                rp.stime = nowtime.ToString("yyyy-MM") + "-01";
+                rp.etime = nowtime.ToString("yyyy-MM-dd");
                 rp.desc = "本月续费汇总";
+                rp.days = nowtime.Day - 1 +  nowtime.Hour/24.0;;
             }
             else if (radioButton3.Checked)
             {
-                rp.stime = DateTime.Now.AddMonths(-1).ToString("yyyy-MM") + "-01"; ;
-                rp.etime = DateTime.Now.AddDays(-(DateTime.Now.Day)).ToString("yyyy-MM-dd");
+                rp.stime = nowtime.AddMonths(-1).ToString("yyyy-MM") + "-01"; ;
+                rp.etime = nowtime.AddDays(-(nowtime.Day)).ToString("yyyy-MM-dd");
                 rp.desc = "上月续费汇总";
+                rp.days = Convert.ToInt32(nowtime.AddDays(-(nowtime.Day)).ToString("dd"));
+            }
+            else if (radioButton4.Checked)
+            {
+                rp.stime = nowtime.AddDays(-14).ToString("yyyy-MM-dd");
+                rp.etime = nowtime.AddDays(-8).ToString("yyyy-MM-dd");
+                rp.desc = "前前7天续费汇总";
+                rp.days = 7.0;
             }
             else
             {
-                rp.stime = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
-                rp.etime = DateTime.Now.ToString("yyyy-MM-dd");
+                rp.stime = nowtime.AddDays(-7).ToString("yyyy-MM-dd");
+                rp.etime = nowtime.AddDays(-1).ToString("yyyy-MM-dd");
                 rp.desc = "最近7天续费汇总";
+                rp.days = 7.0;
             }
             this.backgroundWorker11.RunWorkerAsync(rp);
         }
@@ -2404,23 +2437,35 @@ namespace CheckRenewalPkg
             renewalsPeriod rp;
 
             rp.whichway = "single";
+            DateTime nowtime = DateTime.Now;
             if (radioButton2.Checked)
             {
-                rp.stime = DateTime.Now.ToString("yyyy-MM") + "-01";
-                rp.etime = DateTime.Now.ToString("yyyy-MM-dd");
+
+                rp.stime = nowtime.ToString("yyyy-MM") + "-01";
+                rp.etime = nowtime.ToString("yyyy-MM-dd");
                 rp.desc = "本月续费汇总";
+                rp.days = nowtime.Day - 1 +  nowtime.Hour/24.0;;
             }
             else if (radioButton3.Checked)
             {
-                rp.stime = DateTime.Now.AddMonths(-1).ToString("yyyy-MM") + "-01"; ;
-                rp.etime = DateTime.Now.AddDays(-(DateTime.Now.Day)).ToString("yyyy-MM-dd");
+                rp.stime = nowtime.AddMonths(-1).ToString("yyyy-MM") + "-01"; ;
+                rp.etime = nowtime.AddDays(-(nowtime.Day)).ToString("yyyy-MM-dd");
                 rp.desc = "上月续费汇总";
+                rp.days = Convert.ToInt32(nowtime.AddDays(-(nowtime.Day)).ToString("dd"));
+            }
+            else if (radioButton4.Checked)
+            {
+                rp.stime = nowtime.AddDays(-14).ToString("yyyy-MM-dd");
+                rp.etime = nowtime.AddDays(-8).ToString("yyyy-MM-dd");
+                rp.desc = "前前7天续费汇总";
+                rp.days = 7.0;
             }
             else
             {
-                rp.stime = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
-                rp.etime = DateTime.Now.ToString("yyyy-MM-dd");
+                rp.stime = nowtime.AddDays(-7).ToString("yyyy-MM-dd");
+                rp.etime = nowtime.AddDays(-1).ToString("yyyy-MM-dd");
                 rp.desc = "最近7天续费汇总";
+                rp.days = 7.0;
             }
             this.backgroundWorker11.RunWorkerAsync(rp);
         }
