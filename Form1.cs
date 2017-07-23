@@ -1462,8 +1462,8 @@ namespace CheckRenewalPkg
 
              foreach (ParamDefine.DayStatisticsListItem daylist in frrResult.dayStatisticsList)
              {
-                 //tmp += daylist.statDay + "\t" + daylist.amountUsage.ToString("0.00") + "\t" + daylist.validCount + "\t" + daylist.validAvgUsage.ToString("0.00") + "\t";
-                 tmp += daylist.statDay + "\t" + daylist.amountUsage.ToString("0.00") + "\t" + daylist.validCount  + "\t";
+                 tmp += daylist.statDay + "\t" + daylist.amountUsage.ToString("0.00") + "\t" + daylist.validCount + "\t" + daylist.validAvgUsage.ToString("0.00") + "\t";
+                 //tmp += daylist.statDay + "\t" + daylist.amountUsage.ToString("0.00") + "\t" + daylist.validCount  + "\t";
                  countlist.Add(Convert.ToInt32(daylist.validCount));
                  usagelist.Add(daylist.amountUsage);
              }
