@@ -1756,25 +1756,25 @@ namespace CheckRenewalPkg
                 switch(usernamelist[i].Split(',').Length)
                     {
                     case 1:
-                            displayname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[0]);
+                            displayname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[0].Trim());
                             result = CreateUser(selectedUserId, displayname, displayname, usertype, password);
                             break;
                     case 2:
-                            displayname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[0]);
-                            loginname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[1]);
+                            displayname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[0].Trim());
+                            loginname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[1].Trim());
                             result = CreateUser(selectedUserId, displayname, loginname, usertype, password);
                             break;
                     case 3:
-                            displayname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[0]);
-                            loginname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[1]);
-                            usertype = usernamelist[i].Trim().Split(',')[2];
+                            displayname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[0].Trim());
+                            loginname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[1].Trim());
+                            usertype = usernamelist[i].Trim().Split(',')[2].Trim();
                             result = CreateUser(selectedUserId, displayname, loginname, usertype, password);
                             break;
                     case 4:
-                            displayname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[0]);
-                            loginname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[1]);
-                            usertype = usernamelist[i].Trim().Split(',')[2];
-                            password = usernamelist[i].Trim().Split(',')[3];
+                            displayname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[0].Trim());
+                            loginname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[1].Trim());
+                            usertype = usernamelist[i].Trim().Split(',')[2].Trim();
+                            password = usernamelist[i].Trim().Split(',')[3].Trim();
                             result = CreateUser(selectedUserId, displayname, loginname, usertype, password);
                             break;
 
