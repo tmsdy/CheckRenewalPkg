@@ -53,6 +53,7 @@ namespace CheckRenewalPkg
             dit.Add(new KeyValuePair<object, string>("", "所有收款方"));
             dit.Add(new KeyValuePair<object, string>("MAPGOO", "MAPGOO"));
             dit.Add(new KeyValuePair<object, string>("HUAZ", "HUAZ"));
+            dit.Add(new KeyValuePair<object, string>("WX_HUAZ2", "WX_HUAZ2"));
             dit.Add(new KeyValuePair<object, string>("MAPGOO_CDB", "MAPGOO_CDB"));
             dit.Add(new KeyValuePair<object, string>("SZBY", "SZBY"));
             dit.Add(new KeyValuePair<object, string>("WKTX", "WKTX"));
