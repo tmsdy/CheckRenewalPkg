@@ -1009,7 +1009,7 @@ namespace CheckRenewalPkg
                 renewalsSum += bmr.renewalsPrice;
             }
 
-            result = "ID为" + id + "\t笔数为\t" + bmlist.result.Count().ToString() + "\t总续费为\t" + renewalsSum.ToString() + "\t总返利为\t" + backmoneySum.ToString() + "\r\n" + tmp;
+            result = tmp + "ID为" + id + "\t笔数为\t" + bmlist.result.Count().ToString() + "\t总续费为\t" + renewalsSum.ToString() + "\t总返利为\t" + backmoneySum.ToString() + "\r\n";
             return result;
         }
         private void backgroundWorker2_DoWork(object sender, DoWorkEventArgs e)
@@ -1986,8 +1986,9 @@ namespace CheckRenewalPkg
                 }
                  
                 id = treeView1.SelectedNode.Tag.ToString();
-                
 
+
+                //username = treeView1.SelectedNode.Text.ToString();
                 username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
                 DisplayAndLog(username + "\t" + GetRenewalsOrderSum(id, "S1", stime, etime,days), true);
                 DisplayAndLog(username + "\t" + GetRenewalsOrderSum(id, "S2", stime, etime,days), true);
@@ -2011,7 +2012,7 @@ namespace CheckRenewalPkg
                 }
 
                 id = treeView1.SelectedNode.Tag.ToString();
-
+                //username = treeView1.SelectedNode.Text.ToString();
                 username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
                 DisplayAndLog(username + "\t" + GetRenewalsOrderSum(id, "all", stime, etime, days), true);
 
@@ -2030,7 +2031,8 @@ namespace CheckRenewalPkg
                         DisplayAndLog("未知用户ID为" + idid + "\t" + GetRenewalsOrderSum(idid, "all", stime, etime, days), true);
                         continue;
                     }
-                    username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
+                    username = treeView1.SelectedNode.Text.ToString();
+                    //username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
                     DisplayAndLog(username + "\t" + GetRenewalsOrderSum(idid, "all", stime, etime, days), true);
                 }
             }
