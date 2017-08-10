@@ -979,7 +979,7 @@ namespace CheckRenewalPkg
             double backmoneySum = 0;
             double renewalsSum = 0;
             string result = "";
-            string tmp = "";
+            string tmp = "\r\n";
             string url = "";
             switch (period)
             {
