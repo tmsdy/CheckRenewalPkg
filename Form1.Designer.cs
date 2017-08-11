@@ -37,6 +37,7 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.button21 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.radioButton4 = new System.Windows.Forms.RadioButton();
             this.button23 = new System.Windows.Forms.Button();
             this.button22 = new System.Windows.Forms.Button();
@@ -77,7 +78,6 @@
             this.backgroundWorker9 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker10 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker11 = new System.ComponentModel.BackgroundWorker();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -97,6 +97,7 @@
             this.treeView1.Size = new System.Drawing.Size(231, 650);
             this.treeView1.TabIndex = 0;
             this.treeView1.DrawNode += new System.Windows.Forms.DrawTreeNodeEventHandler(this.treeView1_DrawNode);
+            this.treeView1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseDown);
             // 
             // button1
             // 
@@ -217,6 +218,14 @@
             this.groupBox1.Size = new System.Drawing.Size(930, 30);
             this.groupBox1.TabIndex = 23;
             this.groupBox1.TabStop = false;
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(241, 8);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(100, 20);
+            this.comboBox2.TabIndex = 26;
             // 
             // radioButton4
             // 
@@ -592,14 +601,6 @@
             // 
             this.backgroundWorker11.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker11_DoWork);
             this.backgroundWorker11.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker11_RunWorkerCompleted);
-            // 
-            // comboBox2
-            // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(241, 8);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(100, 20);
-            this.comboBox2.TabIndex = 26;
             // 
             // Form1
             // 

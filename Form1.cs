@@ -2499,6 +2499,23 @@ namespace CheckRenewalPkg
              
         }
 
+        private void treeView1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)//判断你点的是不是右键
+            {
+                Point ClickPoint = new Point(e.X, e.Y);
+                TreeNode CurrentNode = treeView1.GetNodeAt(ClickPoint);
+                if (CurrentNode != null  )//判断你点的是不是一个节点
+                {
+                    treeView1.SelectedNode = CurrentNode;
+                   DisplayAndLog(CurrentNode.Tag.ToString() + ",", true);
+                     
+                   
+                }
+            }
+        }
+       
+
 
 
 
