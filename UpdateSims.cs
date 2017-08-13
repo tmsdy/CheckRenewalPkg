@@ -39,7 +39,7 @@ namespace CheckRenewalPkg
                 ASCII = Encoding.ASCII;
             }
         }
-        public static string CreatePostHttpResponse(byte[] data, string url, int? timeout, string userAgent, string cookies, WebProxy wp)
+        public static string CreatePostHttpResponse(byte[] data, string url, int? timeout, string userAgent, string cookies, string ContentType)
         {
 
             Stream responseStream;
@@ -53,7 +53,14 @@ namespace CheckRenewalPkg
                 //ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
                 HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
                 request.Method = "POST";
-                request.ContentType = "application/json";
+                if (string.IsNullOrEmpty(ContentType))
+                {
+                    request.ContentType = "application/json";
+                }
+                else
+                {
+                    request.ContentType = ContentType;
+                }
                 request.ContentLength = data.Length;
                 request.KeepAlive = false;
                 request.UserAgent = Program.DefaultUserAgent;
@@ -165,7 +172,7 @@ namespace CheckRenewalPkg
             }
             post += ",\"statMonth\":\"" + this.comboBox1.Text + "\"}";
             //richTextBox2.AppendText(post + "\r\n");
-            richTextBox2.AppendText(PostDataToUrl(post, "http://demo.m-m10010.com/api/UpdateTerminalsMonthUsage") + "\r\n");
+            richTextBox2.AppendText(PostDataToUrl(post, Program.sGloableDomailUrl + "/api/UpdateTerminalsMonthUsage") + "\r\n");
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
@@ -271,6 +278,49 @@ namespace CheckRenewalPkg
         {
             this.button3.Enabled = true;
             InvokeHelper.Set(button3, "Text", "预扣费");
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            string str = this.richTextBox1.Text.Trim();
+            if(str.Split(',').Count()<= str.Split('\n').Count())
+            {
+                MessageBox.Show("卡号和用量之间用英文逗号(,)隔开");
+                return;
+            }
+            this.button4.Enabled = false;
+            backgroundWorker3.RunWorkerAsync(); 
+        }
+
+        private void backgroundWorker3_DoWork(object sender, DoWorkEventArgs e)
+        {
+            string[] str = InvokeHelper.Get(this.richTextBox1, "Text").ToString().Trim().Replace("\r\n\r\n", "\r\n").Replace("\r\n\r\n", "\r\n").Split('\n');
+            string result = "";
+            StringBuilder postdata = new StringBuilder();
+            int count = str.Count();
+            for(int i=0;i<count;i++)
+            {
+                postdata.Clear();
+                postdata.Append("txtICCID=" + str[i].Split(',')[0].Trim() + "&txtAmountUsage=" + str[i].Split(',')[1].Trim());
+                try
+                {
+                    InvokeHelper.Set(button4, "Text", i.ToString() + "/" + count.ToString());
+                    result = CreatePostHttpResponse(RequestEncoding.GetBytes(postdata.ToString()), Program.sGloableDomailUrl + "/SysSetting/SetTerminalAmountUsage", null, null, null, "application/x-www-form-urlencoded");
+                    InvokeHelper.Set(richTextBox2, "Text", InvokeHelper.Get(this.richTextBox2, "Text").ToString() + str[i] + result.Substring(0,20) + "\r\n");
+
+                }
+                catch
+                {
+                    InvokeHelper.Set(richTextBox2, "Text", InvokeHelper.Get(this.richTextBox2, "Text").ToString() + "异常\r\n");
+
+                }
+            }
+        }
+
+        private void backgroundWorker3_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            this.button4.Enabled = true;
+            this.button4.Text = "周期用量";
         }
          
     }
