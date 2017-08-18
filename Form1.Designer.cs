@@ -78,6 +78,7 @@
             this.backgroundWorker9 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker10 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker11 = new System.ComponentModel.BackgroundWorker();
+            this.button24 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -113,11 +114,11 @@
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button2.Location = new System.Drawing.Point(86, 636);
+            this.button2.Location = new System.Drawing.Point(82, 636);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(88, 23);
+            this.button2.Size = new System.Drawing.Size(64, 23);
             this.button2.TabIndex = 3;
-            this.button2.Text = "获取套餐列表";
+            this.button2.Text = "获取套餐";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -137,6 +138,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.button24);
             this.splitContainer1.Panel2.Controls.Add(this.button21);
             this.splitContainer1.Panel2.Controls.Add(this.groupBox1);
             this.splitContainer1.Panel2.Controls.Add(this.button16);
@@ -459,7 +461,7 @@
             // button8
             // 
             this.button8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button8.Location = new System.Drawing.Point(533, 636);
+            this.button8.Location = new System.Drawing.Point(529, 636);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(92, 23);
             this.button8.TabIndex = 10;
@@ -470,7 +472,7 @@
             // button7
             // 
             this.button7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button7.Location = new System.Drawing.Point(355, 636);
+            this.button7.Location = new System.Drawing.Point(362, 636);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(71, 23);
             this.button7.TabIndex = 10;
@@ -481,7 +483,7 @@
             // button6
             // 
             this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button6.Location = new System.Drawing.Point(278, 636);
+            this.button6.Location = new System.Drawing.Point(289, 636);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(71, 23);
             this.button6.TabIndex = 9;
@@ -492,7 +494,7 @@
             // button5
             // 
             this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button5.Location = new System.Drawing.Point(184, 637);
+            this.button5.Location = new System.Drawing.Point(199, 637);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(88, 23);
             this.button5.TabIndex = 8;
@@ -602,6 +604,17 @@
             this.backgroundWorker11.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker11_DoWork);
             this.backgroundWorker11.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker11_RunWorkerCompleted);
             // 
+            // button24
+            // 
+            this.button24.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button24.Location = new System.Drawing.Point(148, 636);
+            this.button24.Name = "button24";
+            this.button24.Size = new System.Drawing.Size(49, 23);
+            this.button24.TabIndex = 25;
+            this.button24.Text = "*套餐";
+            this.button24.UseVisualStyleBackColor = true;
+            this.button24.Click += new System.EventHandler(this.button24_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -675,6 +688,7 @@
         private System.Windows.Forms.RadioButton radioButton4;
         private System.Windows.Forms.Button button23;
         private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.Button button24;
     }
 }
 

@@ -715,6 +715,7 @@ namespace CheckRenewalPkg
         {
             this.button2.Text = "获取中";
             this.button2.Enabled = false;
+            this.button1.Enabled = false;
             this.backgroundWorker1.RunWorkerAsync();
 
         }
@@ -926,26 +927,52 @@ namespace CheckRenewalPkg
         {
             string id = "";
             e.Result = "";
-            if (treeView1.Nodes.Count == 0)
+            string whichway = e.Argument.ToString();
+            if( whichway == "multi")
             {
-                DisplayAndLog("请先刷新用户列表\r\n", true);
-                return;
+                StringBuilder  tmp = new StringBuilder();
+
+                List<string> idlist = configManager.GetValueStrList("Userlist", "pkglistCustomers");
+                foreach (string idid in idlist)
+                {
+                    treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
+                    if (null == treeView1.SelectedNode)
+                    {
+                        tmp.Append("未知用户ID为" + idid + "\t" + GetHoldRenewalList(idid));
+                        continue;
+                    }  
+                    tmp.Append(GetHoldRenewalList(idid));
+                }
+
+
+                e.Result = tmp.ToString();
+
+            }
+            else
+            {
+                if (treeView1.Nodes.Count == 0)
+                {
+                    DisplayAndLog("请先刷新用户列表\r\n", true);
+                    return;
+                }
+
+                if (treeView1.SelectedNode == null)
+                {
+
+                    DisplayAndLog("请先选择用户\r\n", true);
+                    return;
+                }
+                id = treeView1.SelectedNode.Tag.ToString();
+                e.Result = GetHoldRenewalList(id);
+
             }
 
-            if (treeView1.SelectedNode == null)
-            {
-
-                DisplayAndLog("请先选择用户\r\n", true);
-                return;
-            }
-            id = treeView1.SelectedNode.Tag.ToString();
-            e.Result = GetHoldRenewalList(id);
         }
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-
-            this.button2.Text = "获取套餐列表";
+             
+            this.button1.Enabled = true;
             this.button2.Enabled = true;
 
             bool isVerySpeed = Convert.ToBoolean(InvokeHelper.Get(this.checkBox4, "Checked"));
@@ -2513,6 +2540,14 @@ namespace CheckRenewalPkg
                    
                 }
             }
+        }
+
+        private void button24_Click(object sender, EventArgs e)
+        {
+
+            this.button2.Enabled = false;
+            this.button1.Enabled = false;
+            this.backgroundWorker1.RunWorkerAsync("multi");
         }
        
 
