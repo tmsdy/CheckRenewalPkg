@@ -1036,7 +1036,7 @@ namespace CheckRenewalPkg
                 renewalsSum += bmr.renewalsPrice;
             }
 
-            result = tmp + "ID为" + id + "\t笔数为\t" + bmlist.result.Count().ToString() + "\t总续费为\t" + renewalsSum.ToString() + "\t总返利为\t" + backmoneySum.ToString() + "\r\n";
+            result = tmp + "ID为" + id + "\t笔数为\t" + bmlist.result.Count().ToString() + "\t总续费为\t" + renewalsSum.ToString("0.00") + "\t总返利为\t" + backmoneySum.ToString("0.00") + "\t" + (backmoneySum / renewalsSum).ToString("0.00%") + "\r\n";
             return result;
         }
         private void backgroundWorker2_DoWork(object sender, DoWorkEventArgs e)
