@@ -712,10 +712,9 @@ namespace CheckRenewalPkg
 
         }
         private void button2_Click(object sender, EventArgs e)
-        {
-            this.button2.Text = "获取中";
+        { 
             this.button2.Enabled = false;
-            this.button23.Enabled = false;
+            this.button24.Enabled = false;
             this.backgroundWorker1.RunWorkerAsync("singal");
 
         }
@@ -973,7 +972,7 @@ namespace CheckRenewalPkg
         {
              
             this.button24.Enabled = true;
-            this.button2.Enabled = true;
+            this.button2.Enabled = true; 
 
             bool isVerySpeed = Convert.ToBoolean(InvokeHelper.Get(this.checkBox4, "Checked"));
            if(isVerySpeed)
