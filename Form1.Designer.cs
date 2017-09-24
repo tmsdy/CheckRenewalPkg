@@ -35,19 +35,16 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.button4 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.button24 = new System.Windows.Forms.Button();
             this.button21 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.radioButton4 = new System.Windows.Forms.RadioButton();
-            this.button23 = new System.Windows.Forms.Button();
             this.button22 = new System.Windows.Forms.Button();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.button20 = new System.Windows.Forms.Button();
             this.button19 = new System.Windows.Forms.Button();
             this.button17 = new System.Windows.Forms.Button();
-            this.button18 = new System.Windows.Forms.Button();
             this.button16 = new System.Windows.Forms.Button();
             this.button15 = new System.Windows.Forms.Button();
             this.button14 = new System.Windows.Forms.Button();
@@ -78,7 +75,6 @@
             this.backgroundWorker9 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker10 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker11 = new System.ComponentModel.BackgroundWorker();
-            this.button24 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -190,6 +186,17 @@
             this.comboBox1.TextChanged += new System.EventHandler(this.comboBox1_TextChanged);
             this.comboBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.comboBox1_KeyUp);
             // 
+            // button24
+            // 
+            this.button24.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button24.Location = new System.Drawing.Point(148, 636);
+            this.button24.Name = "button24";
+            this.button24.Size = new System.Drawing.Size(49, 23);
+            this.button24.TabIndex = 25;
+            this.button24.Text = "*套餐";
+            this.button24.UseVisualStyleBackColor = true;
+            this.button24.Click += new System.EventHandler(this.button24_Click);
+            // 
             // button21
             // 
             this.button21.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -206,15 +213,11 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.groupBox1.Controls.Add(this.comboBox2);
             this.groupBox1.Controls.Add(this.radioButton4);
-            this.groupBox1.Controls.Add(this.button23);
             this.groupBox1.Controls.Add(this.button22);
-            this.groupBox1.Controls.Add(this.radioButton3);
-            this.groupBox1.Controls.Add(this.radioButton2);
             this.groupBox1.Controls.Add(this.radioButton1);
             this.groupBox1.Controls.Add(this.button20);
             this.groupBox1.Controls.Add(this.button19);
             this.groupBox1.Controls.Add(this.button17);
-            this.groupBox1.Controls.Add(this.button18);
             this.groupBox1.Location = new System.Drawing.Point(5, 658);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(930, 30);
@@ -224,7 +227,7 @@
             // comboBox2
             // 
             this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(241, 8);
+            this.comboBox2.Location = new System.Drawing.Point(137, 9);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(100, 20);
             this.comboBox2.TabIndex = 26;
@@ -234,71 +237,38 @@
             this.radioButton4.AutoSize = true;
             this.radioButton4.Location = new System.Drawing.Point(5, 11);
             this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(65, 16);
+            this.radioButton4.Size = new System.Drawing.Size(59, 16);
             this.radioButton4.TabIndex = 25;
             this.radioButton4.TabStop = true;
-            this.radioButton4.Text = "前前7天";
+            this.radioButton4.Text = "月对比";
             this.radioButton4.UseVisualStyleBackColor = true;
-            // 
-            // button23
-            // 
-            this.button23.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button23.Location = new System.Drawing.Point(537, 7);
-            this.button23.Name = "button23";
-            this.button23.Size = new System.Drawing.Size(88, 23);
-            this.button23.TabIndex = 24;
-            this.button23.Text = "重要客户";
-            this.button23.UseVisualStyleBackColor = true;
-            this.button23.Click += new System.EventHandler(this.button23_Click);
             // 
             // button22
             // 
             this.button22.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button22.Location = new System.Drawing.Point(638, 7);
+            this.button22.Location = new System.Drawing.Point(329, 7);
             this.button22.Name = "button22";
-            this.button22.Size = new System.Drawing.Size(88, 23);
+            this.button22.Size = new System.Drawing.Size(99, 23);
             this.button22.TabIndex = 24;
-            this.button22.Text = "*重要客户";
+            this.button22.Text = "*重要客户对比";
             this.button22.UseVisualStyleBackColor = true;
             this.button22.Click += new System.EventHandler(this.button22_Click);
-            // 
-            // radioButton3
-            // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(189, 11);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(47, 16);
-            this.radioButton3.TabIndex = 23;
-            this.radioButton3.TabStop = true;
-            this.radioButton3.Text = "上月";
-            this.radioButton3.UseVisualStyleBackColor = true;
-            // 
-            // radioButton2
-            // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(134, 11);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(47, 16);
-            this.radioButton2.TabIndex = 23;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "本月";
-            this.radioButton2.UseVisualStyleBackColor = true;
             // 
             // radioButton1
             // 
             this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(70, 11);
+            this.radioButton1.Location = new System.Drawing.Point(72, 11);
             this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(65, 16);
+            this.radioButton1.Size = new System.Drawing.Size(59, 16);
             this.radioButton1.TabIndex = 23;
             this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "最近7天";
+            this.radioButton1.Text = "周对比";
             this.radioButton1.UseVisualStyleBackColor = true;
             // 
             // button20
             // 
             this.button20.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button20.Location = new System.Drawing.Point(739, 7);
+            this.button20.Location = new System.Drawing.Point(447, 7);
             this.button20.Name = "button20";
             this.button20.Size = new System.Drawing.Size(75, 23);
             this.button20.TabIndex = 21;
@@ -309,7 +279,7 @@
             // button19
             // 
             this.button19.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button19.Location = new System.Drawing.Point(827, 7);
+            this.button19.Location = new System.Drawing.Point(528, 7);
             this.button19.Name = "button19";
             this.button19.Size = new System.Drawing.Size(75, 23);
             this.button19.TabIndex = 21;
@@ -320,24 +290,13 @@
             // button17
             // 
             this.button17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button17.Location = new System.Drawing.Point(348, 7);
+            this.button17.Location = new System.Drawing.Point(243, 8);
             this.button17.Name = "button17";
-            this.button17.Size = new System.Drawing.Size(75, 23);
+            this.button17.Size = new System.Drawing.Size(80, 23);
             this.button17.TabIndex = 21;
-            this.button17.Text = "续费按卡源";
+            this.button17.Text = "指定对比";
             this.button17.UseVisualStyleBackColor = true;
             this.button17.Click += new System.EventHandler(this.button17_Click);
-            // 
-            // button18
-            // 
-            this.button18.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button18.Location = new System.Drawing.Point(436, 7);
-            this.button18.Name = "button18";
-            this.button18.Size = new System.Drawing.Size(88, 23);
-            this.button18.TabIndex = 22;
-            this.button18.Text = "*续费按卡源";
-            this.button18.UseVisualStyleBackColor = true;
-            this.button18.Click += new System.EventHandler(this.button18_Click);
             // 
             // button16
             // 
@@ -544,7 +503,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.richTextBox1.Font = new System.Drawing.Font("新宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.richTextBox1.Location = new System.Drawing.Point(5, 3);
+            this.richTextBox1.Location = new System.Drawing.Point(3, 5);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(995, 603);
             this.richTextBox1.TabIndex = 4;
@@ -603,17 +562,6 @@
             // 
             this.backgroundWorker11.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker11_DoWork);
             this.backgroundWorker11.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker11_RunWorkerCompleted);
-            // 
-            // button24
-            // 
-            this.button24.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button24.Location = new System.Drawing.Point(148, 636);
-            this.button24.Name = "button24";
-            this.button24.Size = new System.Drawing.Size(49, 23);
-            this.button24.TabIndex = 25;
-            this.button24.Text = "*套餐";
-            this.button24.UseVisualStyleBackColor = true;
-            this.button24.Click += new System.EventHandler(this.button24_Click);
             // 
             // Form1
             // 
@@ -675,10 +623,7 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker9;
         private System.Windows.Forms.Button button17;
         private System.ComponentModel.BackgroundWorker backgroundWorker10;
-        private System.Windows.Forms.Button button18;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.RadioButton radioButton3;
-        private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.Button button19;
         private System.ComponentModel.BackgroundWorker backgroundWorker11;
@@ -686,7 +631,6 @@
         private System.Windows.Forms.Button button21;
         private System.Windows.Forms.Button button22;
         private System.Windows.Forms.RadioButton radioButton4;
-        private System.Windows.Forms.Button button23;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.Button button24;
     }
