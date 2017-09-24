@@ -600,7 +600,7 @@ namespace CheckRenewalPkg
             return false;
 
         }
-        public string GetHoldRenewalList(string id)
+        public string GetHoldRenewalList(string id, string method)
         {
             string response = "";
             string result = "";
@@ -613,7 +613,8 @@ namespace CheckRenewalPkg
                 DisplayAndLog("ID不合法\r\n", true);
                 return result;
             }
-            string url = sApiUrl + "/api/HoldRenewalsList/" + id + GetShowAllStr();
+            string showallStr = GetShowAllStr();
+            string url = sApiUrl + "/api/HoldRenewalsList/" + id + showallStr;
             response = GetResponseSafe(url);
             if (response == "")
             {
@@ -717,6 +718,11 @@ namespace CheckRenewalPkg
                 {
                     result += pkgDescArr[i];
                     pkgDescArr[i] = "";
+                }
+                //加上这个break则只显示第1个用户的
+                if (showallStr.IndexOf("false") > 0  )
+                {
+                    break;
                 }
             }
             return result;
@@ -948,10 +954,10 @@ namespace CheckRenewalPkg
                     treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
                     if (null == treeView1.SelectedNode)
                     {
-                        tmp.Append("未知用户ID为" + idid + "\t" + GetHoldRenewalList(idid));
+                        tmp.Append("未知用户ID为" + idid + "\t" + GetHoldRenewalList(idid, whichway));
                         continue;
-                    }  
-                    tmp.Append(GetHoldRenewalList(idid));
+                    }
+                    tmp.Append(GetHoldRenewalList(idid, whichway));
                 }
 
 
@@ -973,7 +979,7 @@ namespace CheckRenewalPkg
                     return;
                 }
                 id = treeView1.SelectedNode.Tag.ToString();
-                e.Result = GetHoldRenewalList(id);
+                e.Result = GetHoldRenewalList(id, whichway);
 
             }
 
