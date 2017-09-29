@@ -450,7 +450,7 @@ namespace CheckRenewalPkg
         {
             string result = "";
             result = GetResponseSafe(sApiUrl + "/api/allholdnodes?nodeListType=1&NJholdId=1&notIncludeCount=false&id=" + Program.UserId + "&parent=" + Program.UserId);
-            RefreshUserTree(result, isDisplayGhostUser);
+             RefreshUserTree(result, isDisplayGhostUser);
 
         }
         public void RefreshUserTree(string a, bool isDisplayGhostUser)
@@ -1161,9 +1161,9 @@ namespace CheckRenewalPkg
                       "有效续费卡\t" +
                       "总续费金额\t" +
                       "总返利金额\t" +
-                      "累计ARPU\t" +
-                      "有效续费率\t" +
+                      "单卡ARPU\t" +
                       "续费率\t" +
+                      "有效续费率\t" +
                       "使用率\t" +
                       "脱网率\t" +
                       "复充率\r\n";
@@ -1215,9 +1215,9 @@ namespace CheckRenewalPkg
                           "有效续费卡\t" +
                           "总续费金额\t" +
                           "总返利金额\t" +
-                          "累计ARPU\t" +
-                          "有效续费率\t" +
+                          "单卡ARPU\t" +
                           "续费率\t" +
+                          "有效续费率\t" +
                           "使用率\t" +
                           "脱网率\t" +
                           "复充率\r\n";
@@ -1323,7 +1323,7 @@ namespace CheckRenewalPkg
             //          "\t有效续费卡\t" + rtresult.renewalsCount +
             //          "\t总续费金额\t" + rtresult.renewalsAmount +
             //          "\t总返利金额\t" + rtresult.backAmount +
-            //          "\t累计ARPU\t" + (rtresult.renewalsAmount / rtresult.renewalsCount).ToString("#0.00") +
+            //          "\t单卡ARPU\t" + (rtresult.renewalsAmount / rtresult.renewalsCount).ToString("#0.00") +
             //          "\t有效续费率\t" + string.Format("{0:0.00%}", ((double)rtresult.renewalsCount / (rtresult.ltActivatedCount + rtresult.ltStopCount))) +
             //          "\t续费率\t" + string.Format("{0:0.00%}", ((double)rtresult.renewalsCount / (rtresult.allCount))) +
             //          "\t使用率\t" + string.Format("{0:0.00%}", ((double)(rtresult.ltActivatedCount + rtresult.ltStopCount) / rtresult.ltAllCount)) +
@@ -1344,14 +1344,16 @@ namespace CheckRenewalPkg
                        "\t" + rtresult.backAmount.ToString("#0") +
                        "\t" + (rtresult.renewalsAmount / rtresult.renewalsCount).ToString("#0.00") +
                        "\t" + string.Format("{0:0.00%}", ((double)rtresult.renewalsCount / (rtresult.ltActivatedCount + rtresult.ltStopCount))) +
-                       "\t" + string.Format("{0:0.00%}", ((double)rtresult.renewalsCount / (rtresult.allCount))) +
+                       "\t" + string.Format("{0:0.00%}", ((double)rtresult.renewalsCount / (rtresult.renewalsCount+ rtresult.ltOutCount))) +
                        "\t" + string.Format("{0:0.00%}", ((double)(rtresult.ltActivatedCount + rtresult.ltStopCount) / rtresult.ltAllCount)) +
-                       "\t" + string.Format("{0:0.00%}", ((double)rtresult.ltOutCount / (rtresult.ltActivatedCount + rtresult.ltStopCount))) +
+                       "\t" + string.Format("{0:0.00%}", ((double)rtresult.ltOutCount / (rtresult.allCount))) +
                        "\t" + string.Format("{0:0.00%}", ((double)rtresult.twiceRenewalsCount / (rtresult.renewalsCount))) + "\t";
          
             //}
 
-            tmp += GetMonthRenewalsTotal(id);
+            //临时屏蔽掉月度汇总 2017-09-29
+            tmp += "\r\n";
+            //tmp += GetMonthRenewalsTotal(id);
             result = tmp.Replace("非数字", "0");
             return result;
 
@@ -2610,6 +2612,7 @@ namespace CheckRenewalPkg
  * 获取用户列表
  * http://demo.m-m10010.com/api/allholdnodes?id=1&parent=1
  * http://demo.m-m10010.com/api/allholdnodes?id=1&parent=1&nodeListType=1&NJholdId=0&notIncludeCount=false
+ * http://demo.m-m10010.com/api/allholdnodes?id=0&parent=0&nodeListType=3&NJholdId=0&notIncludeCount=false&UserLoadType=1
  * 
  * 用户的可续费套餐权限
  * http://demo.m-m10010.com/api/HoldRenewalsList/1496?allShow=true 
