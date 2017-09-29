@@ -2520,11 +2520,11 @@ namespace CheckRenewalPkg
             if (radioButton4.Checked)
             {
                 rp.desc = "月对比";
-                rp.stime = nowtime.AddMonths(-1).ToString("yyyy-MM") + "-27";
-                rp.etime = nowtime.ToString("yyyy-MM-dd");
+                rp.stime = nowtime.AddMonths(-1).ToString("yyyy-MM") + "-26";
+                rp.etime = nowtime.ToString("yyyy-MM") + "-25";
                 rp.days = nowtime.Day - 1 + nowtime.Hour / 24.0;
-                rp.stime_vs = nowtime.AddMonths(-2).ToString("yyyy-MM") + "-27";
-                rp.etime_vs = nowtime.AddMonths(-1).ToString("yyyy-MM") + "-26";
+                rp.stime_vs = nowtime.AddMonths(-2).ToString("yyyy-MM") + "-26";
+                rp.etime_vs = nowtime.AddMonths(-1).ToString("yyyy-MM") + "-25";
                 rp.days_vs = Convert.ToInt32(nowtime.AddDays(-(nowtime.Day)).ToString("dd"));
             }
             else
