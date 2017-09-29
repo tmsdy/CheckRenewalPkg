@@ -449,7 +449,7 @@ namespace CheckRenewalPkg
         public void GetUserTree(bool isDisplayGhostUser)
         {
             string result = "";
-            result = GetResponseSafe(sApiUrl + "/api/allholdnodes?nodeListType=1&NJholdId=1&notIncludeCount=false&id=" + Program.UserId + "&parent=" + Program.UserId);
+             result = GetResponseSafe(sApiUrl + "/api/allholdnodes?nodeListType=1&NJholdId=1&notIncludeCount=false&id=" + Program.UserId + "&parent=" + Program.UserId);
              RefreshUserTree(result, isDisplayGhostUser);
 
         }

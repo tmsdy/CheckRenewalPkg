@@ -150,5 +150,10 @@ namespace CheckRenewalPkg
         {
             Program.sGloableDomailUrl = "http://www.m-m10010.com";  
         }
+
+        private void radioButton3_CheckedChanged(object sender, EventArgs e)
+        {
+            Program.sGloableDomailUrl = "http://192.168.110.30/m10010";  
+        }
     }
 }
