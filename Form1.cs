@@ -2648,7 +2648,7 @@ namespace CheckRenewalPkg
             //查到了套餐分布
             foreach (ParamDefine.PkgDistributionResultItem pkgitem in pkgDisRoot.result)
             {
-                DisplayAndLog(pkgitem.groupByName + "\t" + pkgitem.groupByValue + "张 \r\n",true);
+                DisplayAndLog(pkgitem.groupByName.PadRight(22) +"\t" + pkgitem.groupByValue + "张 \r\n",true);
                 pkgid =  GetPkgIdFromPkgName(pkgitem.groupByName);
                 if(string.IsNullOrEmpty(pkgid))
                 {
@@ -2697,7 +2697,7 @@ namespace CheckRenewalPkg
 
             foreach(ParamDefine.SimRenewalsPkgListResultItem pkg in pkgListRoot.result)
             {
-                result += "\t@B└--" + pkg.packageName.PadRight(20) + "\t@R" + pkg.price + "\r\n";
+                result += "\t@B└--" + pkg.packageName.PadRight(27) + "\t@R" + pkg.price + "\r\n";
 
             }
 
