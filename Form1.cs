@@ -2738,7 +2738,7 @@ namespace CheckRenewalPkg
             string pkgid = "";
             if (string.IsNullOrEmpty(pkgname))
             {
-                DisplayAndLog("查询套餐ID失败：" + pkgname + "\r\n", true);
+                DisplayAndLog("套餐名为空！" + pkgname + "\r\n", true);
                 return pkgid;
             }
             RefreshPkg(false);
