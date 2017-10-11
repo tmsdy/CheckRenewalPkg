@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Net;
 using System.Security.Cryptography;
@@ -20,7 +21,7 @@ namespace CheckRenewalPkg
 {
     public partial class Form1 : Form
     {
-        
+        Dictionary<string, string> LTPkgIdList = new Dictionary<string, string>();
         string[] skipUserList = { "麦谷测试电信卡", "MG测试电信卡", "续费转仓", "0531081测试勿动", "娜姐", "接口调试(联通)", "麦谷内部人员", "ZYR_麦联宝测试", "ZYR_研发部调试卡" ,
                                 "ZYR_客服体验", "ZYR_其他人员试用", "SDY_体验测试", "ZW_后视镜测试", "123", "123-01", "123-02", "实名奖励套餐测试", "ZYR_内部测试卡",
                                 "ZYR_麦谷测试_YD", "ZYR_麦谷测试_DX", "ZYR_麦谷测试_LT","Jaffe_S85", "海如测试", "陈碧淼", "MG娜姐", "Telecom_S5"};
@@ -2591,7 +2592,212 @@ namespace CheckRenewalPkg
             this.button24.Enabled = false;
             this.backgroundWorker1.RunWorkerAsync("multi");
         }
-       
+
+        private void button18_Click(object sender, EventArgs e)
+        {
+            this.button18.Enabled = false;
+
+            this.CheckSimRenewalsWorker.RunWorkerAsync();
+            
+        }
+
+        private void CheckSimRenewalsWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+             
+            string id = "";
+            string tmp = "";
+            if (treeView1.Nodes.Count == 0)
+            {
+                DisplayAndLog("请先刷新用户列表\r\n", true);
+                return;
+            }
+
+            if (treeView1.SelectedNode == null)
+            {
+
+                DisplayAndLog("请先选择用户\r\n", true);
+                return;
+            }
+
+            DisplayAndLog(tmp, true);
+            id = treeView1.SelectedNode.Tag.ToString();
+            DisplayAndLog(treeView1.SelectedNode.Text.ToString().Split('(')[0] + "\t卡的套餐分布如下：\r\n"  , true);
+            DisplayAndLog(GetUserSimRenewalsPkgList(id, true), true);
+
+        }
+        public string GetUserSimRenewalsPkgList(string id, bool isDisplay)
+        {
+            string result = "";
+            string simid = "";
+            string pkgid = "";
+            string url = sApiUrl + "/api/HoldPackageTotal?holdId=" + id + "&groupHoldId=0&simFromType=1" ;
+
+            string response = GetResponseSafe(url);
+            if (response == "")
+            {
+                result = "holdId为" + id + "查不到啊亲\r\n" ;
+                return result;
+            }
+            ParamDefine.PkgDistributionRoot pkgDisRoot = JsonConvert.DeserializeObject<ParamDefine.PkgDistributionRoot>(response);
+
+            if (pkgDisRoot==null || pkgDisRoot.result == null)
+            {
+                result = "holdId为" + id + "查不到套餐分布呢\r\n";
+                return result;
+            }
+            //查到了套餐分布
+            foreach (ParamDefine.PkgDistributionResultItem pkgitem in pkgDisRoot.result)
+            {
+                DisplayAndLog(pkgitem.groupByName + "\t" + pkgitem.groupByValue + "张 \r\n",true);
+                pkgid =  GetPkgIdFromPkgName(pkgitem.groupByName);
+                if(string.IsNullOrEmpty(pkgid))
+                {
+                    DisplayAndLog("套餐ID为空\r\n", true);
+                    continue;
+                }
+                simid = GetSimidFromSearchPkg(id,pkgid);
+                if (string.IsNullOrEmpty(simid))
+                {
+                    DisplayAndLog("SimID为空\r\n", true);
+                    continue;
+                }
+                DisplayAndLogBatch(GetSimRenewalsPkgList(simid),true);
+                    
+
+            }
+            
+
+            return result;
+        }
+
+        public string GetSimRenewalsPkgList(string simid)
+        {
+            string result ="";
+            if(string.IsNullOrEmpty(simid))
+            {
+                result = "\t@RSimId为空\r\n";
+                return result;
+            }
+
+            string url = sApiUrl + "/api/GetSimRenewalsPackageList/" + simid;
+
+            string response = GetResponseSafe(url);
+            if (response == "")
+            {
+                result = "\t@R获取可续费套餐列表失败\r\n";
+                return result;
+            }
+            ParamDefine.SimRenewalsPkgListRoot pkgListRoot = JsonConvert.DeserializeObject<ParamDefine.SimRenewalsPkgListRoot>(response);
+
+            if (pkgListRoot == null || pkgListRoot.result == null )
+            {
+                result = "\t@R获取可续费套餐列表失败\r\n";
+                return result;
+            }
+
+            foreach(ParamDefine.SimRenewalsPkgListResultItem pkg in pkgListRoot.result)
+            {
+                result += "\t@B└--" + pkg.packageName.PadRight(20) + "\t@R" + pkg.price + "\r\n";
+
+            }
+
+
+            return result;
+        }
+        public int RefreshPkg(bool isForceRefresh)
+        {
+
+            if ((LTPkgIdList.Keys.Count != 0) && isForceRefresh == false)
+                return 0;
+
+            string url = sApiUrl + "/api/SimHandle/ScreenSelectList?pageName=ltsim";
+
+            string response = GetResponseSafe(url);
+            if (response == "")
+            {
+                DisplayAndLog("刷新套餐失败\r\n",true);
+                return -1;
+            }
+            ParamDefine.PkgListDetailRoot pkgListRoot = JsonConvert.DeserializeObject<ParamDefine.PkgListDetailRoot>(response);
+            if (pkgListRoot == null || pkgListRoot.result == null || pkgListRoot.result.sltPackageType == null)
+            {
+                DisplayAndLog("获取套餐失败\r\n", true);
+                return -2;
+            }
+            foreach (ParamDefine.SltPackageTypeItem pkgitem in pkgListRoot.result.sltPackageType)
+            {
+                LTPkgIdList.Add(pkgitem.Text, pkgitem.Value);
+            }
+
+
+            return 0;
+
+        }
+        public string GetPkgIdFromPkgName(string pkgname)
+        {
+            string pkgid = "";
+            if (string.IsNullOrEmpty(pkgname))
+            {
+                DisplayAndLog("查询套餐ID失败：" + pkgname + "\r\n", true);
+                return pkgid;
+            }
+            RefreshPkg(false);
+
+            pkgid = LTPkgIdList[pkgname];
+
+            return pkgid;
+        }
+        public string GetSimidFromSearchPkg(string holdid, string pkgid)
+        {
+            string simid = "";
+
+            string url = sApiUrl + "/api/SimListFire/Search";
+            string postdata = "p=1&pRowCount=1&loginHoldId=" + holdid + "&key=&noChild=0&groupHoldId=0&packageType=" + pkgid;
+            string response = PostDataToUrl(postdata,url);
+            if (response == "")
+            {
+                DisplayAndLog("刷新套餐失败\r\n", true);
+                return simid;
+            }
+            try
+            {
+
+                //jo1是整个返回值
+                JObject jo1 = (JObject)JsonConvert.DeserializeObject(response);
+                //array是三个数组，分别是 汇总信息，卡列表，查询条件
+                ////var listData = data.result[1];
+                ////var page = data.result[0];
+                ////var hid_querySqlwhereKey = data.result[2].card_query_sqlwhere;
+                //var strsimlist = jo1.GetValue("result")[1];
+                //string strsimlistjson = "{\"result\": " + strsimlist.ToString() + "}";
+                //ParamDefine.SearchSimListRoot ssld = JsonConvert.DeserializeObject<ParamDefine.SearchSimListRoot>(strsimlistjson);
+                //foreach (ParamDefine.SearchSimListDetail a in ssld.result)
+                //{
+                //    simid = a.simId;
+                //    break;
+                //}
+
+
+                JToken[] array = jo1.GetValue("result").ToArray();
+                //取第1个卡
+                string simlist = array[1].First.ToString();
+                ParamDefine.SearchSimListDetail sslds = JsonConvert.DeserializeObject<ParamDefine.SearchSimListDetail>(simlist);
+                simid = sslds.simId;
+ 
+                return simid;
+            }
+            catch(Exception e)
+            {
+                DisplayAndLog(e.ToString() + "\r\n", true);
+                return "";
+            }
+        }
+
+        private void CheckSimRenewalsWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            this.button18.Enabled = true;
+        }
+
 
 
 
@@ -2623,5 +2829,17 @@ namespace CheckRenewalPkg
  * 月用量报表
  * http://demo.m-m10010.com/api/ReportFlowHold?holdId=5877
  
+ * 
+ * 套餐列表-分组列表
+ * GET http://demo.m-m10010.com/api/SimHandle/ScreenSelectList?pageName=ltsim 
  
+ * 获取账号的所有卡的套餐分布
+ * GET http://demo.m-m10010.com/api/HoldPackageTotal?holdId=4984&groupHoldId=0&simFromType=1 
+
+ * 查询SIM卡
+ * POST http://demo.m-m10010.com/api/SimListFire/Search
+ * p=1&pRowCount=2&loginHoldId=1&key=&noChild=0&groupHoldId=0&packageType=578
+ * 
+ * 卡的可续费套餐
+ * GET http://demo.m-m10010.com/api/GetSimRenewalsPackageList/430932  
  */

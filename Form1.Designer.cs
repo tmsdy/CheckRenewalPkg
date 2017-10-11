@@ -75,6 +75,8 @@
             this.backgroundWorker9 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker10 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker11 = new System.ComponentModel.BackgroundWorker();
+            this.button18 = new System.Windows.Forms.Button();
+            this.CheckSimRenewalsWorker = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -134,6 +136,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.button18);
             this.splitContainer1.Panel2.Controls.Add(this.button24);
             this.splitContainer1.Panel2.Controls.Add(this.button21);
             this.splitContainer1.Panel2.Controls.Add(this.groupBox1);
@@ -220,7 +223,7 @@
             this.groupBox1.Controls.Add(this.button17);
             this.groupBox1.Location = new System.Drawing.Point(5, 658);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(930, 30);
+            this.groupBox1.Size = new System.Drawing.Size(616, 30);
             this.groupBox1.TabIndex = 23;
             this.groupBox1.TabStop = false;
             // 
@@ -563,6 +566,22 @@
             this.backgroundWorker11.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker11_DoWork);
             this.backgroundWorker11.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker11_RunWorkerCompleted);
             // 
+            // button18
+            // 
+            this.button18.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button18.Location = new System.Drawing.Point(631, 662);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(92, 23);
+            this.button18.TabIndex = 26;
+            this.button18.Text = "卡续费套餐";
+            this.button18.UseVisualStyleBackColor = true;
+            this.button18.Click += new System.EventHandler(this.button18_Click);
+            // 
+            // CheckSimRenewalsWorker
+            // 
+            this.CheckSimRenewalsWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.CheckSimRenewalsWorker_DoWork);
+            this.CheckSimRenewalsWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.CheckSimRenewalsWorker_RunWorkerCompleted);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -633,6 +652,8 @@
         private System.Windows.Forms.RadioButton radioButton4;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.Button button24;
+        private System.Windows.Forms.Button button18;
+        private System.ComponentModel.BackgroundWorker CheckSimRenewalsWorker;
     }
 }
 

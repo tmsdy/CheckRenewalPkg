@@ -11,8 +11,8 @@ namespace CheckRenewalPkg
         public static string UserTreeDefault = @"{""error"":0,""reason"":"""",""result"":[{""id"":1,""parentId"":0,""name"":""运营中心(2620782)"",""nodeLevel"":1,""hasChildren"":false},
 {""id"":1703,""parentId"":1184,""name"":""章益鹏浙D1211W(1)"",""nodeLevel"":11,""hasChildren"":false},
 {""id"":1705,""parentId"":1184,""name"":""朱海滨鲁p1h838(1)"",""nodeLevel"":11,""hasChildren"":false}]}";
-         
-        /// //////////////////////////////////////////////用户列表开始/////////////////////////////////////////////////////////////// 
+
+        #region 用户列表开始
         public class UserTreeResultItem
         {
             /// <summary>
@@ -52,13 +52,9 @@ namespace CheckRenewalPkg
             /// </summary>
             public List<UserTreeResultItem> result { get; set; }
         }
+        #endregion
 
-        /// //////////////////////////////////////////////用户列表结束///////////////////////////////////////////////////////////////
-   
-
-        /// /////////////////////////////////////////////套餐权限 开始///////////////////////////////////////////////////////////////
-        
-        /// /////////////////////////////////////////////套餐权限 结束///////////////////////////////////////////////////////////////
+        #region 套餐权限
         public class PackageListItem
         {
             /// <summary>
@@ -170,7 +166,9 @@ namespace CheckRenewalPkg
             /// </summary>
             public List<HoldList> result { get; set; }
         }
+        #endregion 
         /// //////////////////////////////////////////////套餐的可续费套餐开始///////////////////////////////////////////////////////////////
+        #region 套餐的可续费套餐开始
         public class RenewalsPackageItem
         {
             /// <summary>
@@ -205,9 +203,10 @@ namespace CheckRenewalPkg
             /// 
             /// </summary>
             public List<RenewalsPackageItem> result { get; set; }
-        }                                                
+        }
+        #endregion
         /// //////////////////////////////////////////////套餐的可续费套餐结束///////////////////////////////////////////////////////////////
-        /// //////////////////////////////////////////////XXXX开始///////////////////////////////////////////////////////////////
+        #region 返利数据
         public class BackMoneyResultItem
         {
             /// <summary>
@@ -247,9 +246,11 @@ namespace CheckRenewalPkg
             /// </summary>
             public List<BackMoneyResultItem> result { get; set; }
         }
+        #endregion
         /// //////////////////////////////////////////////XXXX结束///////////////////////////////////////////////////////////////
         /// 
         /// 
+        #region 续费汇总- 脱网卡-激活卡----
         /// 
         public class RenewalsTotalResult
         {
@@ -343,6 +344,9 @@ namespace CheckRenewalPkg
             public RenewalsTotalResult result { get; set; }
         }
         /// 
+        #endregion
+
+        #region 月续费汇总
         ///////////////////////////////////////月续费汇总/////////////////////////////////////////////////////////
         public class MonthRenewalsTotalResultItem
         {
@@ -408,14 +412,14 @@ namespace CheckRenewalPkg
             public List<MonthRenewalsTotalResultItem> result { get; set; }
         }
         /////////////////////////////////////////////////////////////////////////////////////////////////
+        #endregion
 
 
 
 
 
 
-
-
+        #region 用量数据
         /////////////////////////////////////////////用量数据////////////////////////////////////////////////////
         public class SimStatisticsListItem
         {
@@ -585,9 +589,11 @@ namespace CheckRenewalPkg
             /// </summary>
             public FlowReportResult result { get; set; }
         }
+        #endregion
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////老续费 begin//////////////////////////////////////////////////////////////
+        #region 老续费
         public class OldRenewalsRootResultItem
         {
             /// <summary>
@@ -627,6 +633,7 @@ namespace CheckRenewalPkg
             /// </summary>
             public List<OldRenewalsRootResultItem> result { get; set; }
         }
+        #endregion
         ///////////////////////////////////////////老续费 end //////////////////////////////////////////////////////////////
 
 
@@ -634,7 +641,7 @@ namespace CheckRenewalPkg
 
         ///////////////////////////////////////////续费明细的汇总 begin //////////////////////////////////////////////////////////////
 
-
+        #region 续费明细的汇总
         public class RenewalsOrderSumTotalItem
         {
             /// <summary>
@@ -687,9 +694,312 @@ namespace CheckRenewalPkg
             public RenewalsOrderSumResult result { get; set; }
         }
 
-
+        #endregion
         ///////////////////////////////////////////续费明细的汇总 end //////////////////////////////////////////////////////////////
 
 
+
+        #region 套餐列表-分组列表
+        public class SltPackageTypeItem
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Selected { get; set; }
+            /// <summary>
+            /// 全部
+            /// </summary>
+            public string Text { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Value { get; set; }
+        }
+
+        public class SltDeviceTypeItem
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Selected { get; set; }
+            /// <summary>
+            /// 全部
+            /// </summary>
+            public string Text { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Value { get; set; }
+        }
+
+        public class SltRatePlonTypeItem
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Selected { get; set; }
+            /// <summary>
+            /// 全部
+            /// </summary>
+            public string Text { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Value { get; set; }
+        }
+
+        public class SltCustomerTypeItem
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Selected { get; set; }
+            /// <summary>
+            /// 全部
+            /// </summary>
+            public string Text { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Value { get; set; }
+        }
+
+        public class SltSourceTypeItem
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Selected { get; set; }
+            /// <summary>
+            /// 全部
+            /// </summary>
+            public string Text { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Value { get; set; }
+        }
+
+        public class SltCardTypeItem
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Selected { get; set; }
+            /// <summary>
+            /// 全部
+            /// </summary>
+            public string Text { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Value { get; set; }
+        }
+
+        public class PkgListDetailResult
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<SltPackageTypeItem> sltPackageType { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<SltDeviceTypeItem> sltDeviceType { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<SltRatePlonTypeItem> sltRatePlonType { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<SltCustomerTypeItem> sltCustomerType { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<SltSourceTypeItem> sltSourceType { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<SltCardTypeItem> sltCardType { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string sltTagType { get; set; }
+        }
+
+        public class PkgListDetailRoot
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public int error { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string reason { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public PkgListDetailResult result { get; set; }
+        }
+        #endregion
+
+
+        #region 账号下套餐分布
+        public class PkgDistributionResultItem
+        {
+            /// <summary>
+            /// 1GB_(一年有效)
+            /// </summary>
+            public string groupByName { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string groupByValue { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string groupByValue2 { get; set; }
+        }
+
+        public class PkgDistributionRoot
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public int error { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string reason { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<PkgDistributionResultItem> result { get; set; }
+        }
+        #endregion
+
+        #region 搜索卡列表
+        public class SearchSimListDetail
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string indexNo { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string simId { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string guid { get; set; }
+            /// <summary>
+            /// 成都乐富易
+            /// </summary>
+            public string holdName { get; set; }
+            /// <summary>
+            /// 36M一年
+            /// </summary>
+            public string package { get; set; }
+            /// <summary>
+            /// 否
+            /// </summary>
+            public string isUsageReset { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string amountUsageData { get; set; }
+            /// <summary>
+            /// 可激活
+            /// </summary>
+            public string simState { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string lastActiveTime { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string expireTime { get; set; }
+            /// <summary>
+            /// 365天
+            /// </summary>
+            public string oddTime { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string monthUsageData { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string flowLeftValue { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string totalMonthUsageFlow { get; set; }
+        }
+
+          public class SearchSimListRoot
+          {
+              public List<SearchSimListDetail> result { get; set; }
+          }
+        
+        #endregion
+
+        #region 卡的可续费套餐
+        public class SimRenewalsPkgListResultItem
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public int packageId { get; set; }
+            /// <summary>
+            /// 4GB(一年有效)
+            /// </summary>
+            public string packageName { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string price { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string origPrice { get; set; }
+            /// <summary>
+            /// 4096MB，流量不清零，一年有效，全国通用，总流量用完即停机，可累加年套餐。
+            /// </summary>
+            public string packageInfo { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public int isAddPackage { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public int isUsageReset { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public int addUsageForYear { get; set; }
+        }
+
+        public class SimRenewalsPkgListRoot
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public int error { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string reason { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<SimRenewalsPkgListResultItem> result { get; set; }
+        }
+        #endregion
     }
 }
