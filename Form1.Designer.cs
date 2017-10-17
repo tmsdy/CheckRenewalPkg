@@ -73,7 +73,7 @@
             this.backgroundWorker6 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker7 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker8 = new System.ComponentModel.BackgroundWorker();
-            this.backgroundWorker9 = new System.ComponentModel.BackgroundWorker();
+            this.PrintChildNodesWorker9 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker10 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker11 = new System.ComponentModel.BackgroundWorker();
             this.CheckSimRenewalsWorker = new System.ComponentModel.BackgroundWorker();
@@ -563,9 +563,9 @@
             this.backgroundWorker8.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker8_DoWork);
             this.backgroundWorker8.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker8_RunWorkerCompleted);
             // 
-            // backgroundWorker9
+            // PrintChildNodesWorker9
             // 
-            this.backgroundWorker9.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker9_DoWork);
+            this.PrintChildNodesWorker9.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker9_DoWork);
             // 
             // backgroundWorker10
             // 
@@ -639,7 +639,7 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker7;
         private System.ComponentModel.BackgroundWorker backgroundWorker8;
         private System.Windows.Forms.Button button16;
-        private System.ComponentModel.BackgroundWorker backgroundWorker9;
+        private System.ComponentModel.BackgroundWorker PrintChildNodesWorker9;
         private System.Windows.Forms.Button button17;
         private System.ComponentModel.BackgroundWorker backgroundWorker10;
         private System.Windows.Forms.GroupBox groupBox1;

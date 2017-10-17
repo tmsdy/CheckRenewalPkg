@@ -6,11 +6,12 @@ using System.Windows.Forms;
 using System.Data.SQLite;
 using System.Net;
 using System.IO;
+using System.Reflection;
 namespace CheckRenewalPkg
 {
     static class Program
     {
-        public static string sVer = "V1.3.9";
+        public static string sVer = Application.ProductVersion;
         public static string UserId;
         public static CookieContainer MLBCookie = new CookieContainer();
         public static string sGloableDomailUrl = "http://demo.m-m10010.com";  
@@ -23,11 +24,13 @@ namespace CheckRenewalPkg
         /// </summary>
         [STAThread]
         static void Main()
-        {
+        { 
+
             Program.configFilePath = Application.StartupPath + @"\crp_config.ini";
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new LoginForm());
+
             //Application.Run(new UpdateSims());
         }
     }

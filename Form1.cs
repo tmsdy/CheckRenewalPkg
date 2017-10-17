@@ -1898,7 +1898,7 @@ namespace CheckRenewalPkg
         #region 打印下级用户
         private void button16_Click(object sender, EventArgs e)
         {
-            backgroundWorker9.RunWorkerAsync();
+            PrintChildNodesWorker9.RunWorkerAsync();
 
         }
         private string PringUserTree(TreeNode tn)
@@ -1913,9 +1913,18 @@ namespace CheckRenewalPkg
             {
                 PringUserTree(tns);
             }
+            int index = tn.Text.LastIndexOf('(');
 
+            int length = tn.Text.Length;
+            if (index >= 0)
+            {
+                DisplayAndLog(tn.Text.Substring(0, index) + "\t" + tn.Tag + "\t卡量\t" + tn.Text.Substring(index + 1, length-index-2) + "\r\n", true);
+            }
+            else
+            {
+                DisplayAndLog(tn.Text + "\t" + tn.Tag + "\r\n", true);
+            }
 
-            DisplayAndLog(tn.Text + "\t" + tn.Tag    + "\r\n", true);
        
 
             return result;
