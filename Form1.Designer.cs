@@ -77,6 +77,8 @@
             this.backgroundWorker10 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker11 = new System.ComponentModel.BackgroundWorker();
             this.CheckSimRenewalsWorker = new System.ComponentModel.BackgroundWorker();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -225,6 +227,8 @@
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.textBox2);
             this.groupBox1.Controls.Add(this.comboBox2);
             this.groupBox1.Controls.Add(this.radioButton4);
             this.groupBox1.Controls.Add(this.button22);
@@ -234,14 +238,14 @@
             this.groupBox1.Controls.Add(this.button17);
             this.groupBox1.Location = new System.Drawing.Point(5, 658);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(616, 30);
+            this.groupBox1.Size = new System.Drawing.Size(795, 30);
             this.groupBox1.TabIndex = 23;
             this.groupBox1.TabStop = false;
             // 
             // comboBox2
             // 
             this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(137, 9);
+            this.comboBox2.Location = new System.Drawing.Point(252, 9);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(100, 20);
             this.comboBox2.TabIndex = 26;
@@ -260,7 +264,7 @@
             // button22
             // 
             this.button22.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button22.Location = new System.Drawing.Point(329, 7);
+            this.button22.Location = new System.Drawing.Point(444, 7);
             this.button22.Name = "button22";
             this.button22.Size = new System.Drawing.Size(99, 23);
             this.button22.TabIndex = 24;
@@ -282,7 +286,7 @@
             // button20
             // 
             this.button20.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button20.Location = new System.Drawing.Point(447, 7);
+            this.button20.Location = new System.Drawing.Point(562, 7);
             this.button20.Name = "button20";
             this.button20.Size = new System.Drawing.Size(75, 23);
             this.button20.TabIndex = 21;
@@ -293,7 +297,7 @@
             // button19
             // 
             this.button19.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button19.Location = new System.Drawing.Point(528, 7);
+            this.button19.Location = new System.Drawing.Point(643, 7);
             this.button19.Name = "button19";
             this.button19.Size = new System.Drawing.Size(75, 23);
             this.button19.TabIndex = 21;
@@ -304,7 +308,7 @@
             // button17
             // 
             this.button17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button17.Location = new System.Drawing.Point(243, 8);
+            this.button17.Location = new System.Drawing.Point(358, 8);
             this.button17.Name = "button17";
             this.button17.Size = new System.Drawing.Size(80, 23);
             this.button17.TabIndex = 21;
@@ -582,6 +586,23 @@
             this.CheckSimRenewalsWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.CheckSimRenewalsWorker_DoWork);
             this.CheckSimRenewalsWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.CheckSimRenewalsWorker_RunWorkerCompleted);
             // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(185, 8);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(49, 21);
+            this.textBox2.TabIndex = 27;
+            this.textBox2.Text = "1";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(138, 13);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(41, 12);
+            this.label1.TabIndex = 28;
+            this.label1.Text = "周期数";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -654,6 +675,8 @@
         private System.Windows.Forms.Button button24;
         private System.Windows.Forms.Button button18;
         private System.ComponentModel.BackgroundWorker CheckSimRenewalsWorker;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox textBox2;
     }
 }
 

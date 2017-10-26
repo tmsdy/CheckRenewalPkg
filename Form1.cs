@@ -53,6 +53,7 @@ namespace CheckRenewalPkg
             public string stime_vs  ;
             public string etime_vs  ; 
             public double days_vs  ;
+            public int period;
         }
         public Form1()
         {
@@ -2025,9 +2026,10 @@ namespace CheckRenewalPkg
             string stime_vs = rp.stime_vs;
             string etime_vs = rp.etime_vs;
             double days_vs = rp.days_vs;
-
-            DisplayAndLog("数据对比时间段:" + stime_vs + "---" + etime_vs + " VS " + stime + "---" + etime + "\r\n\t\t\t" + rp.desc + "\t收款方:" + InvokeHelper.Get(this.comboBox2, "Text").ToString() + "\r\n", true);
-            DisplayAndLog("\t卡源\t续费次数\t续费金额\t总续费流量\t单笔ARPU\t每G售价\t日均续费\r\n", true);
+            int period = rp.period;
+            DateTime nowtime = DateTime.Now;
+            //DisplayAndLog("数据对比时间段:" + stime_vs + "---" + etime_vs + " VS " + stime + "---" + etime + "\r\n\t\t\t" + rp.desc + "\t收款方:" + InvokeHelper.Get(this.comboBox2, "Text").ToString() + "\r\n", true);
+            DisplayAndLog("时间段\t用户\t卡源\t续费次数\t续费金额\t总续费流量\t单笔ARPU\t每G售价\t日均续费\t收款方:" + InvokeHelper.Get(this.comboBox2, "Text").ToString()+"\r\n", true);
             if (rp.whichway == "single")
             {
                 if (treeView1.Nodes.Count == 0)
@@ -2049,9 +2051,35 @@ namespace CheckRenewalPkg
                 //username = treeView1.SelectedNode.Text.ToString();
                 username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
 
-                DisplayAndLog(username + "\t" + GetRenewalsOrderSum(id, "all", stime_vs, etime_vs, days_vs), true);
-                DisplayAndLog("\t卡源\t续费次数\t续费金额\t总续费流量\t单笔ARPU\t每G售价\t日均续费\t续费金额环比\r\n", true);
-                DisplayAndLog(username + "\t" + GetRenewalsOrderSum(id, "all", stime, etime, days), true);
+                for (int i = period; i >=1; i--)
+                {
+                    if(days==7.0)
+                    {
+                        stime = nowtime.AddDays(-i*days).ToString("yyyy-MM-dd");
+                        etime = nowtime.AddDays(-(i-1)*days -1).ToString("yyyy-MM-dd");
+
+                        DisplayAndLog(stime + "---" + etime + "\t" + username + "\t" + GetRenewalsOrderSum(id, "all", stime, etime, days), true);
+
+                    }
+                    else
+                    {
+                         stime = nowtime.AddMonths(-i+1).ToString("yyyy-MM") + "-01";
+                         etime = Convert.ToDateTime(stime).AddMonths(1).AddHours(-1).ToString("yyyy-MM-dd");
+                         //etime = nowtime.AddMonths(-i + 1).AddDays(-1).ToString("yyyy-MM-dd");
+                         days = Convert.ToInt32(Convert.ToDateTime(etime).ToString("dd"));
+                        //判断如果是月份是当前月，则结束日期和天数要修改下
+                        if(string.Equals(stime.Substring(0,7),nowtime.ToString("yyyy-MM")))
+                        {
+                             etime = nowtime.ToString("yyyy-MM-dd");
+                             days = nowtime.Day - 1 + nowtime.Hour / 24.0;
+                        }
+                        DisplayAndLog(stime + "---" + etime + "\t" + username + "\t" + GetRenewalsOrderSum(id, "all", stime, etime, days), true);
+                    }
+
+                }
+
+               //DisplayAndLog(stime_vs + "---" + etime_vs + "\t" + username + "\t" + GetRenewalsOrderSum(id, "all", stime_vs, etime_vs, days_vs), true);
+              //  DisplayAndLog("\t卡源\t续费次数\t续费金额\t总续费流量\t单笔ARPU\t每G售价\t日均续费\t续费金额环比\r\n", true);
 
 
             }
@@ -2090,26 +2118,26 @@ namespace CheckRenewalPkg
                     treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
                     if (null == treeView1.SelectedNode)
                     {
-                        DisplayAndLog("未知用户ID为" + idid + "\t" + GetRenewalsOrderSum(idid, "all", stime_vs, etime_vs, days_vs), true);
+                        DisplayAndLog(stime_vs + "---" + etime_vs + "\t" + "未知用户ID为" + idid + "\t" + GetRenewalsOrderSum(idid, "all", stime_vs, etime_vs, days_vs), true);
                         continue;
                     }
                     //username = treeView1.SelectedNode.Text.ToString();
                     username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
-                    DisplayAndLog(username + "\t" + GetRenewalsOrderSum(idid, "all", stime_vs, etime_vs, days_vs), true);
+                    DisplayAndLog(stime_vs + "---" + etime_vs + "\t" +username + "\t" + GetRenewalsOrderSum(idid, "all", stime_vs, etime_vs, days_vs), true);
                 }
 
-                DisplayAndLog("\t卡源\t续费次数\t续费金额\t总续费流量\t单笔ARPU\t每G售价\t日均续费\t续费金额环比\r\n", true);
+             //   DisplayAndLog("\t卡源\t续费次数\t续费金额\t总续费流量\t单笔ARPU\t每G售价\t日均续费\t续费金额环比\r\n", true);
                 foreach (string idid in idlist)
                 {
                     treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
                     if (null == treeView1.SelectedNode)
                     {
-                        DisplayAndLog("未知用户ID为" + idid + "\t" + GetRenewalsOrderSum(idid, "all", stime, etime, days), true);
+                        DisplayAndLog(stime + "---" + etime + "\t" + "未知用户ID为" + idid + "\t" + GetRenewalsOrderSum(idid, "all", stime, etime, days), true);
                         continue;
                     }
                     //username = treeView1.SelectedNode.Text.ToString();
                     username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
-                    DisplayAndLog(username + "\t" + GetRenewalsOrderSum(idid, "all", stime, etime, days), true);
+                    DisplayAndLog(stime + "---" + etime + "\t" + username + "\t" + GetRenewalsOrderSum(idid, "all", stime, etime, days), true);
                 }
             }
             //else
@@ -2232,6 +2260,7 @@ namespace CheckRenewalPkg
                  rp.etime_vs = nowtime.AddDays(-8).ToString("yyyy-MM-dd");
                  rp.days_vs = 7.0;
              }
+             rp.period = Convert.ToInt32(this.textBox2.Text.Trim());
            this.backgroundWorker10.RunWorkerAsync(rp);
         }
          
@@ -2306,6 +2335,7 @@ namespace CheckRenewalPkg
                 rp.etime_vs = nowtime.AddDays(-8).ToString("yyyy-MM-dd");
                 rp.days_vs = 7.0;
             }
+            rp.period = Convert.ToInt32(this.textBox2.Text.Trim());
              this.backgroundWorker10.RunWorkerAsync(rp);
         }
         //private void button23_Click(object sender, EventArgs e)
@@ -2420,6 +2450,7 @@ namespace CheckRenewalPkg
                 rp.etime_vs = nowtime.AddDays(-8).ToString("yyyy-MM-dd");
                 rp.days_vs = 7.0;
             }
+            rp.period = Convert.ToInt32(this.textBox2.Text.Trim());
             this.backgroundWorker11.RunWorkerAsync(rp);
         }
 
@@ -2549,6 +2580,7 @@ namespace CheckRenewalPkg
                 rp.etime_vs = nowtime.AddDays(-8).ToString("yyyy-MM-dd");
                 rp.days_vs = 7.0;
             }
+            rp.period = Convert.ToInt32(this.textBox2.Text.Trim());
             this.backgroundWorker11.RunWorkerAsync(rp);
         }
         #endregion
