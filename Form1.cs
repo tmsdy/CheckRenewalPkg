@@ -53,7 +53,7 @@ namespace CheckRenewalPkg
             public string stime_vs  ;
             public string etime_vs  ; 
             public double days_vs  ;
-            public int period;
+            public string period;
         }
         public Form1()
         {
@@ -2026,7 +2026,18 @@ namespace CheckRenewalPkg
             string stime_vs = rp.stime_vs;
             string etime_vs = rp.etime_vs;
             double days_vs = rp.days_vs;
-            int period = rp.period;
+            int period = 1;
+
+            e.Result = rp.whichway;
+            if( string.IsNullOrEmpty( rp.period))
+            {
+                DisplayAndLog("请先输入对比周期\r\n", true);
+                return ;
+            }
+            else
+            {
+                period = Convert.ToInt32(rp.period);
+            }
             DateTime nowtime = DateTime.Now;
             //DisplayAndLog("数据对比时间段:" + stime_vs + "---" + etime_vs + " VS " + stime + "---" + etime + "\r\n\t\t\t" + rp.desc + "\t收款方:" + InvokeHelper.Get(this.comboBox2, "Text").ToString() + "\r\n", true);
             DisplayAndLog("时间段\t用户\t卡源\t续费次数\t续费金额\t总续费流量\t单笔ARPU\t每G售价\t日均续费\t收款方:" + InvokeHelper.Get(this.comboBox2, "Text").ToString()+"\r\n", true);
@@ -2182,7 +2193,7 @@ namespace CheckRenewalPkg
 
             //}
 
-            e.Result = rp.whichway;
+
         }
 
         private void backgroundWorker10_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -2260,7 +2271,7 @@ namespace CheckRenewalPkg
                  rp.etime_vs = nowtime.AddDays(-8).ToString("yyyy-MM-dd");
                  rp.days_vs = 7.0;
              }
-             rp.period = Convert.ToInt32(this.textBox2.Text.Trim());
+             rp.period =(this.textBox2.Text.Trim());
            this.backgroundWorker10.RunWorkerAsync(rp);
         }
          
@@ -2335,7 +2346,7 @@ namespace CheckRenewalPkg
                 rp.etime_vs = nowtime.AddDays(-8).ToString("yyyy-MM-dd");
                 rp.days_vs = 7.0;
             }
-            rp.period = Convert.ToInt32(this.textBox2.Text.Trim());
+            rp.period =  (this.textBox2.Text.Trim());
              this.backgroundWorker10.RunWorkerAsync(rp);
         }
         //private void button23_Click(object sender, EventArgs e)
@@ -2450,7 +2461,7 @@ namespace CheckRenewalPkg
                 rp.etime_vs = nowtime.AddDays(-8).ToString("yyyy-MM-dd");
                 rp.days_vs = 7.0;
             }
-            rp.period = Convert.ToInt32(this.textBox2.Text.Trim());
+            rp.period =  (this.textBox2.Text.Trim());
             this.backgroundWorker11.RunWorkerAsync(rp);
         }
 
@@ -2580,7 +2591,7 @@ namespace CheckRenewalPkg
                 rp.etime_vs = nowtime.AddDays(-8).ToString("yyyy-MM-dd");
                 rp.days_vs = 7.0;
             }
-            rp.period = Convert.ToInt32(this.textBox2.Text.Trim());
+            rp.period =  (this.textBox2.Text.Trim());
             this.backgroundWorker11.RunWorkerAsync(rp);
         }
         #endregion
