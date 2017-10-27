@@ -7,6 +7,7 @@ using System.Data.SQLite;
 using System.Net;
 using System.IO;
 using System.Reflection;
+using AutoUpdaterDotNET;
 namespace CheckRenewalPkg
 {
     static class Program
@@ -29,6 +30,16 @@ namespace CheckRenewalPkg
             Program.configFilePath = Application.StartupPath + @"\crp_config.ini";
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            string updateurl = "http://www.gpspax.com/apkdownload/AutoUpdater-crp.xml";
+            if (!string.IsNullOrEmpty(updateurl))
+            {
+
+                AutoUpdater.Start(updateurl);
+            }   
+
+
+
             Application.Run(new LoginForm());
 
             //Application.Run(new UpdateSims());
