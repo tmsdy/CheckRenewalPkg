@@ -1752,7 +1752,7 @@ namespace CheckRenewalPkg
                 return;
             }
 
-            DialogResult dr = MessageBox.Show("在这个账号下新建： " + treeView1.SelectedNode.Text.ToString().Split('(')[0] + "\r\n格式为：  用户名，登录名，用户类型，密码\r\n" + this.richTextBox1.Text, "提示", MessageBoxButtons.OKCancel);
+            DialogResult dr = MessageBox.Show("在这个账号下新建： " + treeView1.SelectedNode.Text.ToString().Split('(')[0] + "\r\n格式为：  用户名，登录名，用户类型，密码\r\n或者为： 待修改ID，用户名，登录名，用户类型，密码\r\n" + this.richTextBox1.Text.Substring(0,50), "提示", MessageBoxButtons.OKCancel);
            if (dr == DialogResult.OK)
            {
                this.button14.Enabled = false;
@@ -1766,11 +1766,12 @@ namespace CheckRenewalPkg
         }
 
 
-        private string CreateUser(string parentid,string displayname,string loginname,string usertype,string password)
+        private string CreateUser(string parentid,string displayname,string loginname,string usertype,string password, string currentid)
         {
             string result = "";
-            string post = "txtHoldName={1}&txtUserName={2}&txtUserPass={4}&txtReUserPass={5}&sltHoldType={3}&txtContacter=&txtContacterTel=&viewWXRenewals=1&sltProvince=0&txtAddress=&txtRemark=&hid_ParentHoldID={0}&hid_HoldID=&hid_Province=&hid_City=&hid_Region=&hid_GroupHoldIds=&hid_GroupHoldNames=";
-            string postWithParam = string.Format(post, parentid, displayname, loginname, usertype, password, password);
+ 
+            string post = "txtHoldName={1}&txtUserName={2}&txtUserPass={4}&txtReUserPass={5}&sltHoldType={3}&txtContacter=&txtContacterTel=&viewWXRenewals=1&sltProvince=0&txtAddress=&txtRemark=&hid_ParentHoldID={0}&hid_HoldID={6}&hid_Province=&hid_City=&hid_Region=&hid_GroupHoldIds=&hid_GroupHoldNames=";
+            string postWithParam = string.Format(post, parentid, displayname, loginname, usertype, password, password,currentid);
            result = PostDataToUrl(postWithParam, sApiUrl+"/hold/Info");
            if (string.IsNullOrEmpty(result))
                result = "失败";
@@ -1798,6 +1799,7 @@ namespace CheckRenewalPkg
             string loginname = "";
             string usertype = "6";
             string password = "8989123";
+            string currentid = "";
             for (int i=0; i < count; i++)
             {
                 if(string.IsNullOrEmpty(usernamelist[i].Trim()))
@@ -1807,25 +1809,33 @@ namespace CheckRenewalPkg
                     {
                     case 1:
                             displayname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[0].Trim().Replace("\t",""));
-                            result = CreateUser(selectedUserId, displayname, displayname, usertype, password);
+                            result = CreateUser(selectedUserId, displayname, displayname, usertype, password, currentid);
                             break;
                     case 2:
                             displayname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[0].Trim().Replace("\t", ""));
                             loginname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[1].Trim().Replace("\t", ""));
-                            result = CreateUser(selectedUserId, displayname, loginname, usertype, password);
+                            result = CreateUser(selectedUserId, displayname, loginname, usertype, password, currentid);
                             break;
                     case 3:
                             displayname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[0].Trim().Replace("\t", ""));
                             loginname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[1].Trim().Replace("\t", ""));
                             usertype = usernamelist[i].Trim().Split(',')[2].Trim();
-                            result = CreateUser(selectedUserId, displayname, loginname, usertype, password);
+                            result = CreateUser(selectedUserId, displayname, loginname, usertype, password, currentid);
                             break;
                     case 4:
                             displayname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[0].Trim().Replace("\t", ""));
                             loginname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[1].Trim().Replace("\t", ""));
                             usertype = usernamelist[i].Trim().Split(',')[2].Trim();
                             password = usernamelist[i].Trim().Split(',')[3].Trim().Replace("\t", "");
-                            result = CreateUser(selectedUserId, displayname, loginname, usertype, password);
+                            result = CreateUser(selectedUserId, displayname, loginname, usertype, password, currentid);
+                            break;
+                    case 5:
+                            currentid = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[0].Trim().Replace("\t", ""));
+                            displayname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[1].Trim().Replace("\t", ""));
+                            loginname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[2].Trim().Replace("\t", ""));
+                            usertype = usernamelist[i].Trim().Split(',')[3].Trim();
+                            password = usernamelist[i].Trim().Split(',')[4].Trim().Replace("\t", "");
+                            result = CreateUser(selectedUserId, displayname, loginname, usertype, password, currentid);
                             break;
 
                 }
