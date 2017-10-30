@@ -1751,8 +1751,10 @@ namespace CheckRenewalPkg
                 MessageBox.Show("用户名不允许带\"(\" \")\"\r\n");
                 return;
             }
-
-            DialogResult dr = MessageBox.Show("在这个账号下新建： " + treeView1.SelectedNode.Text.ToString().Split('(')[0] + "\r\n格式为：  用户名，登录名，用户类型，密码\r\n或者为： 待修改ID，用户名，登录名，用户类型，密码\r\n" + this.richTextBox1.Text.Substring(0,50), "提示", MessageBoxButtons.OKCancel);
+            int length = s.Length;
+            if (length >= 50)
+                length = 50;
+            DialogResult dr = MessageBox.Show("在这个账号下新建： " + treeView1.SelectedNode.Text.ToString().Split('(')[0] + "\r\n格式为：  用户名，登录名，用户类型，密码\r\n或者为： 待修改ID，用户名，登录名，用户类型，密码\r\n" + s.Substring(0,length), "提示", MessageBoxButtons.OKCancel);
            if (dr == DialogResult.OK)
            {
                this.button14.Enabled = false;
