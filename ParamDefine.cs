@@ -1001,5 +1001,51 @@ namespace CheckRenewalPkg
             public List<SimRenewalsPkgListResultItem> result { get; set; }
         }
         #endregion
+
+
+
+        #region 激活停用数汇总
+
+        public class ActivateCountResultItem
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string date { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string activatedCount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string deactivatedCount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string firstActivatedCount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string lastDeactivatedCount { get; set; }
+        }
+
+        public class ActivateCountRoot
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public int error { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string reason { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<ActivateCountResultItem> result { get; set; }
+        }
+        #endregion
+
     }
 }

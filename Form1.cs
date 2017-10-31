@@ -1262,12 +1262,12 @@ namespace CheckRenewalPkg
 
             if (e.Result.ToString() == "single")
             {
-                this.button9.Text = "单个续费汇总";
+                this.button9.Text = "单续费汇总";
                 this.button9.Enabled = true; 
             }
             else
             {
-                this.button8.Text = "检查续费汇总";
+                this.button8.Text = "*续费汇总";
                 this.button8.Enabled = true; 
             }
 
@@ -1459,11 +1459,15 @@ namespace CheckRenewalPkg
             usagelist.Clear();
 
         }
-        public string GetUsageTotal(string id, bool isDisplayTitle)
+        public string GetUsageTotal(string username,string id, bool isDisplayTitle)
         {
             string result = "";
             string tmp = "";
             string url = "";
+            string dateStr = username + "\t日期\t";
+            string amountUsageStr = username + "\t总用量\t";
+            string validCountStr = username + "\t有效卡\t";
+            string validAvgUsageStr = username + "\t平均用量\t";
 
             url = sApiUrl + "/api/ReportFlowHold?holdId=" + id;
 
@@ -1476,25 +1480,35 @@ namespace CheckRenewalPkg
             ParamDefine.FlowReportRoot frr = JsonConvert.DeserializeObject<ParamDefine.FlowReportRoot>(response);
             ParamDefine.FlowReportResult frrResult = frr.result;
             if (frrResult == null || frrResult.dayStatisticsList == null)
-                return "查不到结果\r\n";
+                return username+"查不到结果\r\n";
 
             foreach (ParamDefine.DayStatisticsListItem daylist in frrResult.dayStatisticsList)
             {
-               tmp += daylist.statDay + "\t" + daylist.amountUsage.ToString("0.00") + "\t" + daylist.validCount + "\t" + daylist.validAvgUsage.ToString("0.00") + "\t";
+                dateStr += daylist.statDay + "\t";
+                amountUsageStr += daylist.amountUsage.ToString("0.00") + "\t";
+                validCountStr += daylist.validCount + "\t";
+                validAvgUsageStr += daylist.validAvgUsage.ToString("0.00") + "\t";
+               //tmp += daylist.statDay + "\t" + daylist.amountUsage.ToString("0.00") + "\t" + daylist.validCount + "\t" + daylist.validAvgUsage.ToString("0.00") + "\t";
                 //tmp += daylist.statDay + "\t" + daylist.amountUsage.ToString("0.00") + "\t" + daylist.validCount + "\t";
             }
 
-            tmp += "\r\n";
+            tmp += dateStr + "\r\n" + amountUsageStr + "\r\n" + validCountStr + "\r\n" + validAvgUsageStr + "\r\n";
             return tmp;
 
 
         }
-        public string GetUsageTotal(string id,bool isDisplayTitle,List<int> countlist,List<double> usagelist)
+        public string GetUsageTotal(string username,string id,bool isDisplayTitle,List<int> countlist,List<double> usagelist)
         {
             string result = "";
             string tmp = "";
             string url = "";
-          
+            string dateStr = username + "\t日期\t";
+            string amountUsageStr = username + "\t总用量\t";
+            string validCountStr = username + "\t有效卡\t";
+            string validAvgUsageStr = username + "\t平均用量\t";
+ 
+
+
             url = sApiUrl + "/api/ReportFlowHold?holdId=" + id;
 
             string response = GetResponseSafe(url);
@@ -1506,17 +1520,20 @@ namespace CheckRenewalPkg
             ParamDefine.FlowReportRoot frr = JsonConvert.DeserializeObject<ParamDefine.FlowReportRoot>(response);
             ParamDefine.FlowReportResult frrResult = frr.result;
             if (frrResult == null || frrResult.dayStatisticsList == null)
-                return "查不到结果\r\n";
+                return username+"查不到结果\r\n";
 
              foreach (ParamDefine.DayStatisticsListItem daylist in frrResult.dayStatisticsList)
              {
-                 tmp += daylist.statDay + "\t" + daylist.amountUsage.ToString("0.00") + "\t" + daylist.validCount + "\t" + daylist.validAvgUsage.ToString("0.00") + "\t";
+                 dateStr += daylist.statDay + "\t";
+                 amountUsageStr += daylist.amountUsage.ToString("0.00") + "\t";
+                 validCountStr += daylist.validCount + "\t";
+                 validAvgUsageStr += daylist.validAvgUsage.ToString("0.00") + "\t";
                  //tmp += daylist.statDay + "\t" + daylist.amountUsage.ToString("0.00") + "\t" + daylist.validCount  + "\t";
                  countlist.Add(Convert.ToInt32(daylist.validCount));
                  usagelist.Add(daylist.amountUsage);
              }
 
-             tmp += "\r\n";
+             tmp += dateStr + "\r\n" + amountUsageStr + "\r\n" + validCountStr + "\r\n" + validAvgUsageStr + "\r\n";
              return tmp;
 
              
@@ -1537,9 +1554,9 @@ namespace CheckRenewalPkg
             string whichway = e.Argument.ToString();
             List<int> Countlist = new List<int> { };
             List<double> Usagelist = new List<double> { };
-               
-            
 
+
+            string username = "";
             e.Result = "";
             if (whichway == "single")
             {
@@ -1558,8 +1575,9 @@ namespace CheckRenewalPkg
 
                 DisplayAndLog(tmp, true);
                 id = treeView1.SelectedNode.Tag.ToString();
-                DisplayAndLog(treeView1.SelectedNode.Text.ToString().Split('(')[0] + "\t", true);
-                DisplayAndLog(GetUsageTotal(id, true), true);
+                username =treeView1.SelectedNode.Text.ToString().Split('(')[0] ;
+
+                DisplayAndLog(GetUsageTotal(username,id, true), true);
 
 
             }
@@ -1587,8 +1605,9 @@ namespace CheckRenewalPkg
                         continue;
                     }
 
-                    DisplayAndLog(treeView1.SelectedNode.Text.ToString().Split('(')[0] + "\t", true);
-                    DisplayAndLog(GetUsageTotal(idid, false, Countlist,Usagelist), true);
+                    //DisplayAndLog(treeView1.SelectedNode.Text.ToString().Split('(')[0] + "\t", true);
+                    username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
+                    DisplayAndLog(GetUsageTotal(username,idid, false, Countlist, Usagelist), true);
                 }
                 DisplayAndLog("-------车载-------\r\n", true);
                 CalcAverage(Countlist, Usagelist);
@@ -1601,8 +1620,9 @@ namespace CheckRenewalPkg
                         continue;
                     }
 
-                    DisplayAndLog(treeView1.SelectedNode.Text.ToString().Split('(')[0] + "\t", true);
-                    DisplayAndLog(GetUsageTotal(idid, false, Countlist, Usagelist), true);
+                    //DisplayAndLog(treeView1.SelectedNode.Text.ToString().Split('(')[0] + "\t", true);
+                    username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
+                    DisplayAndLog(GetUsageTotal(username, idid, false, Countlist, Usagelist), true);
                 }
                 DisplayAndLog("-------MIFi-------\r\n", true);
                 CalcAverage(Countlist, Usagelist);
@@ -1615,8 +1635,9 @@ namespace CheckRenewalPkg
                         continue;
                     }
 
-                    DisplayAndLog(treeView1.SelectedNode.Text.ToString().Split('(')[0] + "\t", true);
-                    DisplayAndLog(GetUsageTotal(idid, false, Countlist, Usagelist), true);
+                    //DisplayAndLog(treeView1.SelectedNode.Text.ToString().Split('(')[0] + "\t", true);
+                    username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
+                    DisplayAndLog(GetUsageTotal(username, idid, false, Countlist, Usagelist), true);
                 }
                 DisplayAndLog("-------POS-------\r\n", true);
                 CalcAverage(Countlist, Usagelist);
@@ -1629,12 +1650,12 @@ namespace CheckRenewalPkg
         {
             if (e.Result.ToString() == "single")
             {
-                this.button11.Text = "单个用量汇总";
+                this.button11.Text = "单用量汇总";
                 this.button11.Enabled = true;
             }
             else
             {
-                this.button12.Text = "检查用量汇总";
+                this.button12.Text = "*用量汇总";
                 this.button12.Enabled = true;
             }
 
@@ -2865,6 +2886,124 @@ namespace CheckRenewalPkg
         }
 
 
+
+        private string GetActivaCountDay(string username,string id)
+        {
+            string result = "";
+      
+            string url = "";
+
+            string dateStr = username + "\t日期\t";
+            string activatedCountStr = username + "\t激活数\t";
+            string deactivatedCountStr = username + "\t停用数\t";
+            string firstActivatedCountStr = username + "\t首次激活\t";
+            string lastDeactivatedStr = username + "\t最近停用\t";
+
+
+            url = sApiUrl + "/api/ReportStatusRenewalsTotal?cmd=1&datetype=day&holdId=" + id;
+
+            string response = GetResponseSafe(url);
+            if (response == "")
+            {
+                DisplayAndLog("holdId为" + id + "查不到啊亲\r\n", true);
+                return result;
+            }
+            ParamDefine.ActivateCountRoot mrt = JsonConvert.DeserializeObject<ParamDefine.ActivateCountRoot>(response);
+            if (mrt.result == null)
+                return result + "\r\n";
+            foreach (ParamDefine.ActivateCountResultItem mrtresult in mrt.result)
+            {
+                dateStr += mrtresult.date + "\t";
+                activatedCountStr += mrtresult.activatedCount + "\t";
+                deactivatedCountStr += mrtresult.deactivatedCount + "\t";
+                firstActivatedCountStr += mrtresult.firstActivatedCount + "\t";
+                lastDeactivatedStr += mrtresult.lastDeactivatedCount + "\t";
+            }
+            result = dateStr + "\r\n" + activatedCountStr + "\r\n" + deactivatedCountStr + "\r\n" + firstActivatedCountStr + "\r\n" + lastDeactivatedStr + "\r\n";
+          
+            return result;
+
+        }
+
+        private void button25_Click(object sender, EventArgs e)
+        {
+            this.button25.Enabled = false;
+            this.button23.Enabled = false;
+
+            this.GetActiveCountWorker.RunWorkerAsync("single");
+        }
+
+        private void button23_Click(object sender, EventArgs e)
+        {
+            this.button25.Enabled = false;
+            this.button23.Enabled = false;
+
+            this.GetActiveCountWorker.RunWorkerAsync("multi");
+        }
+
+        private void GetActiveCountWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            string id = "";
+            string tmp = "";
+            string whichway = e.Argument.ToString();
+            string username = "";
+            e.Result = whichway;
+ 
+            if (whichway == "single")
+            {
+                if (treeView1.Nodes.Count == 0)
+                {
+                    DisplayAndLog("请先刷新用户列表\r\n", true);
+                    return;
+                }
+
+                if (treeView1.SelectedNode == null)
+                {
+
+                    DisplayAndLog("请先选择用户\r\n", true);
+                    return;
+                }
+                 
+                id = treeView1.SelectedNode.Tag.ToString();
+                username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
+                DisplayAndLog(GetActivaCountDay(username,id ), true);
+
+
+            }
+            else
+            { 
+                List<string> idlist = configManager.GetValueStrList("Userlist", "activeuserlist");
+                foreach (string idid in idlist)
+                {
+                    treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
+                    if (null == treeView1.SelectedNode)
+                    {
+                        DisplayAndLog(GetActivaCountDay("未知用户ID为" + idid, idid), true);
+                        continue;
+                    }
+
+                    //treeView1.Select();
+                    username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
+                    DisplayAndLog(GetActivaCountDay(username, idid), true);
+                }
+
+            }
+             
+        }
+
+        private void GetActiveCountWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+ 
+ 
+                this.button25.Enabled = true;
+    
+                this.button23.Enabled = true;
+      
+
+            DisplayAndLogBatch("------------------------------------------------------------------------\r\n", true);
+       
+
+        }
 
 
 
