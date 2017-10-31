@@ -1047,5 +1047,52 @@ namespace CheckRenewalPkg
         }
         #endregion
 
+        #region 续费用量汇总
+        public class RenewalsUsageResultItem
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string date { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string amount { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string usage { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string times { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string stopTimes { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string firstTimes { get; set; }
+        }
+
+        public class RenewalsUsageRoot
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public int error { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string reason { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<RenewalsUsageResultItem> result { get; set; }
+        }
+        #endregion
+
+
     }
 }

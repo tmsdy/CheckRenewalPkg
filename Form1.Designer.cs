@@ -35,6 +35,8 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.button4 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.button23 = new System.Windows.Forms.Button();
+            this.button25 = new System.Windows.Forms.Button();
             this.button18 = new System.Windows.Forms.Button();
             this.button24 = new System.Windows.Forms.Button();
             this.button21 = new System.Windows.Forms.Button();
@@ -79,9 +81,10 @@
             this.backgroundWorker10 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker11 = new System.ComponentModel.BackgroundWorker();
             this.CheckSimRenewalsWorker = new System.ComponentModel.BackgroundWorker();
-            this.button23 = new System.Windows.Forms.Button();
-            this.button25 = new System.Windows.Forms.Button();
             this.GetActiveCountWorker = new System.ComponentModel.BackgroundWorker();
+            this.button26 = new System.Windows.Forms.Button();
+            this.button27 = new System.Windows.Forms.Button();
+            this.GetRenewalsUsageWorker9 = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -98,7 +101,7 @@
             this.treeView1.Location = new System.Drawing.Point(3, 30);
             this.treeView1.Name = "treeView1";
             this.treeView1.ShowNodeToolTips = true;
-            this.treeView1.Size = new System.Drawing.Size(231, 650);
+            this.treeView1.Size = new System.Drawing.Size(247, 650);
             this.treeView1.TabIndex = 0;
             this.treeView1.DrawNode += new System.Windows.Forms.DrawTreeNodeEventHandler(this.treeView1_DrawNode);
             this.treeView1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseDown);
@@ -141,6 +144,8 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.button26);
+            this.splitContainer1.Panel2.Controls.Add(this.button27);
             this.splitContainer1.Panel2.Controls.Add(this.button23);
             this.splitContainer1.Panel2.Controls.Add(this.button25);
             this.splitContainer1.Panel2.Controls.Add(this.button18);
@@ -168,14 +173,14 @@
             this.splitContainer1.Panel2.Controls.Add(this.richTextBox1);
             this.splitContainer1.Panel2.Controls.Add(this.button2);
             this.splitContainer1.Panel2.Controls.Add(this.button1);
-            this.splitContainer1.Size = new System.Drawing.Size(1244, 688);
-            this.splitContainer1.SplitterDistance = 237;
+            this.splitContainer1.Size = new System.Drawing.Size(1331, 688);
+            this.splitContainer1.SplitterDistance = 253;
             this.splitContainer1.TabIndex = 5;
             // 
             // button4
             // 
             this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button4.Location = new System.Drawing.Point(173, 3);
+            this.button4.Location = new System.Drawing.Point(189, 3);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(61, 23);
             this.button4.TabIndex = 7;
@@ -190,11 +195,33 @@
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(3, 4);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(164, 20);
+            this.comboBox1.Size = new System.Drawing.Size(180, 20);
             this.comboBox1.TabIndex = 1;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             this.comboBox1.TextChanged += new System.EventHandler(this.comboBox1_TextChanged);
             this.comboBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.comboBox1_KeyUp);
+            // 
+            // button23
+            // 
+            this.button23.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button23.Location = new System.Drawing.Point(843, 636);
+            this.button23.Name = "button23";
+            this.button23.Size = new System.Drawing.Size(70, 23);
+            this.button23.TabIndex = 28;
+            this.button23.Text = "*激活汇总";
+            this.button23.UseVisualStyleBackColor = true;
+            this.button23.Click += new System.EventHandler(this.button23_Click);
+            // 
+            // button25
+            // 
+            this.button25.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button25.Location = new System.Drawing.Point(761, 636);
+            this.button25.Name = "button25";
+            this.button25.Size = new System.Drawing.Size(76, 23);
+            this.button25.TabIndex = 27;
+            this.button25.Text = "单激活汇总";
+            this.button25.UseVisualStyleBackColor = true;
+            this.button25.Click += new System.EventHandler(this.button25_Click);
             // 
             // button18
             // 
@@ -396,7 +423,7 @@
             // button10
             // 
             this.button10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button10.Location = new System.Drawing.Point(1138, 819);
+            this.button10.Location = new System.Drawing.Point(1209, 819);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(81, 23);
             this.button10.TabIndex = 15;
@@ -518,7 +545,8 @@
             // button3
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(941, 658);
+            this.button3.ForeColor = System.Drawing.Color.DarkRed;
+            this.button3.Location = new System.Drawing.Point(1006, 611);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(59, 23);
             this.button3.TabIndex = 6;
@@ -545,7 +573,7 @@
             this.richTextBox1.Font = new System.Drawing.Font("新宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.richTextBox1.Location = new System.Drawing.Point(3, 5);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(995, 603);
+            this.richTextBox1.Size = new System.Drawing.Size(1066, 601);
             this.richTextBox1.TabIndex = 4;
             this.richTextBox1.Text = "";
             // 
@@ -608,38 +636,43 @@
             this.CheckSimRenewalsWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.CheckSimRenewalsWorker_DoWork);
             this.CheckSimRenewalsWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.CheckSimRenewalsWorker_RunWorkerCompleted);
             // 
-            // button23
-            // 
-            this.button23.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button23.Location = new System.Drawing.Point(843, 636);
-            this.button23.Name = "button23";
-            this.button23.Size = new System.Drawing.Size(70, 23);
-            this.button23.TabIndex = 28;
-            this.button23.Text = "*激活汇总";
-            this.button23.UseVisualStyleBackColor = true;
-            this.button23.Click += new System.EventHandler(this.button23_Click);
-            // 
-            // button25
-            // 
-            this.button25.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button25.Location = new System.Drawing.Point(761, 636);
-            this.button25.Name = "button25";
-            this.button25.Size = new System.Drawing.Size(76, 23);
-            this.button25.TabIndex = 27;
-            this.button25.Text = "单激活汇总";
-            this.button25.UseVisualStyleBackColor = true;
-            this.button25.Click += new System.EventHandler(this.button25_Click);
-            // 
             // GetActiveCountWorker
             // 
             this.GetActiveCountWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.GetActiveCountWorker_DoWork);
             this.GetActiveCountWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.GetActiveCountWorker_RunWorkerCompleted);
             // 
+            // button26
+            // 
+            this.button26.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button26.Location = new System.Drawing.Point(999, 636);
+            this.button26.Name = "button26";
+            this.button26.Size = new System.Drawing.Size(70, 23);
+            this.button26.TabIndex = 30;
+            this.button26.Text = "*续费流量";
+            this.button26.UseVisualStyleBackColor = true;
+            this.button26.Click += new System.EventHandler(this.button26_Click);
+            // 
+            // button27
+            // 
+            this.button27.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button27.Location = new System.Drawing.Point(917, 636);
+            this.button27.Name = "button27";
+            this.button27.Size = new System.Drawing.Size(76, 23);
+            this.button27.TabIndex = 29;
+            this.button27.Text = "单续费流量";
+            this.button27.UseVisualStyleBackColor = true;
+            this.button27.Click += new System.EventHandler(this.button27_Click);
+            // 
+            // GetRenewalsUsageWorker9
+            // 
+            this.GetRenewalsUsageWorker9.DoWork += new System.ComponentModel.DoWorkEventHandler(this.GetRenewalsUsageWorker9_DoWork);
+            this.GetRenewalsUsageWorker9.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.GetRenewalsUsageWorker9_RunWorkerCompleted);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1268, 712);
+            this.ClientSize = new System.Drawing.Size(1355, 712);
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
@@ -712,6 +745,9 @@
         private System.Windows.Forms.Button button23;
         private System.Windows.Forms.Button button25;
         private System.ComponentModel.BackgroundWorker GetActiveCountWorker;
+        private System.Windows.Forms.Button button26;
+        private System.Windows.Forms.Button button27;
+        private System.ComponentModel.BackgroundWorker GetRenewalsUsageWorker9;
     }
 }
 

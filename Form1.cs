@@ -1161,6 +1161,7 @@ namespace CheckRenewalPkg
                       "已激活卡\t" +
                       "已停用卡\t" +
                       "有效续费卡\t" +
+                      "脱网卡\t" +
                       "总续费金额\t" +
                       "总返利金额\t" +
                       "单卡ARPU\t" +
@@ -1215,6 +1216,7 @@ namespace CheckRenewalPkg
                           "已激活卡\t" +
                           "已停用卡\t" +
                           "有效续费卡\t" +
+                      "脱网卡\t" +
                           "总续费金额\t" +
                           "总返利金额\t" +
                           "单卡ARPU\t" +
@@ -1342,6 +1344,7 @@ namespace CheckRenewalPkg
                        "\t" + rtresult.ltActivatedCount +
                        "\t" + rtresult.ltStopCount +
                        "\t" + rtresult.renewalsCount +
+                       "\t" + rtresult.ltOutCount +
                        "\t" + rtresult.renewalsAmount.ToString("#0") +
                        "\t" + rtresult.backAmount.ToString("#0") +
                        "\t" + (rtresult.renewalsAmount / rtresult.renewalsCount).ToString("#0.00") +
@@ -2890,7 +2893,7 @@ namespace CheckRenewalPkg
         }
 
 
-
+        #region 激活数汇总
         private string GetActivaCountDay(string username,string id)
         {
             string result = "";
@@ -3007,6 +3010,120 @@ namespace CheckRenewalPkg
             DisplayAndLogBatch("------------------------------------------------------------------------\r\n", true);
        
 
+        }
+        #endregion 
+
+        private void button27_Click(object sender, EventArgs e)
+        {
+            this.button26.Enabled = false;
+            this.button27.Enabled = false;
+
+            this.GetRenewalsUsageWorker9.RunWorkerAsync("single");
+        }
+
+        private void button26_Click(object sender, EventArgs e)
+        {
+            this.button26.Enabled = false;
+            this.button27.Enabled = false;
+            this.GetRenewalsUsageWorker9.RunWorkerAsync("multi");
+        }
+        private string GetRewnewalsUsage(string username, string id)
+        {
+            string result = "";
+
+            string url = "";
+
+            string dateStr = username + "\t日期\t";
+            string amountStr = username + "\t续费金额\t";
+            string usageStr = username + "\t续费流量\t";
+            string timesStr = username + "\t续费笔数\t";
+            string stopTimesStr = username + "\t停机续费\t";
+            string firstTimesStr = username + "\t首次续费\t";
+        
+            url = sApiUrl + "/api/ReportStatusRenewalsTotal?cmd=3&datetype=day&holdId=" + id;
+
+            string response = GetResponseSafe(url);
+            if (response == "")
+            {
+                DisplayAndLog("holdId为" + id + "查不到啊亲\r\n", true);
+                return result;
+            }
+            ParamDefine.RenewalsUsageRoot mrt = JsonConvert.DeserializeObject<ParamDefine.RenewalsUsageRoot>(response);
+            if (mrt.result == null)
+                return result + "\r\n";
+            foreach (ParamDefine.RenewalsUsageResultItem mrtresult in mrt.result)
+            {
+                dateStr += mrtresult.date + "\t";
+                amountStr += mrtresult.amount + "\t";
+                usageStr += mrtresult.usage + "\t";
+                timesStr += mrtresult.times + "\t";
+                stopTimesStr += mrtresult.stopTimes + "\t";
+                firstTimesStr += mrtresult.firstTimes + "\t";
+            }
+            result = dateStr + "\r\n" + amountStr + "\r\n" + usageStr + "\r\n" + timesStr + "\r\n" + stopTimesStr + "\r\n" + firstTimesStr + "\r\n";
+
+            return result;
+
+        }
+        private void GetRenewalsUsageWorker9_DoWork(object sender, DoWorkEventArgs e)
+        {
+            string id = "";
+            string tmp = "";
+            string whichway = e.Argument.ToString();
+            string username = "";
+            e.Result = whichway;
+
+            if (whichway == "single")
+            {
+                if (treeView1.Nodes.Count == 0)
+                {
+                    DisplayAndLog("请先刷新用户列表\r\n", true);
+                    return;
+                }
+
+                if (treeView1.SelectedNode == null)
+                {
+
+                    DisplayAndLog("请先选择用户\r\n", true);
+                    return;
+                }
+
+                id = treeView1.SelectedNode.Tag.ToString();
+                username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
+                DisplayAndLog(GetRewnewalsUsage(username, id), true);
+
+
+            }
+            else
+            {
+                List<string> idlist = configManager.GetValueStrList("Userlist", "renewalsusageuserlist");
+                foreach (string idid in idlist)
+                {
+                    treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
+                    if (null == treeView1.SelectedNode)
+                    {
+                        DisplayAndLog(GetRewnewalsUsage("未知用户ID为" + idid, idid), true);
+                        continue;
+                    }
+
+                    //treeView1.Select();
+                    username = treeView1.SelectedNode.Text.ToString().Split('(')[0];
+                    DisplayAndLog(GetRewnewalsUsage(username, idid), true);
+                }
+
+            }
+             
+        }
+
+        private void GetRenewalsUsageWorker9_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            this.button26.Enabled = true;
+
+            this.button27.Enabled = true;
+
+
+            DisplayAndLogBatch("------------------------------------------------------------------------\r\n", true);
+       
         }
 
 
