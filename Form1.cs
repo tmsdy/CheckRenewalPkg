@@ -2735,7 +2735,7 @@ namespace CheckRenewalPkg
             //查到了套餐分布
             foreach (ParamDefine.PkgDistributionResultItem pkgitem in pkgDisRoot.result)
             {
-                DisplayAndLog(pkgitem.groupByName.PadRight(22) +"\t" + pkgitem.groupByValue + "张 \r\n",true);
+                DisplayAndLog(pkgitem.groupByName.PadRight(22) + "\t" + pkgitem.groupByValue + "张\t", true);
                 pkgid =  GetPkgIdFromPkgName(pkgitem.groupByName);
                 if(string.IsNullOrEmpty(pkgid))
                 {
@@ -2748,6 +2748,10 @@ namespace CheckRenewalPkg
                     DisplayAndLog("SimID为空\r\n", true);
                     continue;
                 }
+                //返回的格式为 simid，ICCID
+                DisplayAndLog(simid.Split(',')[1] + "\r\n", true);
+
+                simid = simid.Split(',')[0];
                 DisplayAndLogBatch(GetSimRenewalsPkgList(simid),true);
                     
 
@@ -2869,7 +2873,7 @@ namespace CheckRenewalPkg
                 //取第1个卡
                 string simlist = array[1].First.ToString();
                 ParamDefine.SearchSimListDetail sslds = JsonConvert.DeserializeObject<ParamDefine.SearchSimListDetail>(simlist);
-                simid = sslds.simId;
+                simid = sslds.simId + "," + sslds.guid;
  
                 return simid;
             }
