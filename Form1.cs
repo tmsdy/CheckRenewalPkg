@@ -3032,13 +3032,13 @@ namespace CheckRenewalPkg
             string result = "";
 
             string url = "";
-
-            string dateStr = username + "\t日期\t";
-            string amountStr = username + "\t续费金额\t";
-            string usageStr = username + "\t续费流量\t";
-            string timesStr = username + "\t续费笔数\t";
-            string stopTimesStr = username + "\t停机续费\t";
-            string firstTimesStr = username + "\t首次续费\t";
+            string tmp = "\t日期\t续费金额\t续费流量\t续费笔数\t停机续费\t首次续费\r\n";
+            //string dateStr = username + "\t日期\t";
+            //string amountStr = username + "\t续费金额\t";
+            //string usageStr = username + "\t续费流量\t";
+            //string timesStr = username + "\t续费笔数\t";
+            //string stopTimesStr = username + "\t停机续费\t";
+            //string firstTimesStr = username + "\t首次续费\t";
         
             url = sApiUrl + "/api/ReportStatusRenewalsTotal?cmd=3&datetype=day&holdId=" + id;
 
@@ -3053,15 +3053,17 @@ namespace CheckRenewalPkg
                 return result + "\r\n";
             foreach (ParamDefine.RenewalsUsageResultItem mrtresult in mrt.result)
             {
-                dateStr += mrtresult.date + "\t";
-                amountStr += mrtresult.amount + "\t";
-                usageStr += mrtresult.usage + "\t";
-                timesStr += mrtresult.times + "\t";
-                stopTimesStr += mrtresult.stopTimes + "\t";
-                firstTimesStr += mrtresult.firstTimes + "\t";
+                //dateStr += mrtresult.date + "\t";
+                //amountStr += mrtresult.amount + "\t";
+                //usageStr += mrtresult.usage + "\t";
+                //timesStr += mrtresult.times + "\t";
+                //stopTimesStr += mrtresult.stopTimes + "\t";
+                //firstTimesStr += mrtresult.firstTimes + "\t";
+                tmp += username + "\t" + mrtresult.date + "\t" + mrtresult.amount + "\t" + mrtresult.usage + "\t" + mrtresult.times + "\t" + mrtresult.stopTimes + "\t" + mrtresult.firstTimes + "\r\n";
             }
-            result = dateStr + "\r\n" + amountStr + "\r\n" + usageStr + "\r\n" + timesStr + "\r\n" + stopTimesStr + "\r\n" + firstTimesStr + "\r\n";
+            //result = dateStr + "\r\n" + amountStr + "\r\n" + usageStr + "\r\n" + timesStr + "\r\n" + stopTimesStr + "\r\n" + firstTimesStr + "\r\n";
 
+            result = tmp;
             return result;
 
         }
