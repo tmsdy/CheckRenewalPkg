@@ -35,6 +35,8 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.button4 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.button26 = new System.Windows.Forms.Button();
+            this.button27 = new System.Windows.Forms.Button();
             this.button23 = new System.Windows.Forms.Button();
             this.button25 = new System.Windows.Forms.Button();
             this.button18 = new System.Windows.Forms.Button();
@@ -82,9 +84,8 @@
             this.backgroundWorker11 = new System.ComponentModel.BackgroundWorker();
             this.CheckSimRenewalsWorker = new System.ComponentModel.BackgroundWorker();
             this.GetActiveCountWorker = new System.ComponentModel.BackgroundWorker();
-            this.button26 = new System.Windows.Forms.Button();
-            this.button27 = new System.Windows.Forms.Button();
             this.GetRenewalsUsageWorker9 = new System.ComponentModel.BackgroundWorker();
+            this.button28 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -144,6 +145,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.button28);
             this.splitContainer1.Panel2.Controls.Add(this.button26);
             this.splitContainer1.Panel2.Controls.Add(this.button27);
             this.splitContainer1.Panel2.Controls.Add(this.button23);
@@ -200,6 +202,28 @@
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             this.comboBox1.TextChanged += new System.EventHandler(this.comboBox1_TextChanged);
             this.comboBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.comboBox1_KeyUp);
+            // 
+            // button26
+            // 
+            this.button26.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button26.Location = new System.Drawing.Point(999, 636);
+            this.button26.Name = "button26";
+            this.button26.Size = new System.Drawing.Size(70, 23);
+            this.button26.TabIndex = 30;
+            this.button26.Text = "*续费流量";
+            this.button26.UseVisualStyleBackColor = true;
+            this.button26.Click += new System.EventHandler(this.button26_Click);
+            // 
+            // button27
+            // 
+            this.button27.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button27.Location = new System.Drawing.Point(917, 636);
+            this.button27.Name = "button27";
+            this.button27.Size = new System.Drawing.Size(76, 23);
+            this.button27.TabIndex = 29;
+            this.button27.Text = "单续费流量";
+            this.button27.UseVisualStyleBackColor = true;
+            this.button27.Click += new System.EventHandler(this.button27_Click);
             // 
             // button23
             // 
@@ -498,22 +522,22 @@
             // button7
             // 
             this.button7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button7.Location = new System.Drawing.Point(362, 636);
+            this.button7.Location = new System.Drawing.Point(382, 636);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(71, 23);
+            this.button7.Size = new System.Drawing.Size(51, 23);
             this.button7.TabIndex = 10;
-            this.button7.Text = "本月返利";
+            this.button7.Text = "本月返";
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // button6
             // 
             this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button6.Location = new System.Drawing.Point(289, 636);
+            this.button6.Location = new System.Drawing.Point(285, 636);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(71, 23);
+            this.button6.Size = new System.Drawing.Size(42, 23);
             this.button6.TabIndex = 9;
-            this.button6.Text = "上月返利";
+            this.button6.Text = "上返";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
@@ -641,32 +665,21 @@
             this.GetActiveCountWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.GetActiveCountWorker_DoWork);
             this.GetActiveCountWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.GetActiveCountWorker_RunWorkerCompleted);
             // 
-            // button26
-            // 
-            this.button26.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button26.Location = new System.Drawing.Point(999, 636);
-            this.button26.Name = "button26";
-            this.button26.Size = new System.Drawing.Size(70, 23);
-            this.button26.TabIndex = 30;
-            this.button26.Text = "*续费流量";
-            this.button26.UseVisualStyleBackColor = true;
-            this.button26.Click += new System.EventHandler(this.button26_Click);
-            // 
-            // button27
-            // 
-            this.button27.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button27.Location = new System.Drawing.Point(917, 636);
-            this.button27.Name = "button27";
-            this.button27.Size = new System.Drawing.Size(76, 23);
-            this.button27.TabIndex = 29;
-            this.button27.Text = "单续费流量";
-            this.button27.UseVisualStyleBackColor = true;
-            this.button27.Click += new System.EventHandler(this.button27_Click);
-            // 
             // GetRenewalsUsageWorker9
             // 
             this.GetRenewalsUsageWorker9.DoWork += new System.ComponentModel.DoWorkEventHandler(this.GetRenewalsUsageWorker9_DoWork);
             this.GetRenewalsUsageWorker9.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.GetRenewalsUsageWorker9_RunWorkerCompleted);
+            // 
+            // button28
+            // 
+            this.button28.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button28.Location = new System.Drawing.Point(331, 636);
+            this.button28.Name = "button28";
+            this.button28.Size = new System.Drawing.Size(48, 23);
+            this.button28.TabIndex = 31;
+            this.button28.Text = "*上返";
+            this.button28.UseVisualStyleBackColor = true;
+            this.button28.Click += new System.EventHandler(this.button28_Click);
             // 
             // Form1
             // 
@@ -748,6 +761,7 @@
         private System.Windows.Forms.Button button26;
         private System.Windows.Forms.Button button27;
         private System.ComponentModel.BackgroundWorker GetRenewalsUsageWorker9;
+        private System.Windows.Forms.Button button28;
     }
 }
 

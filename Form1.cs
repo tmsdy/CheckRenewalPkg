@@ -1013,13 +1013,23 @@ namespace CheckRenewalPkg
 
         private void button6_Click(object sender, EventArgs e)
         {
-
-            this.button6.Text = "获取中";
+            this.button28.Enabled = false;
+ 
             this.button6.Enabled = false;
 
-            this.backgroundWorker2.RunWorkerAsync();
+            this.backgroundWorker2.RunWorkerAsync("single");
         }
-        private string GetLastMonthBackMoney(string id, string period)
+        private void button28_Click(object sender, EventArgs e)
+        {
+            this.button28.Enabled = false;
+
+            this.button6.Enabled = false;
+
+            this.backgroundWorker2.RunWorkerAsync("multi");
+        }
+
+
+        private string GetLastMonthBackMoney(string id, string period,bool isPrintDetail)
         {
             double backmoneySum = 0;
             double renewalsSum = 0;
@@ -1053,37 +1063,67 @@ namespace CheckRenewalPkg
                 backmoneySum += (bmr.backPrice);
                 renewalsSum += bmr.renewalsPrice;
             }
-
-            result = tmp + "ID为" + id + "\t笔数为\t" + bmlist.result.Count().ToString() + "\t总续费为\t" + renewalsSum.ToString("0.00") + "\t总返利为\t" + backmoneySum.ToString("0.00") + "\t" + (backmoneySum / renewalsSum).ToString("0.00%") + "\r\n";
+            if (isPrintDetail)
+            {
+                result = tmp + "ID为" + id + "\t笔数为\t" + bmlist.result.Count().ToString() + "\t总续费为\t" + renewalsSum.ToString("0.00") + "\t总返利为\t" + backmoneySum.ToString("0.00") + "\t" + (backmoneySum / renewalsSum).ToString("0.00%") + "\r\n";
+            }
+            else
+            {
+                result =  "\tID为" + id + "\t笔数为\t" + bmlist.result.Count().ToString() + "\t总续费为\t" + renewalsSum.ToString("0.00") + "\t总返利为\t" + backmoneySum.ToString("0.00") + "\t" + (backmoneySum / renewalsSum).ToString("0.00%") + "\r\n";
+            }
             return result;
         }
         private void backgroundWorker2_DoWork(object sender, DoWorkEventArgs e)
         {
             string id = "";
-
+            string whichway = e.Argument.ToString();
             e.Result = "";
-            if (treeView1.Nodes.Count == 0)
+            if (whichway == "single")
             {
-                DisplayAndLog("请先刷新用户列表\r\n", true);
-                return;
-            }
+                if (treeView1.Nodes.Count == 0)
+                {
+                    DisplayAndLog("请先刷新用户列表\r\n", true);
+                    return;
+                }
 
-            if (treeView1.SelectedNode == null)
+                if (treeView1.SelectedNode == null)
+                {
+
+                    DisplayAndLog("请先选择用户\r\n", true);
+                    return;
+                }
+                id = treeView1.SelectedNode.Tag.ToString();
+                DisplayAndLogBatch(treeView1.SelectedNode.Text.ToString().Split('(')[0], true);
+                DisplayAndLogBatch(GetLastMonthBackMoney(id, "lastmonth", true),true);
+
+
+            }
+            else
             {
+                List<string> idlist = configManager.GetValueStrList("Userlist", "lastmonthbackmoney");
+                foreach (string idid in idlist)
+                {
+                    treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
+                    if (null == treeView1.SelectedNode)
+                    {
+                        DisplayAndLog(GetActivaCountDay("未知用户ID为" + idid, idid), true);
+                        continue;
+                    }
 
-                DisplayAndLog("请先选择用户\r\n", true);
-                return;
+                    //treeView1.Select();
+                    DisplayAndLogBatch(treeView1.SelectedNode.Text.ToString().Split('(')[0], true);
+                    DisplayAndLogBatch(GetLastMonthBackMoney(idid, "lastmonth", false), true);
+                }
+
             }
-            id = treeView1.SelectedNode.Tag.ToString();
-            DisplayAndLogBatch(treeView1.SelectedNode.Text.ToString().Split('(')[0], true);
-            e.Result = GetLastMonthBackMoney(id, "lastmonth");
         }
 
         private void backgroundWorker2_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            this.button6.Text = "上月返利";
+
+            this.button28.Enabled = true;
             this.button6.Enabled = true;
-            DisplayAndLogBatch(e.Result.ToString(), true);
+            //DisplayAndLogBatch(e.Result.ToString(), true);
             DisplayAndLogBatch("------------------------------------------------------------------------\r\n", true);
         }
 
@@ -1106,7 +1146,7 @@ namespace CheckRenewalPkg
             }
             id = treeView1.SelectedNode.Tag.ToString();
             DisplayAndLogBatch(treeView1.SelectedNode.Text.ToString().Split('(')[0], true);
-            e.Result = GetLastMonthBackMoney(id, "");
+            e.Result = GetLastMonthBackMoney(id, "",true);
 
         }
 
@@ -3128,7 +3168,7 @@ namespace CheckRenewalPkg
        
         }
 
-
+  
 
 
 
