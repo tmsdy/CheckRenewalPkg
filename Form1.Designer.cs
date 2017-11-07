@@ -35,6 +35,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.button4 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.button28 = new System.Windows.Forms.Button();
             this.button26 = new System.Windows.Forms.Button();
             this.button27 = new System.Windows.Forms.Button();
             this.button23 = new System.Windows.Forms.Button();
@@ -85,7 +86,7 @@
             this.CheckSimRenewalsWorker = new System.ComponentModel.BackgroundWorker();
             this.GetActiveCountWorker = new System.ComponentModel.BackgroundWorker();
             this.GetRenewalsUsageWorker9 = new System.ComponentModel.BackgroundWorker();
-            this.button28 = new System.Windows.Forms.Button();
+            this.button29 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -145,6 +146,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.button29);
             this.splitContainer1.Panel2.Controls.Add(this.button28);
             this.splitContainer1.Panel2.Controls.Add(this.button26);
             this.splitContainer1.Panel2.Controls.Add(this.button27);
@@ -202,6 +204,17 @@
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             this.comboBox1.TextChanged += new System.EventHandler(this.comboBox1_TextChanged);
             this.comboBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.comboBox1_KeyUp);
+            // 
+            // button28
+            // 
+            this.button28.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button28.Location = new System.Drawing.Point(331, 636);
+            this.button28.Name = "button28";
+            this.button28.Size = new System.Drawing.Size(48, 23);
+            this.button28.TabIndex = 31;
+            this.button28.Text = "*上返";
+            this.button28.UseVisualStyleBackColor = true;
+            this.button28.Click += new System.EventHandler(this.button28_Click);
             // 
             // button26
             // 
@@ -272,9 +285,9 @@
             // button21
             // 
             this.button21.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button21.Location = new System.Drawing.Point(905, 614);
+            this.button21.Location = new System.Drawing.Point(905, 613);
             this.button21.Name = "button21";
-            this.button21.Size = new System.Drawing.Size(75, 23);
+            this.button21.Size = new System.Drawing.Size(42, 23);
             this.button21.TabIndex = 24;
             this.button21.Text = "同步";
             this.button21.UseVisualStyleBackColor = true;
@@ -427,7 +440,7 @@
             this.button13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button13.Location = new System.Drawing.Point(844, 662);
             this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(75, 23);
+            this.button13.Size = new System.Drawing.Size(55, 23);
             this.button13.TabIndex = 17;
             this.button13.Text = "老续费";
             this.button13.UseVisualStyleBackColor = true;
@@ -570,7 +583,7 @@
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button3.ForeColor = System.Drawing.Color.DarkRed;
-            this.button3.Location = new System.Drawing.Point(1006, 611);
+            this.button3.Location = new System.Drawing.Point(1006, 613);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(59, 23);
             this.button3.TabIndex = 6;
@@ -670,16 +683,16 @@
             this.GetRenewalsUsageWorker9.DoWork += new System.ComponentModel.DoWorkEventHandler(this.GetRenewalsUsageWorker9_DoWork);
             this.GetRenewalsUsageWorker9.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.GetRenewalsUsageWorker9_RunWorkerCompleted);
             // 
-            // button28
+            // button29
             // 
-            this.button28.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button28.Location = new System.Drawing.Point(331, 636);
-            this.button28.Name = "button28";
-            this.button28.Size = new System.Drawing.Size(48, 23);
-            this.button28.TabIndex = 31;
-            this.button28.Text = "*上返";
-            this.button28.UseVisualStyleBackColor = true;
-            this.button28.Click += new System.EventHandler(this.button28_Click);
+            this.button29.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button29.Location = new System.Drawing.Point(905, 662);
+            this.button29.Name = "button29";
+            this.button29.Size = new System.Drawing.Size(55, 23);
+            this.button29.TabIndex = 32;
+            this.button29.Text = "*老续费";
+            this.button29.UseVisualStyleBackColor = true;
+            this.button29.Click += new System.EventHandler(this.button29_Click);
             // 
             // Form1
             // 
@@ -762,6 +775,7 @@
         private System.Windows.Forms.Button button27;
         private System.ComponentModel.BackgroundWorker GetRenewalsUsageWorker9;
         private System.Windows.Forms.Button button28;
+        private System.Windows.Forms.Button button29;
     }
 }
 

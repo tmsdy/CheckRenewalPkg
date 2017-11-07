@@ -1124,7 +1124,7 @@ namespace CheckRenewalPkg
             this.button28.Enabled = true;
             this.button6.Enabled = true;
             //DisplayAndLogBatch(e.Result.ToString(), true);
-            DisplayAndLogBatch("------------------------------------------------------------------------\r\n", true);
+            DisplayAndLogBatch("-----\t-----\t-----\t-----\t-----\t-----\t-----\t-----\r\n", true);
         }
 
         private void backgroundWorker3_DoWork(object sender, DoWorkEventArgs e)
@@ -1164,7 +1164,7 @@ namespace CheckRenewalPkg
             this.button7.Text = "本月返利";
             this.button7.Enabled = true;
             DisplayAndLogBatch(e.Result.ToString(), true);
-            DisplayAndLogBatch("------------------------------------------------------------------------\r\n", true);
+            DisplayAndLogBatch("-----\t-----\t-----\t-----\t-----\t-----\t-----\t-----\r\n", true);
 
         }
 
@@ -1313,7 +1313,7 @@ namespace CheckRenewalPkg
                 this.button8.Enabled = true; 
             }
 
-            DisplayAndLogBatch("------------------------------------------------------------------------\r\n", true);
+            DisplayAndLogBatch("-----\t-----\t-----\t-----\t-----\t-----\t-----\t-----\r\n", true);
         }
         private string GetMonthRenewalsTotal(string id)
         {
@@ -1702,7 +1702,7 @@ namespace CheckRenewalPkg
                 this.button12.Enabled = true;
             }
 
-            DisplayAndLogBatch("------------------------------------------------------------------------\r\n", true);
+            DisplayAndLogBatch("-----\t-----\t-----\t-----\t-----\t-----\t-----\t-----\r\n", true);
         }
 
         private void button12_Click(object sender, EventArgs e)
@@ -1715,14 +1715,23 @@ namespace CheckRenewalPkg
         #region 老续费
         private void button13_Click(object sender, EventArgs e)
         {
-            this.button13.Text = "获取中";
+
             this.button13.Enabled = false;
+            this.button29.Enabled = false;
 
             this.backgroundWorker6.RunWorkerAsync("single");
         }
+        private void button29_Click(object sender, EventArgs e)
+        {
+            this.button13.Enabled = false;
+            this.button29.Enabled = false;
+
+            this.backgroundWorker6.RunWorkerAsync("multi");
+
+        }
 
 
-        public string GetOldRenewals(string id, bool isDisplayTitle)
+        public string GetOldRenewals(string username,string id, bool isDisplayTitle)
         {
             string result = "";
             string tmp = "";
@@ -1733,20 +1742,20 @@ namespace CheckRenewalPkg
             string response = GetResponseSafe(url);
             if (response == "")
             {
-                DisplayAndLog("holdId为" + id + "查不到啊亲\r\n", true);
+                DisplayAndLog(username+ "holdId为" + id + "查不到啊亲\r\n", true);
                 return result;
             }
             ParamDefine.OldRenewalsRoot orr = JsonConvert.DeserializeObject<ParamDefine.OldRenewalsRoot>(response);
 
             if (orr == null)
-                return "查不到结果\r\n";
+                return username+"查不到结果\r\n";
 
             foreach (ParamDefine.OldRenewalsRootResultItem orritem in orr.result)
             {
-                tmp += orritem.totalDay + "\t" + orritem.renewalsTimes + "\t" + orritem.renewalsAmount.ToString("0.00") + "\t" + orritem.MA5.ToString("0.00") + "\r\n";
+                tmp += username + "\t" + orritem.totalDay + "\t" + orritem.renewalsTimes + "\t" + orritem.renewalsAmount.ToString("0.00") + "\t" + orritem.MA5.ToString("0.00") + "\r\n";
             }
 
-            tmp += "\r\n";
+          
             return tmp;
 
         }
@@ -1756,9 +1765,10 @@ namespace CheckRenewalPkg
             string id = "";
             string tmp = "";
             string whichway = e.Argument.ToString();
-
+            string username = "";
             e.Result = "";
-            if (whichway == "single")
+            DisplayAndLog("用户\t日期\t笔数\t续费金额\t5日均值\t收款方:" + InvokeHelper.Get(this.comboBox2, "Text").ToString() + "\r\n", true);
+             if (whichway == "single")
             {
                 if (treeView1.Nodes.Count == 0)
                 {
@@ -1775,8 +1785,8 @@ namespace CheckRenewalPkg
 
                 DisplayAndLog(tmp, true);
                 id = treeView1.SelectedNode.Tag.ToString();
-                DisplayAndLog(GetUserName(treeView1.SelectedNode.Text.ToString()) + "\t收款方:" + InvokeHelper.Get(this.comboBox2, "Text").ToString() + "\r\n日期\t笔数\t续费金额\t5日均值\r\n", true);
-                DisplayAndLog(GetOldRenewals(id, true), true);
+                username = GetUserName(treeView1.SelectedNode.Text.ToString());
+                DisplayAndLog(GetOldRenewals(username, id, true), true);
 
 
             }
@@ -1784,6 +1794,22 @@ namespace CheckRenewalPkg
             {
 
              //批量的老续费
+                List<string> idlist = configManager.GetValueStrList("Userlist", "oldrenewalsuserlist");
+               
+                foreach (string idid in idlist)
+                {
+                    treeView1.SelectedNode = FindNodeById(treeView1.Nodes[0], idid);
+                    if (null == treeView1.SelectedNode)
+                    {
+                        DisplayAndLog(GetRewnewalsUsage("未知用户ID为" + idid, idid), true);
+                        continue;
+                    }
+
+                    //treeView1.Select();
+                    username = GetUserName(treeView1.SelectedNode.Text.ToString());
+
+                    DisplayAndLog(GetOldRenewals(username, idid,true), true);
+                }
 
             }
 
@@ -1792,18 +1818,19 @@ namespace CheckRenewalPkg
 
         private void backgroundWorker6_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            this.button13.Enabled = true;
+            this.button29.Enabled = true;
             if (e.Result.ToString() == "single")
             {
-                this.button13.Text = "老续费";
-                this.button13.Enabled = true;
+              
+       
             }
-            //else
-            //{
-            //    this.button12.Text = "检查用量汇总";
-            //    this.button12.Enabled = true;
-            //}
+            else
+            {
+ 
+            }
 
-            DisplayAndLogBatch("------------------------------------------------------------------------\r\n", true);
+            DisplayAndLogBatch("-----\t-----\t-----\t-----\t-----\t-----\t-----\t-----\r\n", true);
         }
         #endregion
         #region 批量新建下级用户
@@ -2298,14 +2325,15 @@ namespace CheckRenewalPkg
                 this.button17.Text = "指定对比";
                 this.button17.Enabled = true;
 
-                DisplayAndLogBatch("\t------------------------------------------------------------------------\r\n", true);
+                DisplayAndLogBatch("-----\t-----\t-----\t-----\t-----\t-----\t-----\t-----\r\n", true);
             }
             //else if (e.Result.ToString() == "multi")
             //{
             //    this.button18.Text = "*续费按卡源";
             //    this.button18.Enabled = true;
 
-            //    DisplayAndLogBatch("\t------------------------------------------------------------------------\r\n", true);
+            //   
+            //    DisplayAndLogBatch("-----\t-----\t-----\t-----\t-----\t-----\t-----\t-----\r\n", true);
             //}
             else if (e.Result.ToString() == "important")
             {
@@ -2653,7 +2681,7 @@ namespace CheckRenewalPkg
                 this.button19.Enabled = true;
             }
 
-            DisplayAndLogBatch("\t------------------------------------------------------------------------\r\n", true);
+            DisplayAndLogBatch("-----\t-----\t-----\t-----\t-----\t-----\t-----\t-----\r\n", true);
         }
 
         private void button20_Click(object sender, EventArgs e)
@@ -3062,9 +3090,9 @@ namespace CheckRenewalPkg
                 this.button25.Enabled = true;
     
                 this.button23.Enabled = true;
-      
 
-            DisplayAndLogBatch("------------------------------------------------------------------------\r\n", true);
+
+                DisplayAndLogBatch("-----\t-----\t-----\t-----\t-----\t-----\t-----\t-----\r\n", true);
        
 
         }
@@ -3181,10 +3209,11 @@ namespace CheckRenewalPkg
             this.button27.Enabled = true;
 
 
-            DisplayAndLogBatch("------------------------------------------------------------------------\r\n", true);
+            DisplayAndLogBatch("-----\t-----\t-----\t-----\t-----\t-----\t-----\t-----\r\n", true);
        
         }
 
+   
   
 
 
