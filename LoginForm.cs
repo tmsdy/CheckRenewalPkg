@@ -135,7 +135,7 @@ namespace CheckRenewalPkg
             if(clickcount++ >=4)
             {
                 clickcount = 0;
-                UpdateSims us = new UpdateSims( );
+                UpdateSims us = new UpdateSims(new Form1() );
                 us.Show();
                 this.Hide();
 
