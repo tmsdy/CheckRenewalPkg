@@ -684,12 +684,12 @@ namespace CheckRenewalPkg
                 if(0!= SetCustomerID(iccid,customerid))
                 {
                     DisplayAndLog(a + "\t修改失败SIMID失败\r\n", true);
-                    return;
+                   
                 }
                 else
                 {
                     DisplayAndLog(a + "\t修改成功\r\n", true);
-                    return;
+                 
                 }
 
 
@@ -726,6 +726,69 @@ namespace CheckRenewalPkg
         {
             this.button5.Text = "组别";
             this.button5.Enabled = true;
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            this.button6.Enabled = false;
+            this.backgroundWorker5.RunWorkerAsync();
+        }
+
+        private void backgroundWorker5_DoWork(object sender, DoWorkEventArgs e)
+        {
+            int i = 1;
+            string iccid = "";
+            string exptime = "";
+            string[] str = InvokeHelper.Get(this.richTextBox1, "Text").ToString().Trim().Replace("\r\n\r\n", "\r\n").Replace("\r\n\r\n", "\r\n").Split('\n');
+            if (0 != GetSimidFromIccids(str))
+            {
+                DisplayAndLog("获取SIMID失败\r\n", true);
+                return;
+            };
+            foreach (string a in str)
+            {
+                InvokeHelper.Set(this.button6, "Text", (i++).ToString() + "/" + str.Count().ToString());
+                if (string.IsNullOrEmpty(a))
+                    continue;
+                iccid = GetSimID(a.Split(',')[0].Trim());
+                exptime =  (a.Split(',')[1].Trim());
+                if (0 != SetExpTime(iccid, exptime))
+                {
+                    DisplayAndLog(a + "\t修改失败\r\n", true);
+                     
+                }
+                else
+                {
+                    DisplayAndLog(a + "\t修改成功\r\n", true);
+                    
+                }
+
+
+            }
+        }
+        private int SetExpTime(string iccid, string exptime)
+        {
+            string url = Program.sGloableDomailUrl + "/api/SetVExpireTime";
+            string postdata = "ids%5B%5D=" + iccid + "&vExpireTime=" + exptime;
+            //string postdata = "ids%5B%5D=" + iccid + "&vExpireTime=" + exptime.Replace(" ", "+").Replace(":", "%3A");
+
+            string response = CreatePostHttpResponse(RequestEncoding.GetBytes(postdata.ToString()), url, null, null, null, "application/x-www-form-urlencoded");
+
+            if (response == "")
+            {
+                // DisplayAndLog("修改失败\r\n", true);
+                return -2;
+            }
+            else
+            {
+                // DisplayAndLog(iccid + "\t" + customerid + "修改成功\r\n", true);
+                return 0;
+            }
+        }
+        private void backgroundWorker5_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            this.button6.Text = "到期";
+            this.button6.Enabled = true;
         }
          
          

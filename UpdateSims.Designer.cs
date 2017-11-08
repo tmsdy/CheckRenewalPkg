@@ -40,6 +40,8 @@
             this.backgroundWorker3 = new System.ComponentModel.BackgroundWorker();
             this.button5 = new System.Windows.Forms.Button();
             this.backgroundWorker4 = new System.ComponentModel.BackgroundWorker();
+            this.button6 = new System.Windows.Forms.Button();
+            this.backgroundWorker5 = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // richTextBox1
@@ -77,7 +79,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(465, 12);
+            this.button2.Location = new System.Drawing.Point(443, 12);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(86, 23);
             this.button2.TabIndex = 3;
@@ -88,7 +90,7 @@
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(569, 12);
+            this.comboBox1.Location = new System.Drawing.Point(535, 12);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 20);
             this.comboBox1.TabIndex = 4;
@@ -105,7 +107,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(696, 10);
+            this.button3.Location = new System.Drawing.Point(662, 9);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(53, 23);
             this.button3.TabIndex = 5;
@@ -115,7 +117,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(755, 10);
+            this.button4.Location = new System.Drawing.Point(721, 9);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(68, 23);
             this.button4.TabIndex = 6;
@@ -130,9 +132,9 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(829, 9);
+            this.button5.Location = new System.Drawing.Point(795, 9);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(40, 23);
+            this.button5.Size = new System.Drawing.Size(66, 23);
             this.button5.TabIndex = 7;
             this.button5.Text = "组别";
             this.button5.UseVisualStyleBackColor = true;
@@ -143,11 +145,27 @@
             this.backgroundWorker4.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker4_DoWork);
             this.backgroundWorker4.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker4_RunWorkerCompleted);
             // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(867, 9);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(66, 23);
+            this.button6.TabIndex = 8;
+            this.button6.Text = "到期";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // backgroundWorker5
+            // 
+            this.backgroundWorker5.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker5_DoWork);
+            this.backgroundWorker5.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker5_RunWorkerCompleted);
+            // 
             // UpdateSims
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(960, 586);
+            this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
@@ -178,5 +196,7 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker3;
         private System.Windows.Forms.Button button5;
         private System.ComponentModel.BackgroundWorker backgroundWorker4;
+        private System.Windows.Forms.Button button6;
+        private System.ComponentModel.BackgroundWorker backgroundWorker5;
     }
 }
