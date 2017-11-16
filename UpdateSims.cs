@@ -15,6 +15,7 @@ using System.IO;
 using System.Diagnostics;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 
 namespace CheckRenewalPkg
@@ -531,30 +532,40 @@ namespace CheckRenewalPkg
                 MessageBox.Show("卡号和用量之间用英文逗号(,)隔开");
                 return;
             }
+     
             this.button4.Enabled = false;
             backgroundWorker3.RunWorkerAsync(); 
         }
 
         private void backgroundWorker3_DoWork(object sender, DoWorkEventArgs e)
         {
+            string iccid = "";
+            string usage = "";
             string[] str = InvokeHelper.Get(this.richTextBox1, "Text").ToString().Trim().Replace("\r\n\r\n", "\r\n").Replace("\r\n\r\n", "\r\n").Split('\n');
             string result = "";
             StringBuilder postdata = new StringBuilder();
             int count = str.Count();
             for(int i=0;i<count;i++)
             {
+                iccid = str[i].Split(',')[0].Trim();
+                usage = str[i].Split(',')[1].Trim();
+                if (Regex.Matches(usage, "[a-zA-Z]").Count > 0)
+                {
+                    DisplayAndLog(str[i] + "\t" +   "用量不要带字母\r\n", true);
+                    continue;
+                }
                 postdata.Clear();
                 postdata.Append("txtICCID=" + str[i].Split(',')[0].Trim() + "&txtAmountUsage=" + str[i].Split(',')[1].Trim());
                 try
                 {
                     InvokeHelper.Set(button4, "Text", i.ToString() + "/" + count.ToString());
                     result = CreatePostHttpResponse(RequestEncoding.GetBytes(postdata.ToString()), Program.sGloableDomailUrl + "/SysSetting/SetTerminalAmountUsage", null, null, null, "application/x-www-form-urlencoded");
-                    DisplayAndLog( str[i] + result.Substring(0,20) + "\r\n",true);
+                    DisplayAndLog(str[i] + "\t" + result.Substring(0, 20) + "\r\n", true);
 
                 }
                 catch
                 {
-                    DisplayAndLog("异常\r\n",true);
+                    DisplayAndLog(str[i] + "\t" +  "修改异常\r\n", true);
 
                 }
             }
@@ -668,6 +679,7 @@ namespace CheckRenewalPkg
             int i = 1;
             string iccid = "";
             string customerid = "";
+            int result = 0;
             string[] str = InvokeHelper.Get(this.richTextBox1, "Text").ToString().Trim().Replace("\r\n\r\n", "\r\n").Replace("\r\n\r\n", "\r\n").Split('\n');
             if (0 != GetSimidFromIccids(str))
             {
@@ -681,9 +693,10 @@ namespace CheckRenewalPkg
                     continue;
                 iccid = GetSimID(a.Split(',')[0].Trim());
                 customerid = GetCustomerID(a.Split(',')[1].Trim());
-                if(0!= SetCustomerID(iccid,customerid))
+                result = SetCustomerID(iccid, customerid);
+                if (0 != result)
                 {
-                    DisplayAndLog(a + "\t修改失败SIMID失败\r\n", true);
+                    DisplayAndLog(a + "\t" + result.ToString() + "\t修改失败\r\n", true);
                    
                 }
                 else
@@ -698,6 +711,10 @@ namespace CheckRenewalPkg
         }
         private int SetCustomerID(string iccid,string customerid)
         {
+            if (string.IsNullOrEmpty(iccid) || string.IsNullOrEmpty(customerid))
+            {
+                return -1;
+            }
             string url = Program.sGloableDomailUrl + "/api/MonitorTestSetSimGroup";
             string postdata = "simIds%5B%5D=" + iccid + "&groupId=" + customerid;
 
@@ -716,11 +733,25 @@ namespace CheckRenewalPkg
         }
         private string GetSimID(string iccid)
         {
-            return LTSimIdList[iccid];
+            try
+            { 
+                return LTSimIdList[iccid];
+            }
+            catch
+            {
+                return "";
+            }
         }
         private string GetCustomerID(string customerid)
         {
-            return LTCustomerIdList[customerid];
+            try
+            {
+                return LTCustomerIdList[customerid];
+            }
+            catch
+            {
+                return "";
+            }
         }
         private void backgroundWorker4_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -739,6 +770,7 @@ namespace CheckRenewalPkg
             int i = 1;
             string iccid = "";
             string exptime = "";
+            int result = 0;
             string[] str = InvokeHelper.Get(this.richTextBox1, "Text").ToString().Trim().Replace("\r\n\r\n", "\r\n").Replace("\r\n\r\n", "\r\n").Split('\n');
             if (0 != GetSimidFromIccids(str))
             {
@@ -752,10 +784,12 @@ namespace CheckRenewalPkg
                     continue;
                 iccid = GetSimID(a.Split(',')[0].Trim());
                 exptime =  (a.Split(',')[1].Trim());
-                if (0 != SetExpTime(iccid, exptime))
+               
+                result = SetExpTime(iccid, exptime);
+                if (0 != result)
                 {
-                    DisplayAndLog(a + "\t修改失败\r\n", true);
-                     
+                    DisplayAndLog(a + "\t" + result.ToString() + "\t修改失败\r\n", true);
+
                 }
                 else
                 {
@@ -768,6 +802,11 @@ namespace CheckRenewalPkg
         }
         private int SetExpTime(string iccid, string exptime)
         {
+            if(string.IsNullOrEmpty(iccid)||string.IsNullOrEmpty(exptime) )
+            {
+                return -1;
+            }
+
             string url = Program.sGloableDomailUrl + "/api/SetVExpireTime";
             string postdata = "ids%5B%5D=" + iccid + "&vExpireTime=" + exptime;
             //string postdata = "ids%5B%5D=" + iccid + "&vExpireTime=" + exptime.Replace(" ", "+").Replace(":", "%3A");
