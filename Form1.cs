@@ -637,6 +637,7 @@ namespace CheckRenewalPkg
 
                     pkgDescArr[pkg.Type] += ("@" + user.HoldName.PadRight(20) + "\tCUCC\t@B" + pkg.PackageName.PadRight(20) + "\t@" + pkg.UnitPrice + "\t" + pkg.BackPrice + "\t" + (Convert.ToDouble(pkg.BackPrice) / Convert.ToDouble(pkg.UnitPrice)).ToString("0.00%") + "\t");
                     pkgDescArr[pkg.Type] += ((pkg.TopLevel == "0") || (pkg.TopLevel == "10")) ? "" : "@R荐" + pkg.TopLevel;
+                    pkgDescArr[pkg.Type] += (pkg.ShowUnitPrice == "是") ? "\t@R显示单价" : "\t@隐藏单价";  
                     if (isGetPkgRenelwalPkg)
                     {
                         tmp = GetPkgRenewalPkg(pkg.ID);
@@ -669,6 +670,7 @@ namespace CheckRenewalPkg
                         continue;
                     pkgDescArr[pkg.Type] += ("@" + user.HoldName.PadRight(20) + "\tCMCC\t@B" + pkg.PackageName.PadRight(20) + "\t@" + pkg.UnitPrice + "\t" + pkg.BackPrice + "\t" + (Convert.ToDouble(pkg.BackPrice) / Convert.ToDouble(pkg.UnitPrice)).ToString("0.00%") + "\t");
                     pkgDescArr[pkg.Type] += ((pkg.TopLevel == "0") || (pkg.TopLevel == "10")) ? "" : "@R" + pkg.TopLevel;
+                    pkgDescArr[pkg.Type] += (pkg.ShowUnitPrice == "是") ? "\t@R显示单价" : "\t@隐藏单价";  
                     if (isGetPkgRenelwalPkg)
                     {
                         tmp = GetPkgRenewalPkg(pkg.ID);
@@ -699,6 +701,7 @@ namespace CheckRenewalPkg
                         continue;
                     pkgDescArr[pkg.Type] += ("@" + user.HoldName.PadRight(20) + "\tCTCC\t@B" + pkg.PackageName.PadRight(20) + "\t@" + pkg.UnitPrice + "\t" + pkg.BackPrice + "\t" + (Convert.ToDouble(pkg.BackPrice) / Convert.ToDouble(pkg.UnitPrice)).ToString("0.00%") + "\t");
                     pkgDescArr[pkg.Type] += ((pkg.TopLevel == "0") || (pkg.TopLevel == "10")) ? "" : "@R" + pkg.TopLevel;
+                    pkgDescArr[pkg.Type] += (pkg.ShowUnitPrice == "是") ? "\t@R显示单价" : "\t@隐藏单价";  
                     if (isGetPkgRenelwalPkg)
                     {
                         tmp = GetPkgRenewalPkg(pkg.ID);

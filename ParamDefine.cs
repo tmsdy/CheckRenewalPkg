@@ -87,8 +87,12 @@ namespace CheckRenewalPkg
             public string TopLevel { get; set; }
             /// <summary>
             /// //0-移动电信， 3-年，2-月，1-叠加，4-加油
-            /// </summary>
             public int Type { get; set; }
+            /// </summary>
+            /// <summary>
+            //显示单价
+            public string ShowUnitPrice { get; set; }
+            /// </summary>
         }
 
         public class HoldList
