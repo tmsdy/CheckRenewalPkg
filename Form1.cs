@@ -2811,7 +2811,8 @@ namespace CheckRenewalPkg
             string simid = "";
             string pkgid = "";
             string url = sApiUrl + "/api/HoldPackageTotal?holdId=" + id + "&groupHoldId=0&simFromType=1" ;
-
+            bool isPrintRenewals = Convert.ToBoolean(InvokeHelper.Get(this.checkBox2, "Checked"));
+     
             string response = GetResponseSafe(url);
             if (response == "")
             {
@@ -2829,24 +2830,30 @@ namespace CheckRenewalPkg
             foreach (ParamDefine.PkgDistributionResultItem pkgitem in pkgDisRoot.result)
             {
                 DisplayAndLog(pkgitem.groupByName.PadRight(22) + "\t" + pkgitem.groupByValue + "张\t", true);
-                pkgid =  GetPkgIdFromPkgName(pkgitem.groupByName);
-                if(string.IsNullOrEmpty(pkgid))
+                //如果勾选了打印续费套餐列表  就打印
+                if (isPrintRenewals)
                 {
-                    DisplayAndLog("套餐ID为空\r\n", true);
-                    continue;
-                }
-                simid = GetSimidFromSearchPkg(id,pkgid);
-                if (string.IsNullOrEmpty(simid))
-                {
-                    DisplayAndLog("SimID为空\r\n", true);
-                    continue;
-                }
-                //返回的格式为 simid，ICCID
-                DisplayAndLog(simid.Split(',')[1] + "\r\n", true);
+                    pkgid = GetPkgIdFromPkgName(pkgitem.groupByName);
+                    if (string.IsNullOrEmpty(pkgid))
+                    {
+                        DisplayAndLog("套餐ID为空\r\n", true);
+                        continue;
+                    }
+                    simid = GetSimidFromSearchPkg(id, pkgid);
+                    if (string.IsNullOrEmpty(simid))
+                    {
+                        DisplayAndLog("SimID为空\r\n", true);
+                        continue;
+                    }
+                    //返回的格式为 simid，ICCID
+                    DisplayAndLog(simid.Split(',')[1] + "\r\n", true);
 
-                simid = simid.Split(',')[0];
-                DisplayAndLogBatch(GetSimRenewalsPkgList(simid),true);
+                    simid = simid.Split(',')[0];
+                    DisplayAndLogBatch(GetSimRenewalsPkgList(simid), true);
                     
+
+                }
+
 
             }
             
