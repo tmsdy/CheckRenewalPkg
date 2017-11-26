@@ -2046,7 +2046,7 @@ namespace CheckRenewalPkg
             int length = tn.Text.Length;
             if (index >= 0)
             {
-                DisplayAndLog(tn.Text.Substring(0, index) + "\t" + tn.Tag + "\t卡量\t" + tn.Text.Substring(index + 1, length-index-2) + "\r\n", true);
+                DisplayAndLog(tn.Text.Substring(0, index) + "\t" + tn.Tag +"\t上级\t" +GetUserName( tn.Parent.Text)+"\t" + tn.Parent.Tag+  "\t卡量\t" + tn.Text.Substring(index + 1, length-index-2) + "\r\n", true);
             }
             else
             {

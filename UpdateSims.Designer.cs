@@ -42,6 +42,8 @@
             this.backgroundWorker4 = new System.ComponentModel.BackgroundWorker();
             this.button6 = new System.Windows.Forms.Button();
             this.backgroundWorker5 = new System.ComponentModel.BackgroundWorker();
+            this.button7 = new System.Windows.Forms.Button();
+            this.backgroundWorker6 = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // richTextBox1
@@ -73,7 +75,7 @@
             this.richTextBox2.Location = new System.Drawing.Point(347, 41);
             this.richTextBox2.Name = "richTextBox2";
             this.richTextBox2.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.richTextBox2.Size = new System.Drawing.Size(601, 533);
+            this.richTextBox2.Size = new System.Drawing.Size(624, 533);
             this.richTextBox2.TabIndex = 2;
             this.richTextBox2.Text = "";
             // 
@@ -134,7 +136,7 @@
             // 
             this.button5.Location = new System.Drawing.Point(795, 9);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(66, 23);
+            this.button5.Size = new System.Drawing.Size(49, 23);
             this.button5.TabIndex = 7;
             this.button5.Text = "组别";
             this.button5.UseVisualStyleBackColor = true;
@@ -147,9 +149,9 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(867, 9);
+            this.button6.Location = new System.Drawing.Point(850, 10);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(66, 23);
+            this.button6.Size = new System.Drawing.Size(52, 23);
             this.button6.TabIndex = 8;
             this.button6.Text = "到期";
             this.button6.UseVisualStyleBackColor = true;
@@ -160,11 +162,27 @@
             this.backgroundWorker5.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker5_DoWork);
             this.backgroundWorker5.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker5_RunWorkerCompleted);
             // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(908, 9);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(52, 23);
+            this.button7.TabIndex = 9;
+            this.button7.Text = "分配";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
+            // backgroundWorker6
+            // 
+            this.backgroundWorker6.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker6_DoWork);
+            this.backgroundWorker6.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker6_RunWorkerCompleted);
+            // 
             // UpdateSims
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(960, 586);
+            this.ClientSize = new System.Drawing.Size(983, 586);
+            this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
@@ -198,5 +216,7 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker4;
         private System.Windows.Forms.Button button6;
         private System.ComponentModel.BackgroundWorker backgroundWorker5;
+        private System.Windows.Forms.Button button7;
+        private System.ComponentModel.BackgroundWorker backgroundWorker6;
     }
 }
