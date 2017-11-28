@@ -715,6 +715,11 @@ namespace CheckRenewalPkg
             {
                 return -1;
             }
+                    {
+            if ( customerid.Trim() == "OK")
+            {
+                return 0;
+            }
             string url = Program.sGloableDomailUrl + "/api/MonitorTestSetSimGroup";
             string postdata = "simIds%5B%5D=" + iccid + "&groupId=" + customerid;
 
