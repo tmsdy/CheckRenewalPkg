@@ -834,12 +834,97 @@ namespace CheckRenewalPkg
             this.button6.Text = "到期";
             this.button6.Enabled = true;
         }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            this.button7.Enabled = false;
+            this.backgroundWorker6.RunWorkerAsync();
+        }
+
+        private void backgroundWorker6_DoWork(object sender, DoWorkEventArgs e)
+        {
+            int i = 1;
+            string iccid = "";
+            string movetoHoldid = "";
+            int result = 0;
+            string[] str = InvokeHelper.Get(this.richTextBox1, "Text").ToString().Trim().Replace("\r\n\r\n", "\r\n").Replace("\r\n\r\n", "\r\n").Split('\n');
+            if (0 != GetSimidFromIccids(str))
+            {
+                DisplayAndLog("获取SIMID失败\r\n", true);
+                return;
+            };
+            foreach (string a in str)
+            {
+                InvokeHelper.Set(this.button7, "Text", (i++).ToString() + "/" + str.Count().ToString());
+                if (string.IsNullOrEmpty(a))
+                    continue;
+                iccid = GetSimID(a.Split(',')[0].Trim());
+                movetoHoldid =  (a.Split(',')[1].Trim());
+                result = Distribute(iccid, movetoHoldid);
+                if (0 != result)
+                {
+                    DisplayAndLog(a + "\t" + result.ToString() + "\t修改失败\r\n", true);
+
+                }
+                else
+                {
+                    DisplayAndLog(a + "\t修改成功\r\n", true);
+
+                }
+
+
+            }
+
+        }
+        private int Distribute(string iccid,string movetoHoldid)
+        {
+
+            if (string.IsNullOrEmpty(iccid) || string.IsNullOrEmpty(movetoHoldid))
+            {
+                return -1;
+            }
+            string url = Program.sGloableDomailUrl + "/api/SimHandle/Distribute";
+            string postdata = "operateCmd=move&simId%5B%5D=" + iccid + "&toHoldId=" + movetoHoldid + "&loginHoldId=1";
+
+            string response = CreatePostHttpResponse(RequestEncoding.GetBytes(postdata.ToString()), url, null, null, null, "application/x-www-form-urlencoded");
+
+            if (response == "")
+            {
+                // DisplayAndLog("修改失败\r\n", true);
+                return -2;
+            }
+            else
+            {
+                // DisplayAndLog(iccid + "\t" + customerid + "修改成功\r\n", true);
+                return 0;
+            }
+        }
+
+        private void backgroundWorker6_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            this.button7.Text = "分配";
+            this.button7.Enabled = true;
+        }
          
          
     }
 }
 
+//POST http://demo.m-m10010.com/api/SimHandle/Distribute HTTP/1.1
+//Host: demo.m-m10010.com
+//Connection: keep-alive
+//Content-Length: 82
+//Accept: application/json, text/javascript, */*; q=0.01
+//Origin: http://demo.m-m10010.com
+//X-Requested-With: XMLHttpRequest
+//User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36
+//Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+//Referer: http://demo.m-m10010.com/sim/distribute?cardType=1&batch=undefined&sqlKey=undefined&nums=2
+//Accept-Encoding: gzip, deflate
+//Accept-Language: zh,zh-CN;q=0.9,en;q=0.8,zh-TW;q=0.7
+//Cookie: ASP.NET_SessionId=vbcw43x3awlzgrsuxlu1ump3; UserCookie=UserID=1&UserName=admin&UserType=1&HoldID=1&HoldName=%e8%bf%90%e8%90%a5%e4%b8%ad%e5%bf%83&HoldLevel=1&HoldType=4&Token=F1X2BX1LI5V3SDQC1XPOFXW7C9HBHWTN&LoginFromType=1&OEMClient=
 
+//operateCmd=move&simId%5B%5D=367006&toHoldId=3828&loginHoldId=1
  
   
 //POST http://demo.m-m10010.com/api/MonitorTestSetSimGroup HTTP/1.1
