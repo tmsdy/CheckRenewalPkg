@@ -35,6 +35,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.button4 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.button29 = new System.Windows.Forms.Button();
             this.button28 = new System.Windows.Forms.Button();
             this.button26 = new System.Windows.Forms.Button();
             this.button27 = new System.Windows.Forms.Button();
@@ -86,7 +87,7 @@
             this.CheckSimRenewalsWorker = new System.ComponentModel.BackgroundWorker();
             this.GetActiveCountWorker = new System.ComponentModel.BackgroundWorker();
             this.GetRenewalsUsageWorker9 = new System.ComponentModel.BackgroundWorker();
-            this.button29 = new System.Windows.Forms.Button();
+            this.checkBox5 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -146,6 +147,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.checkBox5);
             this.splitContainer1.Panel2.Controls.Add(this.button29);
             this.splitContainer1.Panel2.Controls.Add(this.button28);
             this.splitContainer1.Panel2.Controls.Add(this.button26);
@@ -204,6 +206,17 @@
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             this.comboBox1.TextChanged += new System.EventHandler(this.comboBox1_TextChanged);
             this.comboBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.comboBox1_KeyUp);
+            // 
+            // button29
+            // 
+            this.button29.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button29.Location = new System.Drawing.Point(905, 662);
+            this.button29.Name = "button29";
+            this.button29.Size = new System.Drawing.Size(55, 23);
+            this.button29.TabIndex = 32;
+            this.button29.Text = "*老续费";
+            this.button29.UseVisualStyleBackColor = true;
+            this.button29.Click += new System.EventHandler(this.button29_Click);
             // 
             // button28
             // 
@@ -285,7 +298,7 @@
             // button21
             // 
             this.button21.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button21.Location = new System.Drawing.Point(905, 613);
+            this.button21.Location = new System.Drawing.Point(932, 613);
             this.button21.Name = "button21";
             this.button21.Size = new System.Drawing.Size(42, 23);
             this.button21.TabIndex = 24;
@@ -405,7 +418,7 @@
             // button16
             // 
             this.button16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button16.Location = new System.Drawing.Point(824, 613);
+            this.button16.Location = new System.Drawing.Point(840, 613);
             this.button16.Name = "button16";
             this.button16.Size = new System.Drawing.Size(75, 23);
             this.button16.TabIndex = 20;
@@ -416,7 +429,7 @@
             // button15
             // 
             this.button15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button15.Location = new System.Drawing.Point(729, 613);
+            this.button15.Location = new System.Drawing.Point(748, 613);
             this.button15.Name = "button15";
             this.button15.Size = new System.Drawing.Size(89, 23);
             this.button15.TabIndex = 19;
@@ -427,9 +440,9 @@
             // button14
             // 
             this.button14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button14.Location = new System.Drawing.Point(631, 613);
+            this.button14.Location = new System.Drawing.Point(660, 613);
             this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(92, 23);
+            this.button14.Size = new System.Drawing.Size(75, 23);
             this.button14.TabIndex = 18;
             this.button14.Text = "批量建用户";
             this.button14.UseVisualStyleBackColor = true;
@@ -472,7 +485,7 @@
             // 
             this.checkBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(513, 613);
+            this.checkBox4.Location = new System.Drawing.Point(503, 616);
             this.checkBox4.Name = "checkBox4";
             this.checkBox4.Size = new System.Drawing.Size(84, 16);
             this.checkBox4.TabIndex = 14;
@@ -483,7 +496,7 @@
             // 
             this.checkBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(435, 614);
+            this.checkBox3.Location = new System.Drawing.Point(431, 616);
             this.checkBox3.Name = "checkBox3";
             this.checkBox3.Size = new System.Drawing.Size(72, 16);
             this.checkBox3.TabIndex = 13;
@@ -683,16 +696,18 @@
             this.GetRenewalsUsageWorker9.DoWork += new System.ComponentModel.DoWorkEventHandler(this.GetRenewalsUsageWorker9_DoWork);
             this.GetRenewalsUsageWorker9.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.GetRenewalsUsageWorker9_RunWorkerCompleted);
             // 
-            // button29
+            // checkBox5
             // 
-            this.button29.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button29.Location = new System.Drawing.Point(905, 662);
-            this.button29.Name = "button29";
-            this.button29.Size = new System.Drawing.Size(55, 23);
-            this.button29.TabIndex = 32;
-            this.button29.Text = "*老续费";
-            this.button29.UseVisualStyleBackColor = true;
-            this.button29.Click += new System.EventHandler(this.button29_Click);
+            this.checkBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkBox5.AutoSize = true;
+            this.checkBox5.Checked = true;
+            this.checkBox5.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox5.Location = new System.Drawing.Point(586, 615);
+            this.checkBox5.Name = "checkBox5";
+            this.checkBox5.Size = new System.Drawing.Size(72, 16);
+            this.checkBox5.TabIndex = 33;
+            this.checkBox5.Text = "新建刷新";
+            this.checkBox5.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -776,6 +791,7 @@
         private System.ComponentModel.BackgroundWorker GetRenewalsUsageWorker9;
         private System.Windows.Forms.Button button28;
         private System.Windows.Forms.Button button29;
+        private System.Windows.Forms.CheckBox checkBox5;
     }
 }
 

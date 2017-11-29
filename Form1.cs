@@ -1944,8 +1944,11 @@ namespace CheckRenewalPkg
         private void backgroundWorker7_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             this.button14.Enabled = true;
+            if(InvokeHelper.Get(this.checkBox5,"Checked").ToString() == "True")
+            {
+                button1_Click(sender, e);
+            }
 
-            button1_Click(sender, e);
         }
         #endregion
 

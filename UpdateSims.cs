@@ -715,7 +715,7 @@ namespace CheckRenewalPkg
             {
                 return -1;
             }
-                    {
+                   
             if ( customerid.Trim() == "OK")
             {
                 return 0;
