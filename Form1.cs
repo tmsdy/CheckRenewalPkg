@@ -3236,6 +3236,7 @@ namespace CheckRenewalPkg
         private void button30_Click(object sender, EventArgs e)
         {
             sLogFileName = "CRP_" + DateTime.Now.ToString("yyMMddHHmmss");
+            slogfilepath = Application.StartupPath + @"\logs\" + sLogFileName + ".txt";
         }
 
    
