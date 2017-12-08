@@ -2032,6 +2032,33 @@ namespace CheckRenewalPkg
             return username;
 
         }
+        private int GetUserSimCount(string nodename)
+        {
+            string username = "";
+            int iCount = 0;
+            string sCount = "";
+            int index = nodename.LastIndexOf('(');
+
+            int length = nodename.Length;
+            if (index >= 0)
+            {
+                sCount = nodename.Substring(index+1, nodename.Length-2-index);
+                try
+                {
+                    iCount = Convert.ToInt32(sCount);
+                }
+                catch
+                {
+                    iCount = 0;
+                }
+            }
+            else
+            {
+               
+            }
+            return iCount;
+
+        }
         private string PringUserTree(TreeNode tn)
         {
             string result = "";
@@ -2802,14 +2829,38 @@ namespace CheckRenewalPkg
                 return;
             }
 
-            DisplayAndLog(tmp, true);
+
+            if (GetUserSimCount(treeView1.SelectedNode.Text.ToString()) == 0)
+            {
+
+                DisplayAndLog(treeView1.SelectedNode.Text.ToString() + " 卡量为0\r\n", true);
+                return;
+            }
+            DisplayAndLog(GetUserName(treeView1.SelectedNode.Text.ToString()) + "\t卡的套餐分布如下：\r\n", true);
             id = treeView1.SelectedNode.Tag.ToString();
-            DisplayAndLog(GetUserName(treeView1.SelectedNode.Text.ToString()) + "\t卡的套餐分布如下：\r\n"  , true);
             DisplayAndLog(GetUserSimRenewalsPkgList(id, true), true);
+            /*卡续费套餐  检查是否查询所有的子用户*/
+            bool isPrintAllChilds = Convert.ToBoolean(InvokeHelper.Get(this.checkBox1, "Checked"));
+            if (isPrintAllChilds)
+            { 
+                foreach (TreeNode tns in treeView1.SelectedNode.Nodes)
+                {
+                    if (GetUserSimCount(tns.Text.ToString()) == 0)
+                    {
+
+                       // DisplayAndLog("卡量为0\r\n", true);
+                        continue;
+                    }
+                    DisplayAndLog(GetUserName(tns.Text.ToString()) + "\t卡的套餐分布如下：\r\n", true);
+                    id = tns.Tag.ToString();
+                    DisplayAndLog(GetUserSimRenewalsPkgList(id, true), true);
+                }
+            }
 
         }
         public string GetUserSimRenewalsPkgList(string id, bool isDisplay)
         {
+            int i = 1;
             string result = "";
             string simid = "";
             string pkgid = "";
@@ -2832,7 +2883,7 @@ namespace CheckRenewalPkg
             //查到了套餐分布
             foreach (ParamDefine.PkgDistributionResultItem pkgitem in pkgDisRoot.result)
             {
-                DisplayAndLog(pkgitem.groupByName.PadRight(22) + "\t" + pkgitem.groupByValue + "张\t", true);
+                DisplayAndLog(i++.ToString()  + "\t" + pkgitem.groupByName.PadRight(22) + "\t" + pkgitem.groupByValue + "张\t", true);
                 //如果勾选了打印续费套餐列表  就打印
                 if (isPrintRenewals)
                 {
