@@ -2883,7 +2883,7 @@ namespace CheckRenewalPkg
             //查到了套餐分布
             foreach (ParamDefine.PkgDistributionResultItem pkgitem in pkgDisRoot.result)
             {
-                DisplayAndLog(i++.ToString()  + "\t" + pkgitem.groupByName.PadRight(22) + "\t" + pkgitem.groupByValue + "张\t", true);
+                DisplayAndLog("\t" + i++.ToString() + "\t" + pkgitem.groupByName.PadRight(22) + "\t" + pkgitem.groupByValue + "张\t", true);
                 //如果勾选了打印续费套餐列表  就打印
                 if (isPrintRenewals)
                 {
