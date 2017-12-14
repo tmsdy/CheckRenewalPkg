@@ -41,8 +41,8 @@ namespace CheckRenewalPkg
 
         public static string ProfileReadValue(string section, string key)
         {
-            StringBuilder sb = new StringBuilder(1000);
-            GetPrivateProfileString(section, key, "", sb, 1000, Program.configFilePath);
+            StringBuilder sb = new StringBuilder(5000);
+            GetPrivateProfileString(section, key, "", sb, 5000, Program.configFilePath);
             return sb.ToString().Trim();
         }
         public static void SaveConfig(string key, string value)

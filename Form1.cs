@@ -2163,7 +2163,7 @@ namespace CheckRenewalPkg
             }
 
             //tmp += "卡源:" + source + "\t总续费次数:" + times + "\t总续费金额:" + amount + "\t总返利金额:" + backPrice + " \r\n";
-            tmp += source + "\t" + times + "\t" + amount.ToString("0") + "\t" + usage + "\t" + (amount / times).ToString("0.00") + "\t" + (amount / usage * 1024).ToString("0.00") + "\t" + (amount / days).ToString("0.00") + " \r\n";
+            tmp += source + "\t" + times + "\t" + amount.ToString("0.00") + "\t" + usage + "\t" + (amount / times).ToString("0.00") + "\t" + (amount / usage * 1024).ToString("0.00") + "\t" + (amount / days).ToString("0.00") + " \r\n";
             return tmp;
         }
 
