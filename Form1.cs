@@ -3372,4 +3372,52 @@ namespace CheckRenewalPkg
  * 
  * 卡的可续费套餐
  * GET http://demo.m-m10010.com/api/GetSimRenewalsPackageList/430932  
+
+ *
+ * //查询用户
+//GET http://demo.m-m10010.com/api/HoldLikeName?holdId=1&key=Y_%E6%B8%9D_04 HTTP/1.1
+//Host: demo.m-m10010.com
+//Connection: keep-alive
+//Accept: application/json, text/javascript, */*; q=0.01
+//X-Requested-With: XMLHttpRequest
+//User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36
+//Referer: http://demo.m-m10010.com/GroupHold/Info?currentHoldId=11062
+//Accept-Encoding: gzip, deflate
+//Accept-Language: zh,zh-CN;q=0.9,en;q=0.8,zh-TW;q=0.7
+//Cookie: aliyungf_tc=AQAAACi74wQ3ggAAbh0Ot3PiZil1TTwM; ASP.NET_SessionId=s4kqleappqitzjgouvs0v4dd; UserCookie=UserID=94026&UserName=admin_sdy&UserType=2&HoldID=1&HoldName=%e8%bf%90%e8%90%a5%e4%b8%ad%e5%bf%83&HoldLevel=1&HoldType=4&Token=LPNG6KAPTR4VQRBI1LM3SMRM21PFW6B7&LoginFromType=1&OEMClient=
+//Pragma: no-cache
+
+//新建逻辑用户
+//POST http://demo.m-m10010.com/api/GroupHoldUpdate HTTP/1.1
+//Host: demo.m-m10010.com
+//Connection: keep-alive
+//Content-Length: 143
+//Accept: application/json, text/javascript, */*; q=0.01
+//Origin: http://demo.m-m10010.com
+//X-Requested-With: XMLHttpRequest
+//User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36
+//Content-Type: application/json
+//Referer: http://demo.m-m10010.com/GroupHold/Info?currentHoldId=11062
+//Accept-Encoding: gzip, deflate
+//Accept-Language: zh,zh-CN;q=0.9,en;q=0.8,zh-TW;q=0.7
+//Cookie: aliyungf_tc=AQAAACi74wQ3ggAAbh0Ot3PiZil1TTwM; ASP.NET_SessionId=s4kqleappqitzjgouvs0v4dd; UserCookie=UserID=94026&UserName=admin_sdy&UserType=2&HoldID=1&HoldName=%e8%bf%90%e8%90%a5%e4%b8%ad%e5%bf%83&HoldLevel=1&HoldType=4&Token=LPNG6KAPTR4VQRBI1LM3SMRM21PFW6B7&LoginFromType=1&OEMClient=
+//Pragma: no-cache
+
+//{"holdId":0,"groupHoldId":"11062","holdName":"Y_渝_04","userName":"Y_渝_04","password":"yitu888","remark":"","bindHoldIds":["10612","10795"]}
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  */
