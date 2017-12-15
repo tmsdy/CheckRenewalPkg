@@ -2190,7 +2190,7 @@ namespace CheckRenewalPkg
             }
 
             //tmp += "卡源:" + source + "\t总续费次数:" + times + "\t总续费金额:" + amount + "\t总返利金额:" + backPrice + " \r\n";
-            tmp += source + "\t" + times + "\t" + amount.ToString("0.00") + "\t" + usage + "\t" + (amount / times).ToString("0.00") + "\t" + (amount / usage * 1024).ToString("0.00") + "\t" + (amount / days).ToString("0.00") + " \r\n";
+            tmp += source + "\t" + times + "\t" + amount.ToString("0.00") + "\t" + usage + "\t" + (amount / times).ToString("0.00") + "\t" + (amount / usage * 1024).ToString("0.00") + "\t" + (amount / days).ToString("0.00") + "\t" + backPrice.ToString("0.00") + " \r\n";
             return tmp;
         }
 
@@ -2203,7 +2203,12 @@ namespace CheckRenewalPkg
             renewalsPeriodVS rp =( renewalsPeriodVS )e.Argument;
             string username ="";
             e.Result = "";
-
+            //string stime = "2017-10-01";
+            //string etime = "2017-10-31";
+            //double days = 31.0;
+            //string stime_vs = "2017-09-26";
+            //string etime_vs = "2017-09-30";
+            //double days_vs = 5.0;
             string stime = rp.stime;
             string etime = rp.etime;
             double days = rp.days;
@@ -2224,7 +2229,7 @@ namespace CheckRenewalPkg
             }
             DateTime nowtime = DateTime.Now;
             //DisplayAndLog("数据对比时间段:" + stime_vs + "---" + etime_vs + " VS " + stime + "---" + etime + "\r\n\t\t\t" + rp.desc + "\t收款方:" + InvokeHelper.Get(this.comboBox2, "Text").ToString() + "\r\n", true);
-            DisplayAndLog("时间段\t用户\t卡源\t续费次数\t续费金额\t总续费流量\t单笔ARPU\t每G售价\t日均续费\t收款方:" + InvokeHelper.Get(this.comboBox2, "Text").ToString()+"\r\n", true);
+            DisplayAndLog("时间段\t用户\t卡源\t续费次数\t续费金额\t总续费流量\t单笔ARPU\t每G售价\t日均续费\t返利\t收款方:" + InvokeHelper.Get(this.comboBox2, "Text").ToString()+"\r\n", true);
             if (rp.whichway == "single")
             {
                 if (treeView1.Nodes.Count == 0)
