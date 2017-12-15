@@ -89,6 +89,7 @@
             this.CheckSimRenewalsWorker = new System.ComponentModel.BackgroundWorker();
             this.GetActiveCountWorker = new System.ComponentModel.BackgroundWorker();
             this.GetRenewalsUsageWorker9 = new System.ComponentModel.BackgroundWorker();
+            this.button31 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -115,9 +116,9 @@
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button1.Location = new System.Drawing.Point(5, 636);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(38, 23);
             this.button1.TabIndex = 2;
-            this.button1.Text = "刷新用户树";
+            this.button1.Text = "刷新";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -148,6 +149,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.button31);
             this.splitContainer1.Panel2.Controls.Add(this.button30);
             this.splitContainer1.Panel2.Controls.Add(this.checkBox5);
             this.splitContainer1.Panel2.Controls.Add(this.button29);
@@ -722,6 +724,17 @@
             this.GetRenewalsUsageWorker9.DoWork += new System.ComponentModel.DoWorkEventHandler(this.GetRenewalsUsageWorker9_DoWork);
             this.GetRenewalsUsageWorker9.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.GetRenewalsUsageWorker9_RunWorkerCompleted);
             // 
+            // button31
+            // 
+            this.button31.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button31.Location = new System.Drawing.Point(44, 636);
+            this.button31.Name = "button31";
+            this.button31.Size = new System.Drawing.Size(38, 23);
+            this.button31.TabIndex = 35;
+            this.button31.Text = "逻辑";
+            this.button31.UseVisualStyleBackColor = true;
+            this.button31.Click += new System.EventHandler(this.button31_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -806,6 +819,7 @@
         private System.Windows.Forms.Button button29;
         private System.Windows.Forms.CheckBox checkBox5;
         private System.Windows.Forms.Button button30;
+        private System.Windows.Forms.Button button31;
     }
 }
 

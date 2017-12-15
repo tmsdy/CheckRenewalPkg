@@ -454,10 +454,18 @@ namespace CheckRenewalPkg
         {
             string result = "";
              result = GetResponseSafe(sApiUrl + "/api/allholdnodes?nodeListType=1&NJholdId=1&notIncludeCount=false&id=" + Program.UserId + "&parent=" + Program.UserId);
-             RefreshUserTree(result, isDisplayGhostUser);
+             RefreshUserTree(result, isDisplayGhostUser,false);
 
         }
-        public void RefreshUserTree(string a, bool isDisplayGhostUser)
+        public void GetLogicalUserTree( )
+        {
+            string result = "";
+            result = GetResponseSafe(sApiUrl + "/api/allholdnodes?nodeListType=3&NJholdId=0&notIncludeCount=false&id=" + Program.UserId + "&parent=" + Program.UserId);
+            RefreshUserTree(result, false, true);
+
+        }
+
+        public void RefreshUserTree(string a, bool isDisplayGhostUser,bool isLogical)
         {
             string usertree = "";
             string errormsg = "";
@@ -465,6 +473,7 @@ namespace CheckRenewalPkg
                 return;
             TreeNode node1;
             TreeNode nodeParent;
+            TreeNode root;
             int id = 0;
             ParamDefine.UserTree userTree = JsonConvert.DeserializeObject<ParamDefine.UserTree>(a);
 
@@ -485,7 +494,21 @@ namespace CheckRenewalPkg
                     usertree += node1.Text + "\t" + node1.ToolTipText+ "\r\n";
                     continue;
                 }
-                TreeNode root = treeView1.Nodes[0];
+                
+                if(isLogical)
+                {
+
+                      root = treeView1.Nodes[1];
+                      if (FindNodeById(root, userTree.result[i].id.ToString()) != null)
+                      {
+                          continue;
+                      }
+
+                }
+                else
+                {
+                      root = treeView1.Nodes[0];
+                }
                 root.Expand();
                 nodeParent = FindNodeById(root, userTree.result[i].parentId.ToString());
                 if (nodeParent != null)
@@ -501,11 +524,15 @@ namespace CheckRenewalPkg
                 {
                     if (isDisplayGhostUser)
                         errormsg += "parentId\t" + userTree.result[i].parentId.ToString() + "\tID\t" + userTree.result[i].id.ToString() + "\t" + userTree.result[i].name.ToString() + "\r\n";
-                    //一堆异常的无父节点的用户
-                    //node1 = new TreeNode();
-                    //node1.Tag = userTree.result[i].id.ToString();
-                    //node1.Text = userTree.result[i].name.ToString();
-                    //treeView1.Nodes.Add(node1);
+                    //逻辑用户
+                    if(!isLogical && userTree.result[i].id.ToString() == "3")
+                    {
+                        node1 = new TreeNode();
+                        node1.Tag = userTree.result[i].id.ToString();
+                        node1.Text = userTree.result[i].name.ToString();
+                        treeView1.Nodes.Add(node1);
+
+                    }
                 }
 
 
@@ -3288,6 +3315,13 @@ namespace CheckRenewalPkg
         {
             sLogFileName = "CRP_" + DateTime.Now.ToString("yyMMddHHmmss");
             slogfilepath = Application.StartupPath + @"\logs\" + sLogFileName + ".txt";
+        }
+
+        private void button31_Click(object sender, EventArgs e)
+        { 
+       
+            GetLogicalUserTree();
+            treeView1.SelectedNode = treeView1.Nodes[0];
         }
 
    
