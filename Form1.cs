@@ -196,7 +196,7 @@ namespace CheckRenewalPkg
                 ASCII = Encoding.ASCII;
             }
         }
-        public static string CreatePostHttpResponse(byte[] data, string url, int? timeout, string userAgent, string cookies, WebProxy wp)
+        public static string CreatePostHttpResponse(byte[] data, string url, int? timeout, string userAgent, string cookies, WebProxy wp, string ContentType)
         {
 
             Stream responseStream;
@@ -218,7 +218,10 @@ namespace CheckRenewalPkg
                 request.ReadWriteTimeout = 50000;
                 request.CookieContainer = new CookieContainer();
                 request.CookieContainer = Program.MLBCookie;
-
+                if (!string.IsNullOrEmpty(ContentType))
+                {
+                    request.ContentType = ContentType;
+                }
                 if (!string.IsNullOrEmpty(userAgent))
                 {
                     request.UserAgent = userAgent;
@@ -257,12 +260,17 @@ namespace CheckRenewalPkg
         }
         public static string PostDataToUrl(string data, string url)
         {
-            return PostResponseSafe(RequestEncoding.GetBytes(data), url);
+            return PostResponseSafe(RequestEncoding.GetBytes(data), url,null);
         }
-        public static string PostResponseSafe(byte[] data, string url)
+        public static string PostDataToUrlNotXml(string data, string url, string ContentType)
+        {
+            return PostResponseSafe(RequestEncoding.GetBytes(data), url, ContentType);
+        }
+
+        public static string PostResponseSafe(byte[] data, string url, string ContentType)
         {
 
-            string result = CreatePostHttpResponse(data, url, null, null, null, null);
+            string result = CreatePostHttpResponse(data, url, null, null, null, null, ContentType);
 
 
             return result;
@@ -1877,7 +1885,7 @@ namespace CheckRenewalPkg
             int length = s.Length;
             if (length >= 50)
                 length = 50;
-            DialogResult dr = MessageBox.Show("在这个账号下新建： " + GetUserName(treeView1.SelectedNode.Text.ToString()) + "\r\n格式为：  用户名，登录名，用户类型，密码\r\n或者为： 待修改ID，用户名，登录名，用户类型，密码\r\n" + s.Substring(0,length), "提示", MessageBoxButtons.OKCancel);
+            DialogResult dr = MessageBox.Show("在这个账号下新建： " + GetUserName(treeView1.SelectedNode.Text.ToString()) + "\r\n格式为：  用户名，登录名，用户类型，密码\r\n或者为： 待修改ID，用户名，登录名，用户类型，密码\r\n或者为： 用户名，登录名，logic，密码\r\n" + s.Substring(0, length), "提示", MessageBoxButtons.OKCancel);
            if (dr == DialogResult.OK)
            {
                this.button14.Enabled = false;
@@ -1890,14 +1898,62 @@ namespace CheckRenewalPkg
 
         }
 
+        private string GetBinduserlist(string key)
+        {
+            //http://demo.m-m10010.com/api/HoldLikeName?holdId=1&key=b 
+            string url = sApiUrl + "/api/HoldLikeName?holdId=" + Program.UserId +"&key=" + key ;
+            StringBuilder tmp = new StringBuilder();
+            string result = GetResponseSafe(url);
+            if (result == "")
+            {
+                DisplayAndLog("key为" + key + "搜索不到要绑定的用户\r\n", true);
+                return "";
+            }
+            ParamDefine.HoldLikeNameRoot hln = JsonConvert.DeserializeObject<ParamDefine.HoldLikeNameRoot>(result);
+            if ((hln.result == null)||(hln.result.Count() == 0))
+            {
+                DisplayAndLog("key为" + key + "结果为空\r\n", true);
+                return "";
+            }
+            
+            foreach(ParamDefine.HoldLikeNameResultItem hlnri in hln.result)
+            {
+                tmp.Append("\"" + hlnri.holdId + "\",");
+            }
+            //移除最后一个","
+            tmp.Remove(tmp.Length - 1, 1);
+            return tmp.ToString();
 
+        }
         private string CreateUser(string parentid,string displayname,string loginname,string usertype,string password, string currentid)
         {
             string result = "";
- 
-            string post = "txtHoldName={1}&txtUserName={2}&txtUserPass={4}&txtReUserPass={5}&sltHoldType={3}&txtContacter=&txtContacterTel=&viewWXRenewals=1&sltProvince=0&txtAddress=&txtRemark=&hid_ParentHoldID={0}&hid_HoldID={6}&hid_Province=&hid_City=&hid_Region=&hid_GroupHoldIds=&hid_GroupHoldNames=";
-            string postWithParam = string.Format(post, parentid, displayname, loginname, usertype, password, password,currentid);
-           result = PostDataToUrl(postWithParam, sApiUrl+"/hold/Info");
+            string post = "";
+            string postWithParam = "";
+            string binduserlist = "";
+            if(usertype != "logic")
+            {
+                //普通用户
+                post = "txtHoldName={1}&txtUserName={2}&txtUserPass={4}&txtReUserPass={5}&sltHoldType={3}&txtContacter=&txtContacterTel=&viewWXRenewals=1&sltProvince=0&txtAddress=&txtRemark=&hid_ParentHoldID={0}&hid_HoldID={6}&hid_Province=&hid_City=&hid_Region=&hid_GroupHoldIds=&hid_GroupHoldNames=";
+                postWithParam = string.Format(post, parentid, displayname, loginname, usertype, password, password, currentid);
+                result = PostDataToUrl(postWithParam, sApiUrl + "/hold/Info");
+            }
+            else
+            {
+                //逻辑用户
+                displayname = System.Web.HttpUtility.UrlDecode(displayname);
+                loginname = System.Web.HttpUtility.UrlDecode(loginname);
+                binduserlist = GetBinduserlist(displayname);
+                if (string.IsNullOrEmpty(binduserlist))
+                    return "";
+
+                //{"holdId":0,"groupHoldId":"11062","holdName":"Y_渝_04","userName":"Y_渝_04","password":"yitu888","remark":"","bindHoldIds":["10612","10795"]}
+                post = "{\"holdId\":0,\"groupHoldId\":\"" + parentid + "\",\"holdName\":\""+displayname+"\",\"userName\":\""+loginname+"\",\"password\":\""+password+"\",\"remark\":\"\",\"bindHoldIds\":["+binduserlist+"]}";
+
+                result = PostDataToUrlNotXml(post, sApiUrl + "/api/GroupHoldUpdate", "application/json");
+                
+            }
+
            if (string.IsNullOrEmpty(result))
                result = "失败";
 
@@ -1973,7 +2029,10 @@ namespace CheckRenewalPkg
             this.button14.Enabled = true;
             if(InvokeHelper.Get(this.checkBox5,"Checked").ToString() == "True")
             {
-                button1_Click(sender, e);
+                if (InvokeHelper.Get(this.richTextBox1, "Text").ToString().IndexOf("logic") > 0)
+                    button31_Click(sender, e);
+                else
+                    button1_Click(sender, e);
             }
 
         }
@@ -3374,11 +3433,13 @@ namespace CheckRenewalPkg
  * GET http://demo.m-m10010.com/api/GetSimRenewalsPackageList/430932  
 
  *
- * //查询用户
+ *
+ */
+ //查询用户
 //GET http://demo.m-m10010.com/api/HoldLikeName?holdId=1&key=Y_%E6%B8%9D_04 HTTP/1.1
 //Host: demo.m-m10010.com
 //Connection: keep-alive
-//Accept: application/json, text/javascript, */*; q=0.01
+//Accept: application/json, text/javascript, */ q=0.01
 //X-Requested-With: XMLHttpRequest
 //User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36
 //Referer: http://demo.m-m10010.com/GroupHold/Info?currentHoldId=11062
@@ -3418,6 +3479,3 @@ namespace CheckRenewalPkg
  
  
  
- 
- 
- */

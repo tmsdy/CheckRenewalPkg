@@ -1098,5 +1098,35 @@ namespace CheckRenewalPkg
         #endregion
 
 
+        #region 搜索用户
+        public class HoldLikeNameResultItem
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string holdId { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string name { get; set; }
+        }
+
+        public class HoldLikeNameRoot
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public int error { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string reason { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<HoldLikeNameResultItem> result { get; set; }
+        }
+        #endregion
+
     }
 }
