@@ -3038,7 +3038,7 @@ namespace CheckRenewalPkg
 
             foreach(ParamDefine.SimRenewalsPkgListResultItem pkg in pkgListRoot.result)
             {
-                result += "\t@B└--" + pkg.packageName.PadRight(27) + "\t@R" + pkg.price + "\r\n";
+                result += "\t\t@B└--\t" + pkg.packageName.PadRight(27) + "\t@R" + pkg.price + "\r\n";
 
             }
 
