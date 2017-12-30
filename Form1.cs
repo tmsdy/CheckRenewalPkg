@@ -2145,24 +2145,38 @@ namespace CheckRenewalPkg
             return iCount;
 
         }
-        private string PringUserTree(TreeNode tn)
+        private string LookupRealCustomer(TreeNode tn,TreeNode selected)
+        {
+            if(TreeNode.Equals(tn,selected))
+            {
+                return "NULL";
+            }
+            else if(TreeNode.Equals(tn.Parent,selected))
+            {
+                return GetUserName(tn.Text) + "\t" + tn.Tag;
+            }
+            else
+            {
+               return LookupRealCustomer(tn.Parent, selected);
+            }
+        }
+        private string PrintUserTree(TreeNode tn,TreeNode selected)
         {
             string result = "";
             if (tn == null)
                 return result;
 
-
-
+            
             foreach (TreeNode tns in tn.Nodes)
             {
-                PringUserTree(tns);
+                PrintUserTree(tns, selected);
             }
             int index = tn.Text.LastIndexOf('(');
 
             int length = tn.Text.Length;
             if (index >= 0)
             {
-                DisplayAndLog(tn.Text.Substring(0, index) + "\t" + tn.Tag +"\t上级\t" +GetUserName( tn.Parent.Text)+"\t" + tn.Parent.Tag+  "\t卡量\t" + tn.Text.Substring(index + 1, length-index-2) + "\r\n", true);
+                DisplayAndLog(tn.Text.Substring(0, index) + "\t" + tn.Tag +"\t上级\t" +GetUserName( tn.Parent.Text)+"\t" + tn.Parent.Tag+  "\t卡量\t" + tn.Text.Substring(index + 1, length-index-2) + "\t结算用户\t"+ LookupRealCustomer(tn,selected) +"\r\n", true);
             }
             else
             {
@@ -2179,7 +2193,7 @@ namespace CheckRenewalPkg
  
 
             TreeNode selectednode = treeView1.SelectedNode;
-            PringUserTree(selectednode);
+            PrintUserTree(selectednode, selectednode);
         }
         #endregion
 
