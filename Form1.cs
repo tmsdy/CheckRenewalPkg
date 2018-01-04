@@ -470,7 +470,7 @@ namespace CheckRenewalPkg
             string result = "";
             result = GetResponseSafe(sApiUrl + "/api/allholdnodes?nodeListType=3&NJholdId=0&notIncludeCount=false&id=" + Program.UserId + "&parent=" + Program.UserId);
             RefreshUserTree(result, false, true);
-
+            RefreshUserTree(result, false, true);
         }
 
         public void RefreshUserTree(string a, bool isDisplayGhostUser,bool isLogical)
