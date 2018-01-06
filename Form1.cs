@@ -22,6 +22,7 @@ namespace CheckRenewalPkg
     public partial class Form1 : Form
     {
         Dictionary<string, string> LTPkgIdList = new Dictionary<string, string>();
+        List<string> realCustomersSkip = new List<string> { };
         string[] skipUserList = { "麦谷测试电信卡", "MG测试电信卡", "续费转仓", "0531081测试勿动", "娜姐", "接口调试(联通)", "麦谷内部人员", "ZYR_麦联宝测试", "ZYR_研发部调试卡" ,
                                 "ZYR_客服体验", "ZYR_其他人员试用", "SDY_体验测试", "ZW_后视镜测试", "123", "123-01", "123-02", "实名奖励套餐测试", "ZYR_内部测试卡",
                                 "ZYR_麦谷测试_YD", "ZYR_麦谷测试_DX", "ZYR_麦谷测试_LT","Jaffe_S85", "海如测试", "陈碧淼", "MG娜姐", "Telecom_S5"};
@@ -2098,6 +2099,9 @@ namespace CheckRenewalPkg
         #region 打印下级用户
         private void button16_Click(object sender, EventArgs e)
         {
+            //初始化非结算用户列表
+            realCustomersSkip = configManager.GetValueStrList("Userlist", "realCustomersSkip");
+
             PrintChildNodesWorker9.RunWorkerAsync();
 
         }
@@ -2147,11 +2151,21 @@ namespace CheckRenewalPkg
         }
         private string LookupRealCustomer(TreeNode tn,TreeNode selected)
         {
+            //验证是否在未结算列表里面找到了此节点的父级，如果是，则直接返回此节点
+            string a = realCustomersSkip.Find(
+                  delegate(string str)
+                  {
+                      return str.Equals(tn.Parent.Tag.ToString());
+                  });
             if(TreeNode.Equals(tn,selected))
             {
                 return "NULL";
             }
-            else if(TreeNode.Equals(tn.Parent,selected))
+            else if(!string.IsNullOrEmpty(a))
+            {
+                return GetUserName(tn.Text) + "\t" + tn.Tag;
+            }
+             else if(TreeNode.Equals(tn.Parent,selected))
             {
                 return GetUserName(tn.Text) + "\t" + tn.Tag;
             }
