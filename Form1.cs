@@ -926,7 +926,7 @@ namespace CheckRenewalPkg
                 return;
             //1.将当前节点显示到lable上
             if (tn.Text.IndexOf(key) >= 0)
-                SearchResult.Add(tn.Text);
+                SearchResult.Add(tn.Text+"\t"+tn.Tag);
             foreach (TreeNode tnSub in tn.Nodes)
             {
                 LoopSearch(tnSub, key);
