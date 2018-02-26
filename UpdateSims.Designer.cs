@@ -44,6 +44,8 @@
             this.backgroundWorker5 = new System.ComponentModel.BackgroundWorker();
             this.button7 = new System.Windows.Forms.Button();
             this.backgroundWorker6 = new System.ComponentModel.BackgroundWorker();
+            this.button8 = new System.Windows.Forms.Button();
+            this.backgroundWorker7 = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // richTextBox1
@@ -75,7 +77,7 @@
             this.richTextBox2.Location = new System.Drawing.Point(347, 41);
             this.richTextBox2.Name = "richTextBox2";
             this.richTextBox2.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.richTextBox2.Size = new System.Drawing.Size(624, 533);
+            this.richTextBox2.Size = new System.Drawing.Size(705, 533);
             this.richTextBox2.TabIndex = 2;
             this.richTextBox2.Text = "";
             // 
@@ -177,11 +179,27 @@
             this.backgroundWorker6.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker6_DoWork);
             this.backgroundWorker6.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker6_RunWorkerCompleted);
             // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(966, 9);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(52, 23);
+            this.button8.TabIndex = 10;
+            this.button8.Text = "待开通";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
+            // 
+            // backgroundWorker7
+            // 
+            this.backgroundWorker7.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker7_DoWork);
+            this.backgroundWorker7.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker7_RunWorkerCompleted);
+            // 
             // UpdateSims
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(983, 586);
+            this.ClientSize = new System.Drawing.Size(1064, 586);
+            this.Controls.Add(this.button8);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
@@ -218,5 +236,7 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker5;
         private System.Windows.Forms.Button button7;
         private System.ComponentModel.BackgroundWorker backgroundWorker6;
+        private System.Windows.Forms.Button button8;
+        private System.ComponentModel.BackgroundWorker backgroundWorker7;
     }
 }

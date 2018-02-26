@@ -905,6 +905,77 @@ namespace CheckRenewalPkg
             this.button7.Text = "分配";
             this.button7.Enabled = true;
         }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            this.button8.Enabled = false;
+            this.backgroundWorker7.RunWorkerAsync();
+        }
+        private int SetActiveState(string iccid, string activeState)
+        {
+            if (string.IsNullOrEmpty(iccid) || string.IsNullOrEmpty(activeState))
+            {
+                return -1;
+            }
+
+            string url = Program.sGloableDomailUrl + "/api/SetSimActiveState";
+            string postdata = "simIds%5B%5D=" + iccid + "&activeState=" + activeState;
+            //string postdata = "ids%5B%5D=" + iccid + "&vExpireTime=" + exptime.Replace(" ", "+").Replace(":", "%3A");
+
+            string response = CreatePostHttpResponse(RequestEncoding.GetBytes(postdata.ToString()), url, null, null, null, "application/x-www-form-urlencoded; charset=UTF-8");
+
+            if (response == "")
+            {
+                // DisplayAndLog("修改失败\r\n", true);
+                return -2;
+            }
+            else
+            {
+                // DisplayAndLog(iccid + "\t" + customerid + "修改成功\r\n", true);
+                return 0;
+            }
+        }
+        private void backgroundWorker7_DoWork(object sender, DoWorkEventArgs e)
+        {
+            int i = 1;
+            string iccid = "";
+            string activeState = "1";
+            int result = 0;
+            string[] str = InvokeHelper.Get(this.richTextBox1, "Text").ToString().Trim().Replace("\r\n\r\n", "\r\n").Replace("\r\n\r\n", "\r\n").Split('\n');
+            if (0 != GetSimidFromIccids(str))
+            {
+                DisplayAndLog("获取SIMID失败\r\n", true);
+                return;
+            };
+            foreach (string a in str)
+            {
+                InvokeHelper.Set(this.button8, "Text", (i++).ToString() + "/" + str.Count().ToString());
+                if (string.IsNullOrEmpty(a))
+                    continue;
+                iccid = GetSimID(a.Split(',')[0].Trim());
+
+
+                result = SetActiveState(iccid, activeState);
+                if (0 != result)
+                {
+                    DisplayAndLog(a + "\t" + result.ToString() + "\t修改失败\r\n", true);
+
+                }
+                else
+                {
+                    DisplayAndLog(a + "\t修改成功\r\n", true);
+
+                }
+
+
+            }
+        }
+
+        private void backgroundWorker7_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            this.button8.Text = "待开通";
+            this.button8.Enabled = true;
+        }
          
          
     }
