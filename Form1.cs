@@ -2178,29 +2178,49 @@ namespace CheckRenewalPkg
                return LookupRealCustomer(tn.Parent, selected);
             }
         }
-        private string PrintUserTree(TreeNode tn,TreeNode selected)
+        private string PrintUserTree(TreeNode tn, TreeNode selected)
         {
             string result = "";
             if (tn == null)
                 return result;
 
-            
-            foreach (TreeNode tns in tn.Nodes)
+            bool isPrintAllChilds = Convert.ToBoolean(InvokeHelper.Get(this.checkBox1, "Checked"));
+            if (isPrintAllChilds)
             {
-                PrintUserTree(tns, selected);
-            }
-            int index = tn.Text.LastIndexOf('(');
+                foreach (TreeNode tns in tn.Nodes)
+                {
+                    PrintUserTree(tns, selected);
+                }
+                int index = tn.Text.LastIndexOf('(');
 
-            int length = tn.Text.Length;
-            if (index >= 0)
-            {
-                DisplayAndLog(tn.Text.Substring(0, index) + "\t" + tn.Tag +"\t上级\t" +GetUserName( tn.Parent.Text)+"\t" + tn.Parent.Tag+  "\t卡量\t" + tn.Text.Substring(index + 1, length-index-2) + "\t结算用户\t"+ LookupRealCustomer(tn,selected) +"\r\n", true);
+                int length = tn.Text.Length;
+                if (index >= 0)
+                {
+                    DisplayAndLog(tn.Text.Substring(0, index) + "\t" + tn.Tag + "\t上级\t" + GetUserName(tn.Parent.Text) + "\t" + tn.Parent.Tag + "\t卡量\t" + tn.Text.Substring(index + 1, length - index - 2) + "\t结算用户\t" + LookupRealCustomer(tn, selected) + "\r\n", true);
+                }
+                else
+                {
+                    DisplayAndLog(tn.Text + "\t" + tn.Tag + "\r\n", true);
+                }
             }
             else
             {
-                DisplayAndLog(tn.Text + "\t" + tn.Tag + "\r\n", true);
-            }
+                foreach (TreeNode tns in tn.Nodes)
+                {
+                    int index = tns.Text.LastIndexOf('(');
 
+                    int length = tns.Text.Length;
+                    if (index >= 0)
+                    {
+                        DisplayAndLog(tns.Text.Substring(0, index) + "\t" + tns.Tag + "\t上级\t" + GetUserName(tns.Parent.Text) + "\t" + tns.Parent.Tag + "\t卡量\t" + tns.Text.Substring(index + 1, length - index - 2) + "\t结算用户\t" + LookupRealCustomer(tns, selected) + "\r\n", true);
+                    }
+                    else
+                    {
+                        DisplayAndLog(tns.Text + "\t" + tns.Tag + "\r\n", true);
+                    }
+
+                }
+            }
        
 
             return result;
