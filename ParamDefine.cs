@@ -987,6 +987,12 @@ namespace CheckRenewalPkg
             /// 
             /// </summary>
             public int addUsageForYear { get; set; }
+            /// </summary>
+            public int topLevel { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public int isNotShowForWX { get; set; }
         }
 
         public class SimRenewalsPkgListRoot
