@@ -45,6 +45,89 @@ namespace CheckRenewalPkg
                 ASCII = Encoding.ASCII;
             }
         }
+
+ 
+        public static HttpWebResponse CreateGetHttpResponse(string url, int? timeout, string userAgent, string cookies, WebProxy wp)
+        {
+
+
+
+            try
+            {
+                if (string.IsNullOrEmpty(url))
+                {
+                    throw new ArgumentNullException("url");
+                }
+                //ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
+                HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+                request.Method = "GET";
+                request.KeepAlive = false;
+                request.UserAgent = Program.DefaultUserAgent;
+                request.CookieContainer = new CookieContainer();
+                request.CookieContainer = Program.MLBCookie;
+                request.Timeout = 300000;
+                request.ReadWriteTimeout = 50000;
+                if (!string.IsNullOrEmpty(userAgent))
+                {
+                    request.UserAgent = userAgent;
+                }
+                if (timeout.HasValue)
+                {
+                    request.Timeout = timeout.Value;
+                }
+                request.CookieContainer = new CookieContainer();
+                request.CookieContainer = Program.MLBCookie;
+
+                if (wp != null)
+                {
+                    request.Proxy = wp;
+                    //request.Proxy = new WebProxy("127.0.0.1:9666");
+                }
+
+                //request.Proxy = new WebProxy("127.0.0.1:9666");
+                HttpWebResponse httpresponse = (HttpWebResponse)request.GetResponse();
+                return httpresponse;
+
+            }
+            catch (WebException webEx)
+            {
+                System.Diagnostics.Debug.WriteLine(webEx.Message.ToString() + " \r\n");
+                return null;
+
+            }
+
+        }
+        public string GetResponseSafe(string url)
+        {
+            string result = "";
+            HttpWebResponse webresponse_tmp = CreateGetHttpResponse(url, null, null, null, null);
+
+            if (webresponse_tmp == null)
+            {
+                return result;
+            }
+            Stream sstream_tmp = webresponse_tmp.GetResponseStream();
+            if (sstream_tmp == Stream.Null)
+            {
+                return result;
+            }
+            StreamReader reader = new StreamReader(sstream_tmp, Encoding.UTF8);
+
+            try
+            {
+                result = reader.ReadToEnd();
+            }
+            catch (Exception e)
+            {
+
+                DisplayAndLog(e.Message.ToString() + " 失败\r\n", true);
+
+            }
+            webresponse_tmp.Dispose(); 
+            sstream_tmp.Dispose(); 
+            reader.Dispose(); 
+            return result;
+        }
         public static string CreatePostHttpResponse(byte[] data, string url, int? timeout, string userAgent, string cookies, string ContentType)
         {
 
@@ -577,6 +660,71 @@ namespace CheckRenewalPkg
             this.button4.Text = "周期用量";
         }
 
+        public int GetSimidFromSims(string[] simslist)
+        {
+            string simid = "";
+            string sim = "";
+            string url = Program.sGloableDomailUrl + "/api/YDSimListFire/Search";
+
+            if (simslist == null || simslist.Count() <= 0)
+                return -1;
+            foreach (string a in simslist)
+            {
+                sim += a.Split(',')[0].Trim() + "%0A";
+            }
+            string postdata = "p=1&pRowCount=99999&loginHoldId=1&key=&noChild=0&groupHoldId=0&batchType=2&batchCardStr=" + sim;
+            string response = CreatePostHttpResponse(RequestEncoding.GetBytes(postdata.ToString()), url, null, null, null, "application/x-www-form-urlencoded");
+            if (response == "")
+            {
+                DisplayAndLog("查询卡失败\r\n", true);
+                return -2;
+            }
+            try
+            {
+
+                //jo1是整个返回值
+                JObject jo1 = (JObject)JsonConvert.DeserializeObject(response);
+                //array是三个数组，分别是 汇总信息，卡列表，查询条件
+                ////var listData = data.result[1];
+                ////var page = data.result[0];
+                ////var hid_querySqlwhereKey = data.result[2].card_query_sqlwhere;
+                var strsimlist = jo1.GetValue("result")[1];
+                string strsimlistjson = "{\"result\": " + strsimlist.ToString() + "}";
+                ParamDefine.SearchSimListRoot ssldroot = JsonConvert.DeserializeObject<ParamDefine.SearchSimListRoot>(strsimlistjson);
+                if (ssldroot == null || ssldroot.result == null || ssldroot.result.Count <= 0)
+                    return -3;
+                foreach (ParamDefine.SearchSimListDetail ssld in ssldroot.result)
+                {
+                    try
+                    {
+                        LTSimIdList.Add(ssld.sim, ssld.simId.Split('.')[0]);
+                    }
+                    catch
+                    {
+                        continue;
+                    }
+                }
+
+
+                //JToken[] array = jo1.GetValue("result").ToArray();
+                ////取第1个卡
+                //string simlist = array[1].ToString();
+                //ParamDefine.SearchSimListRoot sslds = JsonConvert.DeserializeObject<ParamDefine.SearchSimListRoot>(simlist);
+                //if (sslds == null || sslds.result == null || sslds.result.Count <= 0)
+                //    return -3;
+                //foreach(ParamDefine.SearchSimListDetail ssld in sslds.result)
+                //{
+                //    LTSimIdList.Add(ssld.guid, ssld.simId.Split('.')[0]);
+                //}
+
+                return 0;
+            }
+            catch (Exception e)
+            {
+                DisplayAndLog(e.ToString() + "\r\n", true);
+                return -4;
+            }
+        }
         public int GetSimidFromIccids( string[] iccidlist)
         {
             string simid = "";
@@ -593,7 +741,7 @@ namespace CheckRenewalPkg
             string response =  CreatePostHttpResponse(RequestEncoding.GetBytes(postdata.ToString()), url , null, null, null, "application/x-www-form-urlencoded");
             if (response == "")
             {
-                DisplayAndLog("刷新套餐失败\r\n", true);
+                DisplayAndLog("查询卡失败\r\n", true);
                 return -2;
             }
             try
@@ -975,6 +1123,87 @@ namespace CheckRenewalPkg
         {
             this.button8.Text = "待开通";
             this.button8.Enabled = true;
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            this.button9.Enabled = false;
+            this.backgroundWorker9.RunWorkerAsync();
+        }
+        private string QueryCMCCbill(string simid)
+        {
+            string billTime = "";
+            string result = "";
+            if (string.IsNullOrEmpty(simid) )
+            {
+                return " Simid为空\r\n";
+            }
+            //http://demo.m-m10010.com/api/YDSimBill?simId=8823346
+            string url = Program.sGloableDomailUrl + "/api/YDSimBill?simId=" + simid;
+
+            int i = 0;
+            string response = GetResponseSafe(url);
+
+            if (response == "")
+            {
+                return ("修改失败\r\n" );
+              
+            }
+            else
+            {
+                 
+                ParamDefine.QueryCMCCBillRoot qcbr = JsonConvert.DeserializeObject<ParamDefine.QueryCMCCBillRoot>(response);
+                if ((qcbr.error == 1) || (qcbr.result == null) || (qcbr.result.Count == 0))
+                    return "没有账单\r\n";
+
+                foreach (ParamDefine.QueryCMCCBillRootResultItem qcbrt in qcbr.result)
+                {
+                    if (qcbrt.operation.IndexOf("续") >= 0)
+                        continue;
+
+                    i = String.Compare(billTime, qcbrt.billTime);
+                    if (billTime == "" || i < 0)
+                    {
+                        billTime = qcbrt.billTime;
+                        result = "\t" + qcbrt.billTime + "\t" + qcbrt.operation + "\t消费\t" + qcbrt.cost + "\t余额\t" + qcbrt.balance + "\t时间\t" + qcbrt.createTime + "\r\n";
+
+                    }
+                }
+                return result;
+            }
+
+        }
+        private void backgroundWorker9_DoWork(object sender, DoWorkEventArgs e)
+        {
+            int i = 1;
+            string simid = ""; 
+            string result = "";
+            string[] str = InvokeHelper.Get(this.richTextBox1, "Text").ToString().Trim().Replace("\r\n\r\n", "\r\n").Replace("\r\n\r\n", "\r\n").Split('\n');
+            if (0 != GetSimidFromSims(str))
+            {
+                DisplayAndLog("获取SIMID失败\r\n", true);
+                return;
+            };
+            foreach (string a in str)
+            {
+                InvokeHelper.Set(this.button9, "Text", (i++).ToString() + "/" + str.Count().ToString());
+                if (string.IsNullOrEmpty(a))
+                    continue;
+                simid = GetSimID(a.Split(',')[0].Trim());
+                
+                result = QueryCMCCbill(simid);
+                 
+                DisplayAndLog(a + result, true);
+ 
+
+
+            }
+        }
+
+        private void backgroundWorker9_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+
+            this.button9.Enabled = true;
         }
          
          

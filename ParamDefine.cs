@@ -897,6 +897,7 @@ namespace CheckRenewalPkg
             public string simId { get; set; }
             /// <summary>
             /// 
+            public string sim { get; set; }
             /// </summary>
             public string guid { get; set; }
             /// <summary>
@@ -1134,5 +1135,51 @@ namespace CheckRenewalPkg
         }
         #endregion
 
+
+        #region
+        public class QueryCMCCBillRootResultItem
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string sim { get; set; }
+            /// <summary>
+            /// 预扣费
+            /// </summary>
+            public string operation { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string billTime { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string cost { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string balance { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string createTime { get; set; }
+        }
+
+        public class QueryCMCCBillRoot
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public int error { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string reason { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<QueryCMCCBillRootResultItem> result { get; set; }
+        }
+        #endregion
     }
 }
