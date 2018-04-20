@@ -1165,7 +1165,7 @@ namespace CheckRenewalPkg
                     if (billTime == "" || i < 0)
                     {
                         billTime = qcbrt.billTime;
-                        result = "\t" + qcbrt.billTime + "\t" + qcbrt.operation + "\t消费\t" + qcbrt.cost + "\t余额\t" + qcbrt.balance + "\t时间\t" + qcbrt.createTime + "\r\n";
+                        result = "\t" + qcbrt.billTime + "\t" + qcbrt.operation + "\t" + qcbrt.cost + "\t余额\t" + qcbrt.balance + "\t时间\t" + qcbrt.createTime + "\r\n";
 
                     }
                 }
@@ -1187,13 +1187,13 @@ namespace CheckRenewalPkg
             foreach (string a in str)
             {
                 InvokeHelper.Set(this.button9, "Text", (i++).ToString() + "/" + str.Count().ToString());
-                if (string.IsNullOrEmpty(a))
+                if (string.IsNullOrEmpty(a.Trim()))
                     continue;
                 simid = GetSimID(a.Split(',')[0].Trim());
                 
                 result = QueryCMCCbill(simid);
                  
-                DisplayAndLog(a + result, true);
+                DisplayAndLog(a.Trim() + result, true);
  
 
 
