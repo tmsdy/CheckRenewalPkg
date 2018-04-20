@@ -1204,6 +1204,7 @@ namespace CheckRenewalPkg
         {
 
             this.button9.Enabled = true;
+            this.button9.Text = "查移动账单";
         }
          
          
