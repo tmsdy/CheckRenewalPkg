@@ -1061,8 +1061,14 @@ namespace CheckRenewalPkg
             this.button28.Enabled = false;
  
             this.button6.Enabled = false;
-
-            this.backgroundWorker2.RunWorkerAsync("single");
+            if(checkBox1.Checked == true)
+            {
+                this.backgroundWorker2.RunWorkerAsync("childs");
+            }
+            else
+            {
+                this.backgroundWorker2.RunWorkerAsync("single");
+            }
         }
         private void button28_Click(object sender, EventArgs e)
         {
@@ -1141,6 +1147,20 @@ namespace CheckRenewalPkg
                 DisplayAndLogBatch(GetUserName(treeView1.SelectedNode.Text.ToString()), true);
                 DisplayAndLogBatch(GetLastMonthBackMoney(id, "lastmonth", true),true);
 
+
+            }
+            else if(whichway == "childs")
+            {
+
+                List<string> idlist = configManager.GetValueStrList("Userlist", "lastmonthbackmoney");
+
+                foreach (TreeNode tns in treeView1.SelectedNode.Nodes)
+                {
+ 
+                    //treeView1.Select();
+                    DisplayAndLogBatch(GetUserName(tns.Text.ToString()), true);
+                    DisplayAndLogBatch(GetLastMonthBackMoney(tns.Tag.ToString(), "lastmonth", false), true);
+                }
 
             }
             else
