@@ -30,7 +30,7 @@ namespace CheckRenewalPkg
         public static Encoding ResponseEncoding = _Encoding.UTF8;
         public UpdateSims(Form1 f)
         {
-             parentForm = f;
+            parentForm = f;
             InitializeComponent();
         }
         public struct _Encoding
@@ -46,7 +46,7 @@ namespace CheckRenewalPkg
             }
         }
 
- 
+
         public static HttpWebResponse CreateGetHttpResponse(string url, int? timeout, string userAgent, string cookies, WebProxy wp)
         {
 
@@ -123,9 +123,9 @@ namespace CheckRenewalPkg
                 DisplayAndLog(e.Message.ToString() + " 失败\r\n", true);
 
             }
-            webresponse_tmp.Dispose(); 
-            sstream_tmp.Dispose(); 
-            reader.Dispose(); 
+            webresponse_tmp.Dispose();
+            sstream_tmp.Dispose();
+            reader.Dispose();
             return result;
         }
         public static string CreatePostHttpResponse(byte[] data, string url, int? timeout, string userAgent, string cookies, string ContentType)
@@ -156,7 +156,7 @@ namespace CheckRenewalPkg
                 request.CookieContainer = new CookieContainer();
                 request.CookieContainer = Program.MLBCookie;
                 request.Timeout = 300000;
-                request.ReadWriteTimeout = 50000; 
+                request.ReadWriteTimeout = 50000;
                 request.CookieContainer = new CookieContainer();
                 request.CookieContainer = Program.MLBCookie;
                 if (!string.IsNullOrEmpty(userAgent))
@@ -201,10 +201,10 @@ namespace CheckRenewalPkg
         }
         public static string PostResponseSafe(byte[] data, string url)
         {
-           
-            string result = CreatePostHttpResponse(  data, url, null, null, null, null);
 
- 
+            string result = CreatePostHttpResponse(data, url, null, null, null, null);
+
+
             return result;
         }
         private void button1_Click(object sender, EventArgs e)
@@ -221,7 +221,7 @@ namespace CheckRenewalPkg
             //}
             //richTextBox2.AppendText(PostDataToUrl(post,,Program.sGloableDomailUrl + "/api/BatchUpdateTerminalUsageByICCIDs") + "\r\n");
             this.button1.Enabled = false;
-            backgroundWorker1.RunWorkerAsync(); 
+            backgroundWorker1.RunWorkerAsync();
         }
         private void InitCustomerList()
         {
@@ -467,12 +467,12 @@ namespace CheckRenewalPkg
             this.Text += Program.sVer;
             DateTime dt = DateTime.Now;
             string date = "";
-            List< string> dit_status = new List< string>();
+            List<string> dit_status = new List<string>();
 
             for (int i = 0; i < 12; i++)
             {
                 date = dt.AddMonths(-i).ToString("yyyy-MM");
-                dit_status.Add(date+"-01");
+                dit_status.Add(date + "-01");
             }
             this.comboBox1.DataSource = dit_status;
 
@@ -481,10 +481,10 @@ namespace CheckRenewalPkg
 
         private void UpdateSims_FormClosing(object sender, FormClosingEventArgs e)
         {
-            
+
         }
 
- 
+
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -514,10 +514,10 @@ namespace CheckRenewalPkg
             for (int times = 0; times < totalTimes; times++)
             {
 
-                InvokeHelper.Set(button1, "Text", (times + 1).ToString() + "/" + totalTimes.ToString()); 
+                InvokeHelper.Set(button1, "Text", (times + 1).ToString() + "/" + totalTimes.ToString());
                 //richTextBox2.AppendText((times + 1).ToString() + "/" + totalTimes.ToString() + "\r\n");
                 postdata.Clear();
-                 postdata.Append("{\"iccids\":[\"" );
+                postdata.Append("{\"iccids\":[\"");
                 for (i = 0; (i < updateRatePlanLimitCount) && (times * updateRatePlanLimitCount + i < count); i++)
                 {
                     postdata.Append(str[times * updateRatePlanLimitCount + i].Trim());
@@ -533,7 +533,7 @@ namespace CheckRenewalPkg
                 }
                 try
                 {
-                    InvokeHelper.Set(richTextBox2, "Text", InvokeHelper.Get(this.richTextBox2, "Text").ToString() + PostDataToUrl(postdata.ToString(), Program.sGloableDomailUrl +"/api/BatchUpdateTerminalUsageByICCIDs") + "\r\n");
+                    InvokeHelper.Set(richTextBox2, "Text", InvokeHelper.Get(this.richTextBox2, "Text").ToString() + PostDataToUrl(postdata.ToString(), Program.sGloableDomailUrl + "/api/BatchUpdateTerminalUsageByICCIDs") + "\r\n");
 
                 }
                 catch
@@ -554,7 +554,7 @@ namespace CheckRenewalPkg
         private void button3_Click(object sender, EventArgs e)
         {
             this.button3.Enabled = false;
-            backgroundWorker2.RunWorkerAsync(); 
+            backgroundWorker2.RunWorkerAsync();
         }
 
         private void backgroundWorker2_DoWork(object sender, DoWorkEventArgs e)
@@ -580,7 +580,7 @@ namespace CheckRenewalPkg
                 {
                     postdata.Append(str[times * updateRatePlanLimitCount + i].Trim());
                     postdata.Append("\n");
-  
+
 
                 }
                 postdata.Append("\",\"batchStart\":\"\",\"batchEnd\":\"\",\"batchNumber\":0,\"date\":\"201704\",\"cost\":\"0\"}");
@@ -610,14 +610,14 @@ namespace CheckRenewalPkg
         private void button4_Click(object sender, EventArgs e)
         {
             string str = this.richTextBox1.Text.Trim();
-            if(str.Split(',').Count()<= str.Split('\n').Count())
+            if (str.Split(',').Count() <= str.Split('\n').Count())
             {
                 MessageBox.Show("卡号和用量之间用英文逗号(,)隔开");
                 return;
             }
-     
+
             this.button4.Enabled = false;
-            backgroundWorker3.RunWorkerAsync(); 
+            backgroundWorker3.RunWorkerAsync();
         }
 
         private void backgroundWorker3_DoWork(object sender, DoWorkEventArgs e)
@@ -628,13 +628,13 @@ namespace CheckRenewalPkg
             string result = "";
             StringBuilder postdata = new StringBuilder();
             int count = str.Count();
-            for(int i=0;i<count;i++)
+            for (int i = 0; i < count; i++)
             {
                 iccid = str[i].Split(',')[0].Trim();
                 usage = str[i].Split(',')[1].Trim();
                 if (Regex.Matches(usage, "[a-zA-Z]").Count > 0)
                 {
-                    DisplayAndLog(str[i] + "\t" +   "用量不要带字母\r\n", true);
+                    DisplayAndLog(str[i] + "\t" + "用量不要带字母\r\n", true);
                     continue;
                 }
                 postdata.Clear();
@@ -648,7 +648,7 @@ namespace CheckRenewalPkg
                 }
                 catch
                 {
-                    DisplayAndLog(str[i] + "\t" +  "修改异常\r\n", true);
+                    DisplayAndLog(str[i] + "\t" + "修改异常\r\n", true);
 
                 }
             }
@@ -725,20 +725,47 @@ namespace CheckRenewalPkg
                 return -4;
             }
         }
-        public int GetSimidFromIccids( string[] iccidlist)
+        public int GetSimidFromIccids(string[] iccidlist)
         {
             string simid = "";
             string iccid = "";
-            string url = Program.sGloableDomailUrl + "/api/SimListFire/Search";
+            bool isCmcc = false;
+            string url = "";
+            string postdata= "";
+            string response= "";
 
             if (iccidlist == null || iccidlist.Count() <= 0)
                 return -1;
             foreach(string a in iccidlist)
             {
-                iccid += a.Split(',')[0].Trim() + "%0A";
+                if (string.IsNullOrEmpty(a))
+                    continue;
+                if(a.IndexOf("898606") == 0)
+                {
+                    iccid += a.Split(',')[0].Trim() + "%0A";
+                }
+                else
+                {
+                    isCmcc = true;
+                    iccid += a.Split(',')[0].Trim() + "\n";
+                }
+
             }
-            string postdata = "p=1&pRowCount=99999&loginHoldId=1&key=&noChild=0&groupHoldId=0&batchType=1&batchCardStr=" + iccid  ;
-            string response =  CreatePostHttpResponse(RequestEncoding.GetBytes(postdata.ToString()), url , null, null, null, "application/x-www-form-urlencoded");
+            if(isCmcc)
+            {
+                //{"p":1,"pRowCount":"25","storeState":"all","loginHoldId":"100","noChild":1,"key":"","groupHoldId":0,"batchType":"1","batchCardStr":"898602B9191750533922\n898602B9191750533934\n","batchStart":"","batchEnd":"","batchNumber":0}
+                url = Program.sGloableDomailUrl + "/api/YDSimListFire/Search";
+                var obj = new { p = 1, pRowCount = 99999, storeState = "all", loginHoldId = 1, noChild = 1, groupHoldId = 0, batchType = 1, batchCardStr = iccid };
+                postdata = JsonConvert.SerializeObject(obj) ;
+                response = CreatePostHttpResponse(RequestEncoding.GetBytes(postdata.ToString()), url, null, null, null, "application/json");
+            }
+            else
+            {
+                url = Program.sGloableDomailUrl + "/api/SimListFire/Search";
+                postdata = "p=1&pRowCount=99999&loginHoldId=1&key=&noChild=0&groupHoldId=0&batchType=1&batchCardStr=" + iccid;
+                response = CreatePostHttpResponse(RequestEncoding.GetBytes(postdata.ToString()), url, null, null, null, "application/x-www-form-urlencoded");
+            }
+
             if (response == "")
             {
                 DisplayAndLog("查询卡失败\r\n", true);
@@ -790,7 +817,7 @@ namespace CheckRenewalPkg
                 return -4;
             }
         }
-        private delegate void SetTextHandler(string text );
+        private delegate void SetTextHandler(string text);
         public void SetText(string text)
         {
             if (richTextBox1.InvokeRequired == true)
@@ -812,7 +839,7 @@ namespace CheckRenewalPkg
 
                 SetText(s);
                 Application.DoEvents();
-            } 
+            }
             parentForm.WriteLogFile(s);
         }
 
@@ -834,7 +861,7 @@ namespace CheckRenewalPkg
                 DisplayAndLog("获取SIMID失败\r\n", true);
                 return;
             };
-            foreach(string a in str)
+            foreach (string a in str)
             {
                 InvokeHelper.Set(this.button5, "Text", (i++).ToString() + "/" + str.Count().ToString());
                 if (string.IsNullOrEmpty(a))
@@ -845,26 +872,26 @@ namespace CheckRenewalPkg
                 if (0 != result)
                 {
                     DisplayAndLog(a + "\t" + result.ToString() + "\t修改失败\r\n", true);
-                   
+
                 }
                 else
                 {
                     DisplayAndLog(a + "\t修改成功\r\n", true);
-                 
+
                 }
 
 
             }
 
         }
-        private int SetCustomerID(string iccid,string customerid)
+        private int SetCustomerID(string iccid, string customerid)
         {
             if (string.IsNullOrEmpty(iccid) || string.IsNullOrEmpty(customerid))
             {
                 return -1;
             }
-                   
-            if ( customerid.Trim() == "OK")
+
+            if (customerid.Trim() == "OK")
             {
                 return 0;
             }
@@ -872,22 +899,22 @@ namespace CheckRenewalPkg
             string postdata = "simIds%5B%5D=" + iccid + "&groupId=" + customerid;
 
             string response = CreatePostHttpResponse(RequestEncoding.GetBytes(postdata.ToString()), url, null, null, null, "application/x-www-form-urlencoded");
-     
+
             if (response == "")
             {
-               // DisplayAndLog("修改失败\r\n", true);
+                // DisplayAndLog("修改失败\r\n", true);
                 return -2;
             }
             else
             {
-               // DisplayAndLog(iccid + "\t" + customerid + "修改成功\r\n", true);
+                // DisplayAndLog(iccid + "\t" + customerid + "修改成功\r\n", true);
                 return 0;
             }
         }
         private string GetSimID(string iccid)
         {
             try
-            { 
+            {
                 return LTSimIdList[iccid];
             }
             catch
@@ -936,8 +963,8 @@ namespace CheckRenewalPkg
                 if (string.IsNullOrEmpty(a))
                     continue;
                 iccid = GetSimID(a.Split(',')[0].Trim());
-                exptime =  (a.Split(',')[1].Trim());
-               
+                exptime = (a.Split(',')[1].Trim());
+
                 result = SetExpTime(iccid, exptime);
                 if (0 != result)
                 {
@@ -947,7 +974,7 @@ namespace CheckRenewalPkg
                 else
                 {
                     DisplayAndLog(a + "\t修改成功\r\n", true);
-                    
+
                 }
 
 
@@ -955,7 +982,7 @@ namespace CheckRenewalPkg
         }
         private int SetExpTime(string iccid, string exptime)
         {
-            if(string.IsNullOrEmpty(iccid)||string.IsNullOrEmpty(exptime) )
+            if (string.IsNullOrEmpty(iccid) || string.IsNullOrEmpty(exptime))
             {
                 return -1;
             }
@@ -1007,7 +1034,7 @@ namespace CheckRenewalPkg
                 if (string.IsNullOrEmpty(a))
                     continue;
                 iccid = GetSimID(a.Split(',')[0].Trim());
-                movetoHoldid =  (a.Split(',')[1].Trim());
+                movetoHoldid = (a.Split(',')[1].Trim());
                 result = Distribute(iccid, movetoHoldid);
                 if (0 != result)
                 {
@@ -1024,7 +1051,7 @@ namespace CheckRenewalPkg
             }
 
         }
-        private int Distribute(string iccid,string movetoHoldid)
+        private int Distribute(string iccid, string movetoHoldid)
         {
 
             if (string.IsNullOrEmpty(iccid) || string.IsNullOrEmpty(movetoHoldid))
@@ -1134,7 +1161,7 @@ namespace CheckRenewalPkg
         {
             string billTime = "";
             string result = "";
-            if (string.IsNullOrEmpty(simid) )
+            if (string.IsNullOrEmpty(simid))
             {
                 return " Simid为空\r\n";
             }
@@ -1146,12 +1173,12 @@ namespace CheckRenewalPkg
 
             if (response == "")
             {
-                return ("修改失败\r\n" );
-              
+                return ("修改失败\r\n");
+
             }
             else
             {
-                 
+
                 ParamDefine.QueryCMCCBillRoot qcbr = JsonConvert.DeserializeObject<ParamDefine.QueryCMCCBillRoot>(response);
                 if ((qcbr.error == 1) || (qcbr.result == null) || (qcbr.result.Count == 0))
                     return "没有账单\r\n";
@@ -1176,7 +1203,7 @@ namespace CheckRenewalPkg
         private void backgroundWorker9_DoWork(object sender, DoWorkEventArgs e)
         {
             int i = 1;
-            string simid = ""; 
+            string simid = "";
             string result = "";
             string[] str = InvokeHelper.Get(this.richTextBox1, "Text").ToString().Trim().Replace("\r\n\r\n", "\r\n").Replace("\r\n\r\n", "\r\n").Split('\n');
             if (0 != GetSimidFromSims(str))
@@ -1190,11 +1217,11 @@ namespace CheckRenewalPkg
                 if (string.IsNullOrEmpty(a.Trim()))
                     continue;
                 simid = GetSimID(a.Split(',')[0].Trim());
-                
+
                 result = QueryCMCCbill(simid);
-                 
+
                 DisplayAndLog(a.Trim() + result, true);
- 
+
 
 
             }
@@ -1206,8 +1233,8 @@ namespace CheckRenewalPkg
             this.button9.Enabled = true;
             this.button9.Text = "查移动账单";
         }
-         
-         
+
+
     }
 }
 
@@ -1226,8 +1253,8 @@ namespace CheckRenewalPkg
 //Cookie: ASP.NET_SessionId=vbcw43x3awlzgrsuxlu1ump3; UserCookie=UserID=1&UserName=admin&UserType=1&HoldID=1&HoldName=%e8%bf%90%e8%90%a5%e4%b8%ad%e5%bf%83&HoldLevel=1&HoldType=4&Token=F1X2BX1LI5V3SDQC1XPOFXW7C9HBHWTN&LoginFromType=1&OEMClient=
 
 //operateCmd=move&simId%5B%5D=367006&toHoldId=3828&loginHoldId=1
- 
-  
+
+
 //POST http://demo.m-m10010.com/api/MonitorTestSetSimGroup HTTP/1.1
 //Host: demo.m-m10010.com
 //Connection: keep-alive
@@ -1261,5 +1288,4 @@ namespace CheckRenewalPkg
 
 //ids%5B%5D=4733596&vExpireTime=2018-10-27+23%3A59%3A59
 
-   
- 
+
