@@ -35,6 +35,8 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.button4 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.button32 = new System.Windows.Forms.Button();
+            this.button31 = new System.Windows.Forms.Button();
             this.button30 = new System.Windows.Forms.Button();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.button29 = new System.Windows.Forms.Button();
@@ -89,7 +91,7 @@
             this.CheckSimRenewalsWorker = new System.ComponentModel.BackgroundWorker();
             this.GetActiveCountWorker = new System.ComponentModel.BackgroundWorker();
             this.GetRenewalsUsageWorker9 = new System.ComponentModel.BackgroundWorker();
-            this.button31 = new System.Windows.Forms.Button();
+            this.batchDistributeWorker = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -149,6 +151,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.button32);
             this.splitContainer1.Panel2.Controls.Add(this.button31);
             this.splitContainer1.Panel2.Controls.Add(this.button30);
             this.splitContainer1.Panel2.Controls.Add(this.checkBox5);
@@ -210,6 +213,28 @@
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             this.comboBox1.TextChanged += new System.EventHandler(this.comboBox1_TextChanged);
             this.comboBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.comboBox1_KeyUp);
+            // 
+            // button32
+            // 
+            this.button32.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button32.Location = new System.Drawing.Point(14, 586);
+            this.button32.Name = "button32";
+            this.button32.Size = new System.Drawing.Size(75, 23);
+            this.button32.TabIndex = 36;
+            this.button32.Text = "批量分配卡";
+            this.button32.UseVisualStyleBackColor = true;
+            this.button32.Click += new System.EventHandler(this.button32_Click);
+            // 
+            // button31
+            // 
+            this.button31.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button31.Location = new System.Drawing.Point(44, 636);
+            this.button31.Name = "button31";
+            this.button31.Size = new System.Drawing.Size(38, 23);
+            this.button31.TabIndex = 35;
+            this.button31.Text = "逻辑";
+            this.button31.UseVisualStyleBackColor = true;
+            this.button31.Click += new System.EventHandler(this.button31_Click);
             // 
             // button30
             // 
@@ -651,7 +676,7 @@
             this.richTextBox1.Font = new System.Drawing.Font("新宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.richTextBox1.Location = new System.Drawing.Point(3, 5);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(1066, 601);
+            this.richTextBox1.Size = new System.Drawing.Size(1066, 575);
             this.richTextBox1.TabIndex = 4;
             this.richTextBox1.Text = "";
             // 
@@ -724,16 +749,10 @@
             this.GetRenewalsUsageWorker9.DoWork += new System.ComponentModel.DoWorkEventHandler(this.GetRenewalsUsageWorker9_DoWork);
             this.GetRenewalsUsageWorker9.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.GetRenewalsUsageWorker9_RunWorkerCompleted);
             // 
-            // button31
+            // batchDistributeWorker
             // 
-            this.button31.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button31.Location = new System.Drawing.Point(44, 636);
-            this.button31.Name = "button31";
-            this.button31.Size = new System.Drawing.Size(38, 23);
-            this.button31.TabIndex = 35;
-            this.button31.Text = "逻辑";
-            this.button31.UseVisualStyleBackColor = true;
-            this.button31.Click += new System.EventHandler(this.button31_Click);
+            this.batchDistributeWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.batchDistributeWorker_DoWork);
+            this.batchDistributeWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.batchDistributeWorker_RunWorkerCompleted);
             // 
             // Form1
             // 
@@ -820,6 +839,8 @@
         private System.Windows.Forms.CheckBox checkBox5;
         private System.Windows.Forms.Button button30;
         private System.Windows.Forms.Button button31;
-    }
+        private System.Windows.Forms.Button button32;
+        private System.ComponentModel.BackgroundWorker batchDistributeWorker;
+     }
 }
 

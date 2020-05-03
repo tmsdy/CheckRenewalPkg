@@ -16,18 +16,21 @@ using System.Threading;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Data.SQLite;
+using System.Text.RegularExpressions;
 
 namespace CheckRenewalPkg
 {
     public partial class Form1 : Form
     {
         Dictionary<string, string> LTPkgIdList = new Dictionary<string, string>();
+
+        Dictionary<string, string> YDPkgIdList = new Dictionary<string, string>();
         List<string> realCustomersSkip = new List<string> { };
         string[] skipUserList = { "麦谷测试电信卡", "MG测试电信卡", "续费转仓", "0531081测试勿动", "娜姐", "接口调试(联通)", "麦谷内部人员", "ZYR_麦联宝测试", "ZYR_研发部调试卡" ,
                                 "ZYR_客服体验", "ZYR_其他人员试用", "SDY_体验测试", "ZW_后视镜测试", "123", "123-01", "123-02", "实名奖励套餐测试", "ZYR_内部测试卡",
                                 "ZYR_麦谷测试_YD", "ZYR_麦谷测试_DX", "ZYR_麦谷测试_LT","Jaffe_S85", "海如测试", "陈碧淼", "MG娜姐", "Telecom_S5"};
         public string sApiUrl = Program.sGloableDomailUrl;
-        public string sOpenUrl = "http://open.m-m10010.com";
+        public string sOpenUrl = "http://open.ali-sim.com";
         public string sLogFileName = "";
         public string slogfilepath = "";
         private object filelocker = new object();
@@ -35,7 +38,13 @@ namespace CheckRenewalPkg
 
         public static Encoding RequestEncoding = _Encoding.UTF8;
         public static Encoding ResponseEncoding = _Encoding.UTF8;
+        enum CarrierType
+        {
 
+            CMCC = 0,
+            CUCC = 1,
+            CTCC = 2
+        }
         public struct renewalsPeriod
         {
             public string whichway;
@@ -411,6 +420,61 @@ namespace CheckRenewalPkg
             return null;
         }
 
+        private string  GetNameFromRegex(string text)
+        {
+        
+            Regex r = new Regex(@"^[\u4e00-\u9fa5\w]+");
+            Match m = r.Match(text);
+            return m.Groups[0].Value;
+
+        }
+        private TreeNode FindNodeByName(TreeNode tnParent, string strValue)
+        {
+            if (tnParent == null) return null;
+
+  
+            if (GetNameFromRegex(tnParent.Text) == strValue) return tnParent;
+            else if (tnParent.Nodes.Count == 0) return null;
+
+            TreeNode tnCurrent, tnCurrentPar;
+
+            //Init node
+            tnCurrentPar = tnParent;
+            tnCurrent = tnCurrentPar.FirstNode;
+
+            while (tnCurrent != null && tnCurrent != tnParent)
+            {
+                while (tnCurrent != null)
+                {
+                    if (GetNameFromRegex(tnCurrent.Text) == strValue) return tnCurrent;
+                    else if (tnCurrent.Nodes.Count > 0)
+                    {
+                        //Go into the deepest node in current sub-path
+                        tnCurrentPar = tnCurrent;
+                        tnCurrent = tnCurrent.FirstNode;
+                    }
+                    else if (tnCurrent != tnCurrentPar.LastNode)
+                    {
+                        //Goto next sible node
+                        tnCurrent = tnCurrent.NextNode;
+                    }
+                    else
+                        break;
+                }
+
+                //Go back to parent node till its has next sible node
+                while (tnCurrent != tnParent && tnCurrent == tnCurrentPar.LastNode)
+                {
+                    tnCurrent = tnCurrentPar;
+                    tnCurrentPar = tnCurrentPar.Parent;
+                }
+
+                //Goto next sible node
+                if (tnCurrent != tnParent)
+                    tnCurrent = tnCurrent.NextNode;
+            }
+            return null;
+        }
 
         private TreeNode FindNodeByText(TreeNode tnParent, string strValue)
         {
@@ -928,7 +992,7 @@ namespace CheckRenewalPkg
             if (tn.Text.IndexOf(key) >= 0)
             {
                 SearchResult.Add(tn.Text);
-               WriteLogFile(tn.Text + "\t" + tn.Tag);
+               //WriteLogFile(tn.Text + "\t" + tn.Tag);
 
             }
             foreach (TreeNode tnSub in tn.Nodes)
@@ -1910,7 +1974,7 @@ namespace CheckRenewalPkg
             int length = s.Length;
             if (length >= 50)
                 length = 50;
-            DialogResult dr = MessageBox.Show("在这个账号下新建： " + GetUserName(treeView1.SelectedNode.Text.ToString()) + "\r\n格式为：  用户名，登录名，用户类型，密码\r\n或者为： 待修改ID，用户名，登录名，用户类型，密码\r\n或者为： 用户名，登录名，logic，密码\r\n" + s.Substring(0, length), "提示", MessageBoxButtons.OKCancel);
+            DialogResult dr = MessageBox.Show("在这个账号下新建： " + GetUserName(treeView1.SelectedNode.Text.ToString()) + "\r\n格式为：  用户名，登录名，密码，用户类型\r\n或者为： 待修改ID，用户名，登录名，密码，用户类型\r\n或者为： 用户名，登录名，密码，logic\r\n" + s.Substring(0, length), "提示", MessageBoxButtons.OKCancel);
            if (dr == DialogResult.OK)
            {
                this.button14.Enabled = false;
@@ -1925,7 +1989,7 @@ namespace CheckRenewalPkg
 
         private string GetBinduserlist(string key)
         {
-            //http://demo.m-m10010.com/api/HoldLikeName?holdId=1&key=b 
+            //http://demo.ali-sim.com/api/HoldLikeName?holdId=1&key=b 
             string url = sApiUrl + "/api/HoldLikeName?holdId=" + Program.UserId +"&key=" + key ;
             StringBuilder tmp = new StringBuilder();
             string result = GetResponseSafe(url);
@@ -1959,7 +2023,7 @@ namespace CheckRenewalPkg
             if(usertype != "logic")
             {
                 //普通用户
-                post = "txtHoldName={1}&txtUserName={2}&txtUserPass={4}&txtReUserPass={5}&sltHoldType={3}&txtContacter=&txtContacterTel=&viewWXRenewals=1&sltProvince=0&txtAddress=&txtRemark=&hid_ParentHoldID={0}&hid_HoldID={6}&hid_Province=&hid_City=&hid_Region=&hid_GroupHoldIds=&hid_GroupHoldNames=";
+                post = "txtHoldName={1}&txtUserName={2}&txtUserPass={4}&txtReUserPass={5}&sltHoldType={3}&txtContacter=&txtContacterTel=&viewWXRenewals=1&sltProvince=0&txtAddress=&txtRemark=&hid_ParentHoldID={0}&hid_HoldID={6}&hid_Province=&hid_City=&hid_Region=&hid_GroupHoldIds=&hid_GroupHoldNames=&sortHoldId=-1&hid_VirtualHold=1";
                 postWithParam = string.Format(post, parentid, displayname, loginname, usertype, password, password, currentid);
                 result = PostDataToUrl(postWithParam, sApiUrl + "/hold/Info");
             }
@@ -2015,32 +2079,32 @@ namespace CheckRenewalPkg
                     {
                     case 1:
                             displayname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[0].Trim().Replace("\t",""));
-                            result = CreateUser(selectedUserId, displayname, displayname, usertype, password, currentid);
+                            result = CreateUser(selectedUserId, displayname, displayname, usertype, displayname+password, currentid);
                             break;
                     case 2:
                             displayname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[0].Trim().Replace("\t", ""));
                             loginname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[1].Trim().Replace("\t", ""));
-                            result = CreateUser(selectedUserId, displayname, loginname, usertype, password, currentid);
+                            result = CreateUser(selectedUserId, displayname, loginname, usertype, loginname + password, currentid);
                             break;
                     case 3:
                             displayname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[0].Trim().Replace("\t", ""));
                             loginname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[1].Trim().Replace("\t", ""));
-                            usertype = usernamelist[i].Trim().Split(',')[2].Trim();
-                            result = CreateUser(selectedUserId, displayname, loginname, usertype, password, currentid);
+                            password = usernamelist[i].Trim().Split(',')[2].Trim().Replace("\t", "");
+                            result = CreateUser(selectedUserId, displayname, loginname, usertype,  password, currentid);
                             break;
                     case 4:
                             displayname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[0].Trim().Replace("\t", ""));
                             loginname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[1].Trim().Replace("\t", ""));
-                            usertype = usernamelist[i].Trim().Split(',')[2].Trim();
-                            password = usernamelist[i].Trim().Split(',')[3].Trim().Replace("\t", "");
+                            password = usernamelist[i].Trim().Split(',')[2].Trim().Replace("\t", "");
+                            usertype = usernamelist[i].Trim().Split(',')[3].Trim();
                             result = CreateUser(selectedUserId, displayname, loginname, usertype, password, currentid);
                             break;
                     case 5:
                             currentid = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[0].Trim().Replace("\t", ""));
                             displayname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[1].Trim().Replace("\t", ""));
                             loginname = System.Web.HttpUtility.UrlEncode(usernamelist[i].Trim().Split(',')[2].Trim().Replace("\t", ""));
-                            usertype = usernamelist[i].Trim().Split(',')[3].Trim();
-                            password = usernamelist[i].Trim().Split(',')[4].Trim().Replace("\t", "");
+                            password = usernamelist[i].Trim().Split(',')[3].Trim().Replace("\t", "");
+                            usertype = usernamelist[i].Trim().Split(',')[4].Trim();
                             result = CreateUser(selectedUserId, displayname, loginname, usertype, password, currentid);
                             break;
 
@@ -2295,7 +2359,7 @@ namespace CheckRenewalPkg
             }
             string payee = InvokeHelper.Get(this.comboBox2, "SelectedValue").ToString();
 
-            //http://demo.m-m10010.com/api/ReportRenewalsOrderTotal?holdid=1&ComeFrom=undefined&timeType=4&timeType=4&stime=2017-06-23%2000:00:00&etime=2017-06-23%2023:59:59&order=&id=&PayState=1&simState=-1&RenewalsState=&minamonth=&psize=60000&payee=&source=&access=&packageType=
+            //http://demo.ali-sim.com/api/ReportRenewalsOrderTotal?holdid=1&ComeFrom=undefined&timeType=4&timeType=4&stime=2017-06-23%2000:00:00&etime=2017-06-23%2023:59:59&order=&id=&PayState=1&simState=-1&RenewalsState=&minamonth=&psize=60000&payee=&source=&access=&packageType=
 
             url = sApiUrl + "/api/ReportRenewalsOrderTotal?holdid=" + id + "&ComeFrom=undefined&timeType=4&timeType=4&stime=" + stime + "%2000:00:00&etime=" + etime + "%2023:59:59&order=&id=&PayState=1&simState=-1&RenewalsState=&minamonth=&psize=60000&payee=" + payee + "&source=" + sourceid + "&access=&packageType=";
 
@@ -2722,7 +2786,7 @@ namespace CheckRenewalPkg
             double usage = 0;
             double amount = 0;
            
-            //http://demo.m-m10010.com/api/ReportYDRenewalsOrderTotal?serviceState=0&holdid=1756&sdate=2017-06-26%2012%3A32&edate=2017-06-28%2012%3A32&order=&id=&psize=50&payee=&comeFrom=&renewalsState=&sourceType=&packageType=558&p=1
+            //http://demo.ali-sim.com/api/ReportYDRenewalsOrderTotal?serviceState=0&holdid=1756&sdate=2017-06-26%2012%3A32&edate=2017-06-28%2012%3A32&order=&id=&psize=50&payee=&comeFrom=&renewalsState=&sourceType=&packageType=558&p=1
 
             url = sApiUrl + "/api/ReportYDRenewalsOrderTotal?serviceState=0&holdid=" + id + "&sdate=" + stime + "%2000:00:00&edate=" + etime + "%2023:59:59&order=&id=&psize=50&payee=&comeFrom=&renewalsState=&sourceType=&packageType=558&p=1";
 
@@ -3050,7 +3114,7 @@ namespace CheckRenewalPkg
                 //如果勾选了打印续费套餐列表  就打印
                 if (isPrintRenewals)
                 {
-                    pkgid = GetPkgIdFromPkgName(pkgitem.groupByName);
+                    pkgid = GetPkgIdFromPkgNameCUCC(pkgitem.groupByName);
                     if (string.IsNullOrEmpty(pkgid))
                     {
                         DisplayAndLog("套餐ID为空\r\n", true);
@@ -3117,7 +3181,44 @@ namespace CheckRenewalPkg
 
             return result;
         }
-        public int RefreshPkg(bool isForceRefresh)
+
+        public int RefreshPkgCMCC(bool isForceRefresh)
+        {
+
+            if ((YDPkgIdList.Keys.Count != 0) && isForceRefresh == false)
+                return 0;
+
+            string url = sApiUrl + "/api/SimHandle/ScreenSelectList?pageName=ydsim";
+
+            string response = GetResponseSafe(url);
+            if (response == "")
+            {
+                DisplayAndLog("刷新套餐失败\r\n", true);
+                return -1;
+            }
+            ParamDefine.YDPkgListDetailRoot pkgListRoot = JsonConvert.DeserializeObject<ParamDefine.YDPkgListDetailRoot>(response);
+            if (pkgListRoot == null || pkgListRoot.result == null || pkgListRoot.result.sltPackageTypeYD == null)
+            {
+                DisplayAndLog("获取套餐失败\r\n", true);
+                return -2;
+            }
+            foreach (ParamDefine.SltPackageTypeYDItem pkgitem in pkgListRoot.result.sltPackageTypeYD)
+            {
+                try
+                {
+                    YDPkgIdList.Add(pkgitem.Text, pkgitem.Value);
+                }
+                catch
+                {
+
+                }
+            }
+
+
+            return 0;
+
+        }
+        public int RefreshPkgCUCC(bool isForceRefresh)
         {
 
             if ((LTPkgIdList.Keys.Count != 0) && isForceRefresh == false)
@@ -3139,14 +3240,21 @@ namespace CheckRenewalPkg
             }
             foreach (ParamDefine.SltPackageTypeItem pkgitem in pkgListRoot.result.sltPackageType)
             {
-                LTPkgIdList.Add(pkgitem.Text, pkgitem.Value);
+                try
+                {
+                     LTPkgIdList.Add(pkgitem.Text, pkgitem.Value);
+                }
+                catch
+                {
+
+                }
             }
 
 
             return 0;
 
         }
-        public string GetPkgIdFromPkgName(string pkgname)
+        public string GetPkgIdFromPkgNameCUCC(string pkgname)
         {
             string pkgid = "";
             if (string.IsNullOrEmpty(pkgname))
@@ -3154,9 +3262,23 @@ namespace CheckRenewalPkg
                 DisplayAndLog("套餐名为空！" + pkgname + "\r\n", true);
                 return pkgid;
             }
-            RefreshPkg(false);
+            RefreshPkgCUCC(false);
 
             pkgid = LTPkgIdList[pkgname];
+
+            return pkgid;
+        }
+        public string GetPkgIdFromPkgNameCMCC(string pkgname)
+        {
+            string pkgid = "";
+            if (string.IsNullOrEmpty(pkgname))
+            {
+                DisplayAndLog("套餐名为空！" + pkgname + "\r\n", true);
+                return pkgid;
+            }
+            RefreshPkgCMCC(false);
+
+            pkgid = YDPkgIdList[pkgname];
 
             return pkgid;
         }
@@ -3460,6 +3582,237 @@ namespace CheckRenewalPkg
             treeView1.SelectedNode = treeView1.Nodes[0];
         }
 
+        private void button32_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show( "格式为：头ICCID，尾ICCID, 用户名，套餐名", "提示", MessageBoxButtons.OKCancel);
+            if (dr == DialogResult.OK)
+            {
+                this.button32.Enabled = false;
+                this.batchDistributeWorker.RunWorkerAsync();
+            }
+            else if (dr == DialogResult.Cancel)
+            {
+
+            }
+         
+     
+        }
+
+        public string GetBatchQuerySQLCMCC(string beginiccid, string endiccid)
+        {
+            string querysql = "";
+            string countregex = "(?<=records\":)\\d+";
+            string url = sApiUrl + "/api/YDSimListFire/Search";
+            string postdata = string.Format("{{\"p\":1,\"pRowCount\":\"25\",\"storeState\":\"all\",\"loginHoldId\":\"1\",\"noChild\":1,\"key\":\"\",\"groupHoldId\":0,\"batchType\":\"1\",\"batchCardStr\":\"\",\"batchStart\":\"{0}\",\"batchEnd\":\"{1}\",\"batchNumber\":0}}", beginiccid, endiccid);
+            string response = PostDataToUrlNotXml(postdata, url, "application/json");
+
+             if (response == "")
+            {
+                DisplayAndLog("刷新套餐失败\r\n", true);
+                return querysql;
+            }
+            try
+            {
+                if (Regex.IsMatch(response, countregex))
+                {
+                    var mc = Regex.Match(response, countregex);
+                    DisplayAndLog(beginiccid + ',' + endiccid + ',' + mc.Value.ToString() + "\r\n", false);
+
+
+                }
+
+
+                Regex r = new Regex("(?<=card_query_sqlwhere\":\")[^\"]+");
+                Match m = r.Match(response);//匹配
+                querysql = m.Groups[0].Value.ToString();
+                return querysql;
+
+            }
+            catch (Exception e)
+            {
+                DisplayAndLog(e.ToString() + "\r\n", true);
+                return querysql;
+            }
+        }
+        public string GetBatchQuerySQLCUCC( string beginiccid,string endiccid)
+        {
+            string querysql = "";
+            string countregex = "(?<=records\":)\\d+";
+            string url = sApiUrl + "/api/SimListFire/Search";
+            string postdata = string.Format("p=1&pRowCount=1&loginHoldId=1&key=&noChild=0&groupHoldId=0&batchType=1&batchCardStr=&batchStart={0}&batchEnd={1}&batchNumber=0",beginiccid,endiccid);
+            string response = PostDataToUrl(postdata,url);
+            if (response == "")
+            {
+                DisplayAndLog("刷新套餐失败\r\n", true);
+                return querysql;
+            }
+            try
+            {
+                if(Regex.IsMatch(response,countregex))
+                {
+	                var mc =Regex.Match(response,countregex);
+	                 DisplayAndLog( beginiccid + ',' + endiccid + ',' + mc.Value.ToString() + "\r\n", false);
+
+ 	
+                }
+ 
+                
+                Regex r = new Regex("(?<=card_query_sqlwhere\":\")[^\"]+");
+                Match m = r.Match(response);//匹配
+                querysql = m.Groups[0].Value.ToString();
+                return querysql;
+                
+            }
+            catch(Exception e)
+            {
+                DisplayAndLog(e.ToString() + "\r\n", true);
+                return querysql;
+            }
+        }
+        private bool BatchDistributeCard(string holdid,string querysql,string carrierType)
+        {
+            string postdata = "operateCmd=distribute&simId%5B%5D=1&simId%5B%5D=1&toHoldId={0}&loginHoldId=1&inheritCfg=true&cardType={1}&outWarehouseDate={2}&query_sqlwhere_key={3}";
+            postdata = string.Format(postdata, holdid, carrierType, DateTime.Now.ToString("yyyy-MM-dd"), querysql);
+            string url = sApiUrl + "/api/Distribute";
+            string response = PostDataToUrl(postdata, url);
+            if (response == "")
+            {
+                DisplayAndLog("分配失败\r\n", false);
+                return false;
+            }
+            if (response.IndexOf("成功") > 0)
+                return true;
+            return false;
+        
+        
+        
+        }
+        private bool BatchChangPkg(string pkgid, string querysql, string carrierType)
+        {
+        //{"id":[],"packageId":190,"simFromType":"1","isSetGroup":"1","isSetVExpireTime":"1","query_sqlwhere_key":"CardQw_579c1e3d-a05e-4616-aa16-13ee8edc2e8c"}
+        //{"id":[],"packageId":48,"simFromType":"0","isSetGroup":"1","isSetVExpireTime":"1","query_sqlwhere_key":"YDCardQw_78e964f0-d7ca-4d01-96e2-d1e82435ff60"}
+
+            string postdata = "{{\"id\":[],\"packageId\":{0},\"simFromType\":\"{1}\",\"isSetGroup\":\"1\",\"isSetVExpireTime\":\"1\",\"query_sqlwhere_key\":\"{2}\"}}";
+            postdata = string.Format(postdata, pkgid, carrierType, querysql);
+            string url = sApiUrl + "/api/ChangeSimPackage";
+            string response = PostDataToUrlNotXml(postdata, url, "application/json");
+            if (response == "")
+            {
+                DisplayAndLog("修改失败\r\n", false);
+                return false;
+            }
+            if (response.IndexOf("error\":0") > 0)
+                return true;
+            return false;
+
+
+
+        }
+        private string judgeCarrierTypeFromIccid(string iccid)
+        {
+            if (iccid == string.Empty)
+                return CarrierType.CUCC.ToString();
+            string pre = iccid.Substring(0, 6);
+ 
+            if ((pre == "898600") || (pre == "898604"))
+                return CarrierType.CMCC.ToString();
+            else
+                return CarrierType.CUCC.ToString();
+                
+        }
+
+        private void batchDistributeWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            string input = this.richTextBox1.Text;
+            string[] iccidlist = input.Split('\n');
+            int count = iccidlist.Count();
+            string result = "";
+            InvokeHelper.Set(this.richTextBox1, "Text", "");
+            string beginiccid = string.Empty;
+            string endiccid = string.Empty;
+            string holdname = string.Empty;
+            string package = string.Empty;
+            string holdid = string.Empty;
+            string querysql = string.Empty;
+            string pkgid = string.Empty;
+            bool isSuccess = false;
+            foreach(string icc in iccidlist)
+            {
+                if (icc.Trim() == string.Empty)
+                    continue;
+                string iccid = icc.Replace("，", ",");
+                string[] param = iccid.Split(',');
+                if (param.Count() <3 )
+                {
+                    result += iccid + "\t格式不对\r\n";
+                    continue;
+                }
+                beginiccid = param[0].Trim();
+                endiccid =  param[1].Trim();
+                holdname =  param[2].Trim();
+                string carrierType = judgeCarrierTypeFromIccid(beginiccid);
+
+                if (param.Count() > 3)
+                    package = param[3].Trim();
+
+
+                if (carrierType == CarrierType.CUCC.ToString())
+                    querysql = GetBatchQuerySQLCUCC(beginiccid, endiccid);
+                else if (carrierType == CarrierType.CMCC.ToString())
+                    querysql = GetBatchQuerySQLCMCC(beginiccid, endiccid);
+
+
+                TreeNode tr = FindNodeByName(treeView1.Nodes[0], holdname);
+                if (tr != null)
+                {
+                    holdid = tr.Tag.ToString();
+
+                    isSuccess = BatchDistributeCard(holdid, querysql, carrierType);
+                    if (isSuccess)
+                        result += iccid + "\tOK\t";
+                    else
+                        result += iccid + "\t失败\t";
+                }
+                else
+                {
+                    result += iccid + "\t找不到账号\t";
+                }
+                if (package ==  string.Empty)
+                {
+                    result += "\r\n";
+                    continue;
+                }
+                //说明有输入套餐
+                if (carrierType == CarrierType.CUCC.ToString())
+                    pkgid = GetPkgIdFromPkgNameCUCC(package);
+                else if (carrierType == CarrierType.CMCC.ToString())
+                    pkgid = GetPkgIdFromPkgNameCMCC(package);
+
+                isSuccess = BatchChangPkg(pkgid, querysql, carrierType);
+                if (isSuccess)
+                {
+                    result += "修改套餐成功\r\n"; 
+                }
+                else
+                {
+                    result += "修改套餐失败\r\n"; 
+                }
+            }
+            e.Result = result;
+
+ 
+
+        }
+
+        private void batchDistributeWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            this.button32.Enabled = true;
+            DisplayAndLog(e.Result.ToString(),true);
+
+        }
+
+ 
+
    
   
 
@@ -3473,64 +3826,64 @@ namespace CheckRenewalPkg
 
 /*
  * 平台登录 
- * http://demo.m-m10010.com/User/login 
+ * http://demo.ali-sim.com/User/login 
  * userName=XXX&userPwd=XXXXX&remember=on
  * Set-Cookie: UserCookie=UserID=1&UserName=admin&UserType=1&HoldID=1&HoldName=%e8%bf%90%e8%90%a5%e4%b8%ad%e5%bf%83&HoldLevel=1&HoldType=4&Token=UJWGJQSGDVMXVX6MHT082WWNCIS9TM22&LoginFromType=1&OEMClient=; path=/
  * 获取用户列表
- * http://demo.m-m10010.com/api/allholdnodes?id=1&parent=1
- * http://demo.m-m10010.com/api/allholdnodes?id=1&parent=1&nodeListType=1&NJholdId=0&notIncludeCount=false
- * http://demo.m-m10010.com/api/allholdnodes?id=0&parent=0&nodeListType=3&NJholdId=0&notIncludeCount=false&UserLoadType=1
+ * http://demo.ali-sim.com/api/allholdnodes?id=1&parent=1
+ * http://demo.ali-sim.com/api/allholdnodes?id=1&parent=1&nodeListType=1&NJholdId=0&notIncludeCount=false
+ * http://demo.ali-sim.com/api/allholdnodes?id=0&parent=0&nodeListType=3&NJholdId=0&notIncludeCount=false&UserLoadType=1
  * 
  * 用户的可续费套餐权限
- * http://demo.m-m10010.com/api/HoldRenewalsList/1496?allShow=true 
+ * http://demo.ali-sim.com/api/HoldRenewalsList/1496?allShow=true 
  * 
  * 套餐的可续费套餐
- * http://demo.m-m10010.com/api/RenewalsPackage?id=17547
+ * http://demo.ali-sim.com/api/RenewalsPackage?id=17547
  * 
  * 月用量报表
- * http://demo.m-m10010.com/api/ReportFlowHold?holdId=5877
+ * http://demo.ali-sim.com/api/ReportFlowHold?holdId=5877
  
  * 
  * 套餐列表-分组列表
- * GET http://demo.m-m10010.com/api/SimHandle/ScreenSelectList?pageName=ltsim 
+ * GET http://demo.ali-sim.com/api/SimHandle/ScreenSelectList?pageName=ltsim 
  
  * 获取账号的所有卡的套餐分布
- * GET http://demo.m-m10010.com/api/HoldPackageTotal?holdId=4984&groupHoldId=0&simFromType=1 
+ * GET http://demo.ali-sim.com/api/HoldPackageTotal?holdId=4984&groupHoldId=0&simFromType=1 
 
  * 查询SIM卡
- * POST http://demo.m-m10010.com/api/SimListFire/Search
+ * POST http://demo.ali-sim.com/api/SimListFire/Search
  * p=1&pRowCount=2&loginHoldId=1&key=&noChild=0&groupHoldId=0&packageType=578
  * 
  * 卡的可续费套餐
- * GET http://demo.m-m10010.com/api/GetSimRenewalsPackageList/430932  
+ * GET http://demo.ali-sim.com/api/GetSimRenewalsPackageList/430932  
 
  *
  *
  */
  //查询用户
-//GET http://demo.m-m10010.com/api/HoldLikeName?holdId=1&key=Y_%E6%B8%9D_04 HTTP/1.1
-//Host: demo.m-m10010.com
+//GET http://demo.ali-sim.com/api/HoldLikeName?holdId=1&key=Y_%E6%B8%9D_04 HTTP/1.1
+//Host: demo.ali-sim.com
 //Connection: keep-alive
 //Accept: application/json, text/javascript, */ q=0.01
 //X-Requested-With: XMLHttpRequest
 //User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36
-//Referer: http://demo.m-m10010.com/GroupHold/Info?currentHoldId=11062
+//Referer: http://demo.ali-sim.com/GroupHold/Info?currentHoldId=11062
 //Accept-Encoding: gzip, deflate
 //Accept-Language: zh,zh-CN;q=0.9,en;q=0.8,zh-TW;q=0.7
 //Cookie: aliyungf_tc=AQAAACi74wQ3ggAAbh0Ot3PiZil1TTwM; ASP.NET_SessionId=s4kqleappqitzjgouvs0v4dd; UserCookie=UserID=94026&UserName=admin_sdy&UserType=2&HoldID=1&HoldName=%e8%bf%90%e8%90%a5%e4%b8%ad%e5%bf%83&HoldLevel=1&HoldType=4&Token=LPNG6KAPTR4VQRBI1LM3SMRM21PFW6B7&LoginFromType=1&OEMClient=
 //Pragma: no-cache
 
 //新建逻辑用户
-//POST http://demo.m-m10010.com/api/GroupHoldUpdate HTTP/1.1
-//Host: demo.m-m10010.com
+//POST http://demo.ali-sim.com/api/GroupHoldUpdate HTTP/1.1
+//Host: demo.ali-sim.com
 //Connection: keep-alive
 //Content-Length: 143
 //Accept: application/json, text/javascript, */*; q=0.01
-//Origin: http://demo.m-m10010.com
+//Origin: http://demo.ali-sim.com
 //X-Requested-With: XMLHttpRequest
 //User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36
 //Content-Type: application/json
-//Referer: http://demo.m-m10010.com/GroupHold/Info?currentHoldId=11062
+//Referer: http://demo.ali-sim.com/GroupHold/Info?currentHoldId=11062
 //Accept-Encoding: gzip, deflate
 //Accept-Language: zh,zh-CN;q=0.9,en;q=0.8,zh-TW;q=0.7
 //Cookie: aliyungf_tc=AQAAACi74wQ3ggAAbh0Ot3PiZil1TTwM; ASP.NET_SessionId=s4kqleappqitzjgouvs0v4dd; UserCookie=UserID=94026&UserName=admin_sdy&UserType=2&HoldID=1&HoldName=%e8%bf%90%e8%90%a5%e4%b8%ad%e5%bf%83&HoldLevel=1&HoldType=4&Token=LPNG6KAPTR4VQRBI1LM3SMRM21PFW6B7&LoginFromType=1&OEMClient=

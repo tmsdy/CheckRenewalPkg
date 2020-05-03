@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Net;
 using System.IO;
 using System.Data.SQLite;
+using System.Web;
 
 namespace CheckRenewalPkg
 {
@@ -97,7 +98,7 @@ namespace CheckRenewalPkg
         private void button1_Click(object sender, EventArgs e)
         {
             //userName=admin&userPwd=www.u12580.com.allah
-            string postData = "userName=" + this.textBox1.Text.Trim() + "&userPwd=" + this.textBox2.Text.Trim();
+            string postData = "userName=" + HttpUtility.UrlEncode(this.textBox1.Text.Trim(), Encoding.UTF8) + "&userPwd=" + HttpUtility.UrlEncode(this.textBox2.Text.Trim(), Encoding.UTF8);
 
             if (PosttoLogin(postData))
             {
@@ -145,17 +146,23 @@ namespace CheckRenewalPkg
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
-            Program.sGloableDomailUrl = "http://demo.m-m10010.com";  
+            Program.sGloableDomailUrl = "http://demo.ali-sim.com";  
         }
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
-            Program.sGloableDomailUrl = "http://www.m-m10010.com";  
+            Program.sGloableDomailUrl = "http://www.ali-sim.com";  
         }
 
         private void radioButton3_CheckedChanged(object sender, EventArgs e)
         {
-            Program.sGloableDomailUrl = "http://192.168.110.30/m10010";  
+            Program.sGloableDomailUrl = "http://demo.m-m10010.com";  
+        }
+
+        private void radioButton4_CheckedChanged(object sender, EventArgs e)
+        {
+            Program.sGloableDomailUrl = "http://www.m-m10010.com";  
+
         }
     }
 }

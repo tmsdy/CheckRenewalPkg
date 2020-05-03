@@ -1114,7 +1114,7 @@ namespace CheckRenewalPkg
         {
             int i = 1;
             string iccid = "";
-            string activeState = "1";
+            string activeState = "0";
             int result = 0;
             string[] str = InvokeHelper.Get(this.richTextBox1, "Text").ToString().Trim().Replace("\r\n\r\n", "\r\n").Replace("\r\n\r\n", "\r\n").Split('\n');
             if (0 != GetSimidFromIccids(str))
@@ -1165,7 +1165,7 @@ namespace CheckRenewalPkg
             {
                 return " Simid为空\r\n";
             }
-            //http://demo.m-m10010.com/api/YDSimBill?simId=8823346
+            //http://demo.ali-sim.com/api/YDSimBill?simId=8823346
             string url = Program.sGloableDomailUrl + "/api/YDSimBill?simId=" + simid;
 
             int i = 0;
@@ -1238,16 +1238,16 @@ namespace CheckRenewalPkg
     }
 }
 
-//POST http://demo.m-m10010.com/api/SimHandle/Distribute HTTP/1.1
-//Host: demo.m-m10010.com
+//POST http://demo.ali-sim.com/api/SimHandle/Distribute HTTP/1.1
+//Host: demo.ali-sim.com
 //Connection: keep-alive
 //Content-Length: 82
 //Accept: application/json, text/javascript, */*; q=0.01
-//Origin: http://demo.m-m10010.com
+//Origin: http://demo.ali-sim.com
 //X-Requested-With: XMLHttpRequest
 //User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36
 //Content-Type: application/x-www-form-urlencoded; charset=UTF-8
-//Referer: http://demo.m-m10010.com/sim/distribute?cardType=1&batch=undefined&sqlKey=undefined&nums=2
+//Referer: http://demo.ali-sim.com/sim/distribute?cardType=1&batch=undefined&sqlKey=undefined&nums=2
 //Accept-Encoding: gzip, deflate
 //Accept-Language: zh,zh-CN;q=0.9,en;q=0.8,zh-TW;q=0.7
 //Cookie: ASP.NET_SessionId=vbcw43x3awlzgrsuxlu1ump3; UserCookie=UserID=1&UserName=admin&UserType=1&HoldID=1&HoldName=%e8%bf%90%e8%90%a5%e4%b8%ad%e5%bf%83&HoldLevel=1&HoldType=4&Token=F1X2BX1LI5V3SDQC1XPOFXW7C9HBHWTN&LoginFromType=1&OEMClient=
@@ -1255,16 +1255,16 @@ namespace CheckRenewalPkg
 //operateCmd=move&simId%5B%5D=367006&toHoldId=3828&loginHoldId=1
 
 
-//POST http://demo.m-m10010.com/api/MonitorTestSetSimGroup HTTP/1.1
-//Host: demo.m-m10010.com
+//POST http://demo.ali-sim.com/api/MonitorTestSetSimGroup HTTP/1.1
+//Host: demo.ali-sim.com
 //Connection: keep-alive
 //Content-Length: 31
 //Accept: application/json, text/javascript, */*; q=0.01
-//Origin: http://demo.m-m10010.com
+//Origin: http://demo.ali-sim.com
 //X-Requested-With: XMLHttpRequest
 //User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36
 //Content-Type: application/x-www-form-urlencoded; charset=UTF-8
-//Referer: http://demo.m-m10010.com/sim/customer
+//Referer: http://demo.ali-sim.com/sim/customer
 //Accept-Encoding: gzip, deflate
 //Accept-Language: zh,zh-CN;q=0.8,en;q=0.6,zh-TW;q=0.4
 //Cookie: aliyungf_tc=AQAAAH3TPDes5gMAHB0Ot4yONBq6GaaA; ASP.NET_SessionId=hfok0ftocsfomjnbjftaakhx; UserCookie=UserID=1&UserName=admin&UserType=1&HoldID=1&HoldName=%e8%bf%90%e8%90%a5%e4%b8%ad%e5%bf%83&HoldLevel=1&HoldType=4&Token=IPIBMIWHVSNBYMDFJUKMK0QW5OTOCR5F&LoginFromType=1&OEMClient=
@@ -1272,16 +1272,16 @@ namespace CheckRenewalPkg
 //simIds%5B%5D=408697&groupId=162
 
 
-//POST http://demo.m-m10010.com/api/SetVExpireTime HTTP/1.1
-//Host: demo.m-m10010.com
+//POST http://demo.ali-sim.com/api/SetVExpireTime HTTP/1.1
+//Host: demo.ali-sim.com
 //Connection: keep-alive
 //Content-Length: 53
 //Accept: application/json, text/javascript, */*; q=0.01
-//Origin: http://demo.m-m10010.com
+//Origin: http://demo.ali-sim.com
 //X-Requested-With: XMLHttpRequest
 //User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36
 //Content-Type: application/x-www-form-urlencoded; charset=UTF-8
-//Referer: http://demo.m-m10010.com/sim/setTillDate?cardType=1
+//Referer: http://demo.ali-sim.com/sim/setTillDate?cardType=1
 //Accept-Encoding: gzip, deflate
 //Accept-Language: zh,zh-CN;q=0.8,en;q=0.6,zh-TW;q=0.4
 //Cookie: aliyungf_tc=AQAAAH3TPDes5gMAHB0Ot4yONBq6GaaA; ASP.NET_SessionId=hfok0ftocsfomjnbjftaakhx; UserCookie=UserID=1&UserName=admin&UserType=1&HoldID=1&HoldName=%e8%bf%90%e8%90%a5%e4%b8%ad%e5%bf%83&HoldLevel=1&HoldType=4&Token=IPIBMIWHVSNBYMDFJUKMK0QW5OTOCR5F&LoginFromType=1&OEMClient=

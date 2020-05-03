@@ -849,7 +849,191 @@ namespace CheckRenewalPkg
         }
         #endregion
 
+        #region 移动套餐分组列表
+        public class SltPackageTypeYDItem
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Selected { get; set; }
+            /// <summary>
+            /// 全部
+            /// </summary>
+            public string Text { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Value { get; set; }
+        }
 
+        public class SltCardTypeYDItem
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Selected { get; set; }
+            /// <summary>
+            /// 全部
+            /// </summary>
+            public string Text { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Value { get; set; }
+        }
+
+        public class SltYDSupplierItem
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Selected { get; set; }
+            /// <summary>
+            /// 全部
+            /// </summary>
+            public string Text { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Value { get; set; }
+        }
+
+        public class SltYDCardTypeItem
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Selected { get; set; }
+            /// <summary>
+            /// 全部
+            /// </summary>
+            public string Text { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Value { get; set; }
+        }
+
+        public class SltYDNetworkItem
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Selected { get; set; }
+            /// <summary>
+            /// 全部
+            /// </summary>
+            public string Text { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Value { get; set; }
+        }
+
+        public class SltYDCompanyItem
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Selected { get; set; }
+            /// <summary>
+            /// 全部
+            /// </summary>
+            public string Text { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Value { get; set; }
+        }
+
+        public class SltYDContractTypeItem
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Selected { get; set; }
+            /// <summary>
+            /// 全部
+            /// </summary>
+            public string Text { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Value { get; set; }
+        }
+
+        public class SltYDSourceTypeItem
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Selected { get; set; }
+            /// <summary>
+            /// 全部
+            /// </summary>
+            public string Text { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Value { get; set; }
+        }
+
+        public class YDPkgListDetailRootResult
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<SltPackageTypeYDItem> sltPackageTypeYD { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<SltCardTypeYDItem> sltCardTypeYD { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<SltYDSupplierItem> sltYDSupplier { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<SltYDCardTypeItem> sltYDCardType { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<SltYDNetworkItem> sltYDNetwork { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<SltYDCompanyItem> sltYDCompany { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<SltYDContractTypeItem> sltYDContractType { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<SltYDSourceTypeItem> sltYDSourceType { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string sltYDTagType { get; set; }
+        }
+
+        public class YDPkgListDetailRoot
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public int error { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string reason { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public YDPkgListDetailRootResult result { get; set; }
+        }
+        #endregion
         #region 账号下套餐分布
         public class PkgDistributionResultItem
         {
